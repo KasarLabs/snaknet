@@ -1,0 +1,34 @@
+import { StarknetTool } from './dependances/types';
+import { getProofService } from '../actions/getProofService.js';
+import { AtlanticParam, VerifierParam } from '../types/Atlantic.js';
+import {
+  GetProofServiceSchema,
+  VerifyProofServiceSchema,
+} from '../schema/index.js';
+import { verifyProofService } from '../actions/verifyProofService.js';
+
+export const registerTools = (StarknetToolRegistry: StarknetTool[]) => {
+  StarknetToolRegistry.push({
+    name: 'get_proof_service',
+    plugins: 'atlantic',
+    description:
+      "Query atlantic api to generate a proof from '.zip' file on starknet and return the query id",
+    schema: GetProofServiceSchema,
+    execute: async (params) => {
+      // Assuming params is validated against GetProofServiceSchema and is of type AtlanticParam
+      return getProofService(params as unknown as AtlanticParam);
+    },
+  });
+
+  StarknetToolRegistry.push({
+    name: 'verify_proof_service',
+    plugins: 'atlantic',
+    description:
+      "Query atlantic api to verify a proof from '.json' file on starknet and return the query id",
+    schema: VerifyProofServiceSchema,
+    execute: async (params) => {
+      // Assuming params is validated against VerifyProofServiceSchema and is of type VerifierParam
+      return verifyProofService(params as unknown as VerifierParam);
+    },
+  });
+};
