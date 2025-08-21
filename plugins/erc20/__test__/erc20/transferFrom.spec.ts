@@ -3,7 +3,7 @@ import { approve } from '../../src/actions/approve.js';
 import { transferFrom } from '../../src/actions/transferFrom.js';
 import { createMockSnakAgent } from '../jest/setEnvVars.js';
 import { setupTestEnvironment } from '../utils/helper.js';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '@snakagent/core';
 
 describe('TransferFrom with prior approval', () => {
   const approvalAmount = '1.0';

@@ -1,4 +1,4 @@
-import { StarknetTool } from './dependances/types';
+import { StarknetTool } from '../dependances/types.js';
 import { getProofService } from '../actions/getProofService.js';
 import { AtlanticParam, VerifierParam } from '../types/Atlantic.js';
 import {

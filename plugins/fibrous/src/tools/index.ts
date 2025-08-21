@@ -1,4 +1,4 @@
-import { StarknetTool } from './dependances/types';
+import { StarknetTool } from '../dependances/types.js';
 import { swapSchema } from '../schema/index.js';
 import { swapTokensFibrous } from '../actions/swap.js';
 import {

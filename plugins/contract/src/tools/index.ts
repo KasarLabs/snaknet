@@ -1,4 +1,4 @@
-import { StarknetTool, SnakAgentInterface } from './dependances/types';
+import { StarknetTool, SnakAgentInterface } from '../dependances/types.js';
 import {
   declareContractSchema,
   deployContractSchema,

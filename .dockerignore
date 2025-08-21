@@ -1,0 +1,13 @@
+packages/database/data
+packages/database/log
+
+**/node_modules
+**/dist
+
+.git
+.turbo
+.github
+
+.vscode
+*.log
+.npmrc

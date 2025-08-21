@@ -2,7 +2,7 @@ import { LaunchOnEkuboParams } from '../schema/index.js';
 import { FACTORY_ABI } from '../abis/unruggableFactory.js';
 import { FACTORY_ADDRESS } from '../constants/index.js';
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 
 /**
  * Launches a memecoin on the Ekubo DEX with concentrated liquidity.

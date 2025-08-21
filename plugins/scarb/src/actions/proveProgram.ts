@@ -1,4 +1,4 @@
-import { logger, SnakAgentInterface } from './dependances/types';
+import { logger, SnakAgentInterface } from '../dependances/types.js';
 import { proveProject, cleanProject } from '../utils/workspace.js';
 import { proveProgramSchema } from '../schema/schema.js';
 import { executeProgram } from './executeProgram.js';

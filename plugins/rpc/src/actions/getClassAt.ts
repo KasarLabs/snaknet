@@ -1,5 +1,5 @@
 import { BlockNumber } from 'starknet';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { GetClassAtParams } from '../schema/index.js';
 
 export const getClassAt = async (

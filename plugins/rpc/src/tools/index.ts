@@ -1,4 +1,4 @@
-import { StarknetTool } from './dependances/types';
+import { StarknetTool } from '../dependances/types.js';
 import { getSpecVersion } from '../actions/getSpecVersion.js';
 import { getBlockWithTxHashes } from '../actions/getBlockWithTxHashes.js';
 import { getBlockWithReceipts } from '../actions/getBlockWithReceipts.js';

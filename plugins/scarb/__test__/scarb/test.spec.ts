@@ -2,8 +2,8 @@
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { initializeProjectData } from '../../src/utils/db.js';
 import { createMockSnakAgent } from '../jest/setEnvVars.js';
-import { SnakAgentInterface } from './dependances/types';
-import { PostgresAdaptater } from './dependances/types';
+import { SnakAgentInterface } from '@snakagent/core';
+import { PostgresAdaptater } from '@snakagent/core';
 
 // Define a type for our mocks that matches the expected structure
 type MockDB = {

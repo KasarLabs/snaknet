@@ -1,4 +1,4 @@
-import { SignatureTool } from './dependances/types';
+import { SignatureTool } from '../dependances/types.js';
 import { accountDetailsSchema } from '../schemas/schema.js';
 import { DeployOKXAccountSignature } from '../actions/deployAccount.js';
 import { CreateOKXAccountSignature } from '../actions/createAccount.js';

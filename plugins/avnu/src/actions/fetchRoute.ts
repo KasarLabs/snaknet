@@ -1,5 +1,5 @@
 import { fetchQuotes, QuoteRequest } from '@avnu/avnu-sdk';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { TokenService } from './fetchTokens.js';
 import { RouteSchemaType } from '../schema/index.js';
 import { RouteResult } from '../interfaces/index.js';

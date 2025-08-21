@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { scarb } from '@snakagent/database/queries';
 
 /**

@@ -1,7 +1,7 @@
 import { Account, Call, constants } from 'starknet';
 
 import { ApprovalService } from './approval.js';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { SLIPPAGE_PERCENTAGE } from '../constants/index.js';
 import { TokenService } from './fetchTokens.js';
 import { Router as FibrousRouter } from 'fibrous-router-sdk';

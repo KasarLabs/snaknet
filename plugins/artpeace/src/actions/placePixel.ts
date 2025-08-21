@@ -1,4 +1,4 @@
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { Account, constants, Contract } from 'starknet';
 import { artpeaceAbi } from '../abis/artpeaceAbi.js';
 import { artpeaceAddr } from '../constants/artpeace.js';

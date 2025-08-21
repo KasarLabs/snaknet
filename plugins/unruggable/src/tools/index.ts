@@ -1,4 +1,4 @@
-import { StarknetTool } from './dependances/types';
+import { StarknetTool } from '../dependances/types.js';
 import {
   contractAddressSchema,
   launchOnEkuboSchema,

@@ -1,5 +1,5 @@
 import { Account, shortString, cairo } from 'starknet';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { ContractManager } from '../utils/contractManager.js';
 import { deployERC20Schema } from '../schemas/schema.js';
 import {

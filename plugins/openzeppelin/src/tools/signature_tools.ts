@@ -1,4 +1,4 @@
-import { SignatureTool } from './dependances/types';
+import { SignatureTool } from '../dependances/types.js';
 import { accountDetailsSchema } from '../schemas/schema.js';
 import { CreateOZAccountSignature } from '../actions/createAccount.js';
 import { DeployOZAccountSignature } from '../actions/deployAccount.js';

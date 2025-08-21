@@ -1,5 +1,5 @@
 import { RpcProvider } from 'starknet';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { OKX_CLASSHASH } from '../constant/contract.js';
 import { AccountManager } from '../utils/AccountManager.js';
 import { z } from 'zod';

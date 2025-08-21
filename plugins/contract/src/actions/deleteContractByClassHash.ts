@@ -1,4 +1,4 @@
-import { logger, SnakAgentInterface } from './dependances/types';
+import { logger, SnakAgentInterface } from '../dependances/types.js';
 import { z } from 'zod';
 import { deleteContractByClassHashSchema } from '../schemas/schema.js';
 import { contract } from '@snakagent/database/queries';

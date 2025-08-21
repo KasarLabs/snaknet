@@ -1,0 +1,13 @@
+src/
+test/
+tsconfig.json
+tsconfig.build.json
+.gitignore
+.env
+.env.example
+nest-cli.json
+coverage/
+.github/
+.vscode/
+*.log
+*.tgz

@@ -1,4 +1,4 @@
-import { SignatureTool } from './dependances/types';
+import { SignatureTool } from '../dependances/types.js';
 import { placePixelSchema } from '../schema/index.js';
 import { placePixelSignature } from '../actions/placePixel.js';
 

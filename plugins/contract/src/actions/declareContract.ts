@@ -1,10 +1,10 @@
 import { Account, constants } from 'starknet';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { z } from 'zod';
 import { ContractManager } from '../utils/contractManager.js';
 import { declareContractSchema } from '../schemas/schema.js';
 import { getSierraCasmFromDB } from '../utils/db.js';
-import { logger } from './dependances/types';
+import { logger } from '../dependances/types.js';
 import { contract } from '@snakagent/database/queries';
 
 /**

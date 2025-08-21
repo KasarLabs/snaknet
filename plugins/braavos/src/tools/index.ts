@@ -1,6 +1,6 @@
 import { wrapAccountCreationResponse } from '../utils/AccountManager.js';
 import { accountDetailsSchema } from '../schemas/schema.js';
-import { StarknetTool } from './dependances/types';
+import { StarknetTool } from '../dependances/types.js';
 import { DeployBraavosAccount } from '../actions/deployAccount.js';
 import { CreateBraavosAccount } from '../actions/createAccount.js';
 

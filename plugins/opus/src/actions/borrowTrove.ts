@@ -1,4 +1,4 @@
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { BorrowTroveParams } from '../schemas/index.js';
 import { createTroveManager } from '../utils/troveManager.js';
 

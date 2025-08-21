@@ -26,10 +26,10 @@
     "lint": "eslint \"src/**/*.ts\" --fix"
   },
   "dependencies": {
-    "fibrous-router-sdk": "0.4.3",
-    "starknet": "^6.23.1",
-    "@langchain/core": "^0.1.0",
-    "zod": "^3.24.2"
+    "@langchain/core": "^0.3.42",
+    "zod": "^3.24.2",
+    "winston": "^3.17.0",
+    "fibrous-router-sdk": "0.4.3"
   },
   "keywords": [],
   "author": "",

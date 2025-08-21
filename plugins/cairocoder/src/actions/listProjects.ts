@@ -1,4 +1,4 @@
-import { logger, SnakAgentInterface } from './dependances/types';
+import { logger, SnakAgentInterface } from '../dependances/types.js';
 import { z } from 'zod';
 import { listProjectsSchema } from '../schema/schema.js';
 import { scarb } from '@snakagent/database/queries';

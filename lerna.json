@@ -2,5 +2,5 @@
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "version": "0.0.12",
   "npmClient": "pnpm",
-  "packages": ["plugins/*"]
+  "packages": ["packages/*", "plugins/*", "mcps/*"]
 }

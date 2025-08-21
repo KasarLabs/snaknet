@@ -1,5 +1,5 @@
 import { Account, uint256 } from 'starknet';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { ERC20_ABI } from '../abi/erc20Abi.js';
 import { ContractInteractor } from '../utils/contractInteractor.js';
 import { TransactionMonitor } from '../utils/transactionMonitor.js';

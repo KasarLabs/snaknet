@@ -1,6 +1,6 @@
 import { Account, uint256 } from 'starknet';
 import { tokenAddresses } from '../constants/erc20.js';
-import { logger, SnakAgentInterface } from './dependances/types';
+import { logger, SnakAgentInterface } from '../dependances/types.js';
 
 /**
  * Configuration interface for transfer operations

@@ -1,5 +1,5 @@
 import { BlockIdParams } from '../schema/index.js';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 
 export const getBlockWithTxHashes = async (
   agent: SnakAgentInterface,

@@ -26,8 +26,8 @@
   },
   "dependencies": {
     "@avnu/avnu-sdk": "^3.0.0",
-    "starknet": "^6.23.1",
-    "@langchain/core": "^0.1.0",
+    "@langchain/core": "^0.3.42",
+    "winston": "^3.17.0",
     "zod": "^3.24.2"
   },
   "keywords": [],

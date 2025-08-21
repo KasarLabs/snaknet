@@ -1,4 +1,4 @@
-import { logger, SnakAgentInterface } from './dependances/types';
+import { logger, SnakAgentInterface } from '../dependances/types.js';
 import { addProgramSchema, addDependencySchema } from '../schema/schema.js';
 import { extractFile } from '../utils/utils.js';
 import path from 'path';

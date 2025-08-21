@@ -24,13 +24,13 @@
     "prepublishOnly": "npm run format && npm run build",
     "prepack": "npm run build"
   },
+  "dependencies": {
+    "@langchain/core": "^0.3.42",
+    "zod": "^3.24.2",
+    "winston": "^3.17.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "Snak plugin for creating and deploying Argent wallet accounts on Starknet.",
-  "dependencies": {
-    "starknet": "^6.23.1",
-    "@langchain/core": "^0.1.0",
-    "zod": "^3.24.2"
-  }
+  "description": "Snak plugin for creating and deploying Argent wallet accounts on Starknet."
 }

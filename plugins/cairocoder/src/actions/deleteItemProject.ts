@@ -5,7 +5,7 @@ import {
   deleteProjectSchema,
 } from '../schema/schema.js';
 import { scarb } from '@snakagent/database/queries';
-import { logger, SnakAgentInterface } from './dependances/types';
+import { logger, SnakAgentInterface } from '../dependances/types.js';
 
 /**
  * Delete several programs from a project

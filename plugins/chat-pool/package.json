@@ -25,10 +25,10 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@snakagent/database": "workspace:*",
-    "starknet": "^6.23.1",
-    "@langchain/core": "^0.1.0",
-    "zod": "^3.24.2"
+    "@langchain/core": "^0.3.42",
+    "zod": "^3.24.2",
+    "winston": "^3.17.0",
+    "@snakagent/database": "workspace:*"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,5 @@
 import { Account, constants } from 'starknet';
-import { logger, SnakAgentInterface } from './dependances/types';
+import { logger, SnakAgentInterface } from '../dependances/types.js';
 import { ContractManager } from '../utils/contractManager.js';
 import { deployContractSchema } from '../schemas/schema.js';
 import { getSierraCasmFromDB } from '../utils/db.js';

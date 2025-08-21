@@ -1,6 +1,6 @@
 import { insertChatInstruction, readChatPool } from '../actions/chatPool.js';
 import { insertChatIntructionSchema } from '../schema/index.js';
-import { StarknetTool } from './dependances/types';
+import { StarknetTool } from '../dependances/types.js';
 import { chat } from '@snakagent/database/queries';
 
 export const registerTools = async (StarknetToolRegistry: StarknetTool[]) => {

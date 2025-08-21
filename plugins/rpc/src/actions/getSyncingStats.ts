@@ -1,4 +1,4 @@
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 
 export const getSyncingStats = async (agent: SnakAgentInterface) => {
   const provider = agent.getProvider();

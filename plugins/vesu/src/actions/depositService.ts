@@ -1,5 +1,5 @@
 import { Account, Call } from 'starknet';
-import { logger, SnakAgentInterface } from './dependances/types';
+import { logger, SnakAgentInterface } from '../dependances/types.js';
 import { z } from 'zod';
 import { parseUnits } from 'ethers';
 import {

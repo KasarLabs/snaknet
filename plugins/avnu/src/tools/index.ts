@@ -1,4 +1,4 @@
-import { StarknetTool } from './dependances/types';
+import { StarknetTool } from '../dependances/types.js';
 import { routeSchema, swapSchema } from '../schema/index.js';
 import { swapTokens } from '../actions/swap.js';
 import { getRoute } from '../actions/fetchRoute.js';

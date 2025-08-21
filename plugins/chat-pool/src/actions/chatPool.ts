@@ -1,5 +1,5 @@
 import { insertChatIntructionParams } from '../schema/index.js';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { chat } from '@snakagent/database/queries';
 
 export const insertChatInstruction = async (

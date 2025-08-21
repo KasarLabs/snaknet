@@ -1,5 +1,5 @@
 import { Account, shortString } from 'starknet';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { ContractManager } from '../utils/contractManager.js';
 import {
   ERC721_CLASSHASH_SEPOLIA,

@@ -25,10 +25,12 @@
     "prepack": "npm run build"
   },
   "dependencies": {
+    "@langchain/core": "^0.3.42",
     "@snakagent/database": "workspace:*",
     "axios": "^1.8.2",
     "starknet": "^5.25.0",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.4"

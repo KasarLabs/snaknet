@@ -1,4 +1,4 @@
-import { logger, SnakAgentInterface } from './dependances/types';
+import { logger, SnakAgentInterface } from '../dependances/types.js';
 import { z } from 'zod';
 import { generateCairoCodeSchema } from '../schema/schema.js';
 import {

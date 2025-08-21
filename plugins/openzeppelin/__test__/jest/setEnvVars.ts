@@ -1,6 +1,6 @@
 import { setupTestEnvironment } from '../utils/helper.js';
 import { RpcProvider } from 'starknet';
-import { SnakAgentInterface, AgentConfig } from './dependances/types';
+import { SnakAgentInterface, AgentConfig } from '@snakagent/core';
 import { SystemMessage } from '@langchain/core/messages';
 import { AgentMode } from '@core/src/common/agent.js';
 

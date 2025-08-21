@@ -4,7 +4,7 @@ import {
   constants,
   validateAndParseAddress,
 } from 'starknet';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { INTERACT_ERC721_ABI } from '../abis/interact.js';
 import {
   validateAndFormatTokenId,

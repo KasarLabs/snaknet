@@ -1,6 +1,6 @@
 import { Account, CallData, Uint256 } from 'starknet';
 import { FACTORY_ADDRESS } from '../constants/index.js';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { RpcProvider } from 'starknet';
 
 /**

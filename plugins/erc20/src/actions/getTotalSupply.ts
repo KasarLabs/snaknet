@@ -1,5 +1,5 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import { validateToken, formatBalance, detectAbiType } from '../utils/utils.js';
 import { validToken } from '../types/types.js';
 import { z } from 'zod';

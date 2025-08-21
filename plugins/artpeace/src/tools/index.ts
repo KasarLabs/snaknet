@@ -1,4 +1,4 @@
-import { StarknetTool } from './dependances/types';
+import { StarknetTool } from '../dependances/types.js';
 import { placePixel } from '../actions/placePixel.js';
 import { placePixelSchema } from '../schema/index.js';
 

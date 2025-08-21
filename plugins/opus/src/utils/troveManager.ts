@@ -6,7 +6,7 @@ import {
   GetTransactionReceiptResponse,
 } from 'starknet';
 import { formatUnits, parseUnits } from 'ethers';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 import {
   BorrowTroveResult,
   DepositTroveResult,

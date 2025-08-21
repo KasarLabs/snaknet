@@ -1,5 +1,5 @@
 import { GetStorageParams } from '../schema/index.js';
-import { SnakAgentInterface } from './dependances/types';
+import { SnakAgentInterface } from '../dependances/types.js';
 
 export const getStorageAt = async (
   agent: SnakAgentInterface,

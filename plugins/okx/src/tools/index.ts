@@ -1,6 +1,6 @@
 import { wrapAccountCreationResponse } from '../utils/AccountManager.js';
 import { accountDetailsSchema } from '../schemas/schema.js';
-import { StarknetTool } from './dependances/types';
+import { StarknetTool } from '../dependances/types.js';
 import { DeployOKXAccount } from '../actions/deployAccount.js';
 import { CreateOKXAccount } from '../actions/createAccount.js';
 

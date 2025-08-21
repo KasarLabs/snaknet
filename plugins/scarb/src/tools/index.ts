@@ -11,7 +11,7 @@ import {
   installScarbSchema,
   compileContractSchema,
 } from '../schema/schema.js';
-import { logger, StarknetTool } from './dependances/types';
+import { logger, StarknetTool } from '../dependances/types.js';
 import { scarb } from '@snakagent/database/queries';
 
 export const registerTools = async (StarknetToolRegistry: StarknetTool[]) => {

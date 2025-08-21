@@ -1,4 +1,4 @@
-import { SignatureTool } from './dependances/types';
+import { SignatureTool } from '../dependances/types.js';
 import { transfer_signature } from '../actions/transfer.js';
 import { getBalanceSignature } from '../actions/getBalances.js';
 import { getBalanceSchema, transferSignatureschema } from '../schema/index.js';
