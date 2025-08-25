@@ -1,32 +1,12 @@
-import { BlockIdAndContractAddressParams } from '../schema/index.js';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { BlockNumber } from 'starknet';
+import { RpcProvider } from 'starknet';
 
-export const getNonceForAddress = async (
-  agent: SnakAgentInterface,
-  params: BlockIdAndContractAddressParams
-) => {
-  const provider = agent.getProvider();
-
+export const getNonceForAddress = async (provider: RpcProvider, params: { contractAddress: string; blockId?: string }) => {
   try {
-    let blockIdentifier: BlockNumber | string = params.blockId || 'latest';
-
-    if (
-      typeof blockIdentifier === 'string' &&
-      !isNaN(Number(blockIdentifier)) &&
-      blockIdentifier !== 'latest'
-    ) {
-      blockIdentifier = Number(blockIdentifier);
-    }
-
-    const contractClass = await provider.getNonceForAddress(
-      params.contractAddress,
-      blockIdentifier
-    );
+    const nonce = await provider.getNonceForAddress(params.contractAddress, params.blockId);
 
     return JSON.stringify({
       status: 'success',
-      contractClass,
+      nonce,
     });
   } catch (error) {
     return JSON.stringify({

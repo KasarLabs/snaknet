@@ -1,18 +1,9 @@
-import { GetTransactionByBlockIdAndIndexParams } from '../schema/index.js';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { RpcProvider } from 'starknet';
 
-export const getTransactionByBlockIdAndIndex = async (
-  agent: SnakAgentInterface,
-  params: GetTransactionByBlockIdAndIndexParams
-) => {
-  const provider = agent.getProvider();
-
+export const getTransactionByBlockIdAndIndex = async (provider: RpcProvider, params: { blockId: string; index: number }) => {
   try {
-    const { transactionIndex, blockId } = params;
-    const transaction = await provider.getTransactionByBlockIdAndIndex(
-      blockId,
-      transactionIndex
-    );
+    const transaction = await provider.getTransactionByBlockIdAndIndex(params.blockId, params.index);
+
     return JSON.stringify({
       status: 'success',
       transaction,

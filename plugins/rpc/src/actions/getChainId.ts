@@ -1,8 +1,6 @@
-import { SnakAgentInterface } from '../dependances/types.js';
+import { RpcProvider } from 'starknet';
 
-export const getChainId = async (agent: SnakAgentInterface) => {
-  const provider = agent.getProvider();
-
+export const getChainId = async (provider: RpcProvider) => {
   try {
     const chainId = await provider.getChainId();
 

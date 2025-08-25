@@ -1,10 +1,9 @@
-import { SnakAgentInterface } from '../dependances/types.js';
+import { RpcProvider } from 'starknet';
 
-export const getSyncingStats = async (agent: SnakAgentInterface) => {
-  const provider = agent.getProvider();
-
+export const getSyncingStats = async (provider: RpcProvider) => {
   try {
     const syncingStats = await provider.getSyncingStats();
+
     return JSON.stringify({
       status: 'success',
       syncingStats,

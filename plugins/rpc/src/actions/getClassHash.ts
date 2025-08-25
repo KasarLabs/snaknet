@@ -1,34 +1,14 @@
-import { BlockIdAndContractAddressParams } from '../schema/index.js';
-import { BlockNumber } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { RpcProvider } from 'starknet';
 
-export const getClassHashAt = async (
-  agent: SnakAgentInterface,
-  params: BlockIdAndContractAddressParams
-) => {
-  const provider = agent.getProvider();
+export const getClassHash = async (provider: RpcProvider, params: { contractAddress: string; blockId?: string }) => {
   try {
-    let blockIdentifier: BlockNumber | string = params.blockId || 'latest';
-
-    if (
-      typeof blockIdentifier === 'string' &&
-      !isNaN(Number(blockIdentifier)) &&
-      blockIdentifier !== 'latest'
-    ) {
-      blockIdentifier = Number(blockIdentifier);
-    }
-
-    const classHash = await provider.getClassHashAt(
-      params.contractAddress,
-      blockIdentifier
-    );
+    const classHash = await provider.getClassHashAt(params.contractAddress, params.blockId);
 
     return JSON.stringify({
       status: 'success',
       classHash,
     });
   } catch (error) {
-    console.error('GetClassHash error:', error);
     return JSON.stringify({
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',

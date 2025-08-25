@@ -1,37 +1,37 @@
 {
-  "name": "@snakagent/plugin-rpc",
-  "version": "0.0.7",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.mjs",
+  "name": "mcp_starknet-rpc",
+  "version": "1.0.0",
+  "main": "index.js",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
+  "bin": {
+    "mcp_starknet-rpc": "./bin/mcp_starknet-rpc.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "clean": "rm -rf build",
+    "clean:all": "rm -rf build node_modules",
+    "start": "node build/index.js"
   },
   "files": [
-    "dist",
-    "LICENSE",
-    "package.json",
-    "README.md"
+    "build"
   ],
-  "scripts": {
-    "test": "echo \"No test has been created for this plugins\" && exit 0",
-    "build": "tsup",
-    "clean": "rm -rf node_modules",
-    "clean:dist": "rm -rf dist",
-    "clean:all": "pnpm clean && pnpm clean:dist",
-    "format": "prettier --write \"./**/*.ts\"",
-    "prepublishOnly": "npm run format && npm run build",
-    "prepack": "npm run build",
-    "lint": "eslint \"src/**/*.ts\" --fix"
-  },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "dotenv": "^16.4.7",
     "@langchain/core": "^0.3.42",
     "zod": "^3.24.2",
     "winston": "^3.17.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "Snak plugin for direct blockchain interaction via RPC methods, providing access to on-chain data and state."
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  },
+  "keywords": [
+    "mcp",
+    "starknet",
+    "rpc"
+  ],
+  "author": "kasarlabs",
+  "license": "MIT",
+  "description": "MCP server for direct blockchain interaction via RPC methods, providing access to on-chain data and state."
 }

@@ -1,27 +1,8 @@
-import { BlockNumber } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { GetClassAtParams } from '../schema/index.js';
+import { RpcProvider } from 'starknet';
 
-export const getClassAt = async (
-  agent: SnakAgentInterface,
-  params: GetClassAtParams
-) => {
-  const provider = agent.getProvider();
+export const getClassAt = async (provider: RpcProvider, params: { contractAddress: string; blockId?: string }) => {
   try {
-    let blockIdentifier: BlockNumber | string = params.blockId || 'latest';
-
-    if (
-      typeof blockIdentifier === 'string' &&
-      !isNaN(Number(blockIdentifier)) &&
-      blockIdentifier !== 'latest'
-    ) {
-      blockIdentifier = Number(blockIdentifier);
-    }
-
-    const contractClass = await provider.getClassAt(
-      params.contractAddress,
-      blockIdentifier
-    );
+    const contractClass = await provider.getClassAt(params.contractAddress, params.blockId);
 
     return JSON.stringify({
       status: 'success',
