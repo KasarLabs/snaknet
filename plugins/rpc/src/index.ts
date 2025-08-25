@@ -41,14 +41,12 @@ const registerTools = (RpcToolRegistry: RpcTool[]) => {
     name: 'get_chain_id',
     description:
       'Retrieve the unique identifier (chain ID) of the Starknet network',
-    schema: emptyInputSchema,
     execute: getChainId,
   });
 
   RpcToolRegistry.push({
     name: 'get_syncing_status',
     description: 'Retrieve the syncing status of the Starknet node',
-    schema: emptyInputSchema,
     execute: getSyncingStats,
   });
 
@@ -64,7 +62,6 @@ const registerTools = (RpcToolRegistry: RpcTool[]) => {
   RpcToolRegistry.push({
     name: 'get_spec_version',
     description: 'Get the current spec version from the Starknet RPC provider',
-    schema: emptyInputSchema,
     execute: getSpecVersion,
   });
 
@@ -94,7 +91,6 @@ const registerTools = (RpcToolRegistry: RpcTool[]) => {
   RpcToolRegistry.push({
     name: 'get_block_number',
     description: 'Get the current block number from the Starknet network',
-    schema: emptyInputSchema,
     execute: getBlockNumber,
   });
 
@@ -133,7 +129,7 @@ const registerTools = (RpcToolRegistry: RpcTool[]) => {
 
 export const RegisterToolInServer = async (provider: RpcProvider) => {
   const tools: RpcTool[] = [];
-  await registerTools(tools);
+  registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {
       server.tool(tool.name, tool.description, async () => {

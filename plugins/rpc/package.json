@@ -16,7 +16,7 @@
     "build"
   ],
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.7.0",
+    "@modelcontextprotocol/sdk": "^1.11.2",
     "dotenv": "^16.4.7",
     "@langchain/core": "^0.3.42",
     "zod": "^3.24.2",
