@@ -1,9 +1,15 @@
-import { RpcProvider } from 'starknet';
+import { TransactionHashParams } from '../schema/index.js';
+import { SnakAgentInterface } from '../dependances/types.js';
 
-export const getTransactionByHash = async (provider: RpcProvider, params: { transactionHash: string }) => {
+export const getTransactionByHash = async (
+  agent: SnakAgentInterface,
+  params: TransactionHashParams
+) => {
+  const provider = agent.getProvider();
+
   try {
-    const transaction = await provider.getTransactionByHash(params.transactionHash);
-
+    const { transactionHash } = params;
+    const transaction = await provider.getTransactionByHash(transactionHash);
     return JSON.stringify({
       status: 'success',
       transaction,

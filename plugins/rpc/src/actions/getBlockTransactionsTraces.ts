@@ -1,12 +1,19 @@
-import { RpcProvider } from 'starknet';
+import { BlockIdParams } from '../schema/index.js';
+import { SnakAgentInterface } from '../dependances/types.js';
 
-export const getBlockTransactionsTraces = async (provider: RpcProvider, params: { blockId: string }) => {
+export const getBlockTransactionsTraces = async (
+  agent: SnakAgentInterface,
+  params: BlockIdParams
+) => {
+  const provider = agent.getProvider();
+
   try {
-    const blockTransactionsTraces = await provider.getBlockTransactionsTraces(params.blockId);
-
+    const { blockId } = params;
+    const transactionTraces =
+      await provider.getBlockTransactionsTraces(blockId);
     return JSON.stringify({
       status: 'success',
-      blockTransactionsTraces,
+      transactionTraces,
     });
   } catch (error) {
     return JSON.stringify({

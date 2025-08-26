@@ -1,9 +1,16 @@
-import { RpcProvider } from 'starknet';
+import { BlockIdAndContractAddressParams } from '../schema/index.js';
+import { SnakAgentInterface } from '../dependances/types.js';
 
-export const getClassHashAt = async (provider: RpcProvider, params: { contractAddress: string; blockId?: string }) => {
+export const getClassHashAt = async (
+  agent: SnakAgentInterface,
+  params: BlockIdAndContractAddressParams
+) => {
   try {
-    const classHash = await provider.getClassHashAt(params.contractAddress, params.blockId);
-
+    const provider = agent.getProvider();
+    const classHash = await provider.getClassHashAt(
+      params.contractAddress,
+      params.blockId
+    );
     return JSON.stringify({
       status: 'success',
       classHash,

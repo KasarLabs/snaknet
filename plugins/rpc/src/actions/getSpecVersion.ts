@@ -1,12 +1,13 @@
-import { RpcProvider } from 'starknet';
+import { SnakAgentInterface } from '../dependances/types.js';
 
-export const getSpecVersion = async (provider: RpcProvider) => {
+export const getSpecVersion = async (agent: SnakAgentInterface) => {
   try {
+    const provider = agent.getProvider();
     const specVersion = await provider.getSpecVersion();
 
     return JSON.stringify({
       status: 'success',
-      specVersion,
+      specVersion: specVersion.toString(),
     });
   } catch (error) {
     return JSON.stringify({

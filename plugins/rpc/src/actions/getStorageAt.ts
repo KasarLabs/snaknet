@@ -1,12 +1,21 @@
-import { RpcProvider } from 'starknet';
+import { GetStorageParams } from '../schema/index.js';
+import { SnakAgentInterface } from '../dependances/types.js';
 
-export const getStorageAt = async (provider: RpcProvider, params: { contractAddress: string; key: string; blockId?: string }) => {
+export const getStorageAt = async (
+  agent: SnakAgentInterface,
+  params: GetStorageParams
+) => {
+  const provider = agent.getProvider();
   try {
-    const storageValue = await provider.getStorageAt(params.contractAddress, params.key, params.blockId);
+    const storage = await provider.getStorageAt(
+      params.contractAddress,
+      params.key,
+      params.blockId || 'latest'
+    );
 
     return JSON.stringify({
       status: 'success',
-      storageValue,
+      storage: storage.toString(),
     });
   } catch (error) {
     return JSON.stringify({

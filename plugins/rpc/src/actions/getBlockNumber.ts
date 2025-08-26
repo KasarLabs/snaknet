@@ -1,6 +1,8 @@
-import { RpcProvider } from 'starknet';
+import { SnakAgentInterface } from '../dependances/types.js';
 
-export const getBlockNumber = async (provider: RpcProvider) => {
+export const getBlockNumber = async (agent: SnakAgentInterface) => {
+  const provider = agent.getProvider();
+
   try {
     const blockNumber = await provider.getBlockNumber();
 

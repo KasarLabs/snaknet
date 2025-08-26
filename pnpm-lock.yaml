@@ -154,6 +154,322 @@ importers:
         specifier: ^8.25.0
         version: 8.32.1(eslint@9.26.0(jiti@1.21.7))(typescript@5.8.3)
 
+  mcps/argent:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      starknet:
+        specifier: ^6.20.5
+        version: 6.24.1(encoding@0.1.13)
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/artpeace:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      starknet:
+        specifier: ^6.20.5
+        version: 6.24.1(encoding@0.1.13)
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/avnu:
+    dependencies:
+      '@avnu/avnu-sdk':
+        specifier: ^2.0.1
+        version: 2.1.1(ethers@6.14.0)(qs@6.14.0)(starknet@6.24.1(encoding@0.1.13))
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      starknet:
+        specifier: ^6.20.5
+        version: 6.24.1(encoding@0.1.13)
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/braavos:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      starknet:
+        specifier: ^6.20.5
+        version: 6.24.1(encoding@0.1.13)
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/erc20:
+    dependencies:
+      '@langchain/core':
+        specifier: ^0.3.42
+        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      winston:
+        specifier: ^3.17.0
+        version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/erc721:
+    dependencies:
+      '@langchain/core':
+        specifier: ^0.3.42
+        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      winston:
+        specifier: ^3.17.0
+        version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/fibrous:
+    dependencies:
+      '@langchain/core':
+        specifier: ^0.3.42
+        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      fibrous-router-sdk:
+        specifier: 0.4.3
+        version: 0.4.3(encoding@0.1.13)
+      winston:
+        specifier: ^3.17.0
+        version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/okx:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      starknet:
+        specifier: ^6.20.5
+        version: 6.24.1(encoding@0.1.13)
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/openzeppelin:
+    dependencies:
+      '@langchain/core':
+        specifier: ^0.3.42
+        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      winston:
+        specifier: ^3.17.0
+        version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/opus:
+    dependencies:
+      '@langchain/core':
+        specifier: ^0.3.42
+        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      winston:
+        specifier: ^3.17.0
+        version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/rpc:
+    dependencies:
+      '@langchain/core':
+        specifier: ^0.3.42
+        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      winston:
+        specifier: ^3.17.0
+        version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/unruggable:
+    dependencies:
+      '@langchain/core':
+        specifier: ^0.3.42
+        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      winston:
+        specifier: ^3.17.0
+        version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  mcps/vesu:
+    dependencies:
+      '@langchain/core':
+        specifier: ^0.3.42
+        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.11.2
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      winston:
+        specifier: ^3.17.0
+        version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.4
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
   packages/database:
     dependencies:
       pg:
@@ -180,18 +496,6 @@ importers:
         version: 3.24.4
 
   plugins/artpeace:
-    dependencies:
-      '@langchain/core':
-        specifier: ^0.3.42
-        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
-      winston:
-        specifier: ^3.17.0
-        version: 3.17.0
-      zod:
-        specifier: ^3.24.2
-        version: 3.24.4
-
-  plugins/atlantic:
     dependencies:
       '@langchain/core':
         specifier: ^0.3.42
@@ -254,21 +558,6 @@ importers:
       '@types/axios':
         specifier: ^0.14.4
         version: 0.14.4
-
-  plugins/chat-pool:
-    dependencies:
-      '@langchain/core':
-        specifier: ^0.3.42
-        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
-      '@snakagent/database':
-        specifier: workspace:*
-        version: link:../../packages/database
-      winston:
-        specifier: ^3.17.0
-        version: 3.17.0
-      zod:
-        specifier: ^3.24.2
-        version: 3.24.4
 
   plugins/contract:
     dependencies:
@@ -365,25 +654,12 @@ importers:
       '@langchain/core':
         specifier: ^0.3.42
         version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
-      '@modelcontextprotocol/sdk':
-        specifier: ^1.11.2
-        version: 1.11.2
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.5.0
       winston:
         specifier: ^3.17.0
         version: 3.17.0
       zod:
         specifier: ^3.24.2
         version: 3.24.4
-    devDependencies:
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.15.17
-      typescript:
-        specifier: ^5.8.2
-        version: 5.9.2
 
   plugins/scarb:
     dependencies:
@@ -427,18 +703,6 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.8.3
-
-  plugins/token:
-    dependencies:
-      '@langchain/core':
-        specifier: ^0.3.42
-        version: 0.3.55(openai@4.98.0(encoding@0.1.13)(ws@8.18.2)(zod@3.24.4))
-      winston:
-        specifier: ^3.17.0
-        version: 3.17.0
-      zod:
-        specifier: ^3.24.2
-        version: 3.24.4
 
   plugins/transaction:
     dependencies:
@@ -505,6 +769,14 @@ packages:
 
   '@asamuzakjp/css-color@3.1.7':
     resolution: {integrity: sha512-Ok5fYhtwdyJQmU1PpEv6Si7Y+A4cYb8yNM9oiIJC9TzXPMuN9fvdonKJqcnz9TbFqV6bQ8z0giRq0iaOpGZV2g==}
+
+  '@avnu/avnu-sdk@2.1.1':
+    resolution: {integrity: sha512-y/r/pVT2pU33fGHNVE7A5UIAqQhjEXYQhUh7EodY1s5H7mhRd5U8zHOtI5z6vmpuSnUv0hSvOmmgz8HTuwZ7ew==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      ethers: ^6.11.1
+      qs: ^6.12.0
+      starknet: ^6.6.0
 
   '@avnu/avnu-sdk@3.0.2':
     resolution: {integrity: sha512-N8McoXYEcp1uhSZ4XlEi5BcTpvJDDhUw4kYnlYmPrd7fWezfGy4UHyoFT/A4gqEM4nL3vtENczDNFS1AVfdTnA==}
@@ -5915,6 +6187,12 @@ snapshots:
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-tokenizer': 3.0.3
       lru-cache: 10.4.3
+
+  '@avnu/avnu-sdk@2.1.1(ethers@6.14.0)(qs@6.14.0)(starknet@6.24.1(encoding@0.1.13))':
+    dependencies:
+      ethers: 6.14.0
+      qs: 6.14.0
+      starknet: 6.24.1(encoding@0.1.13)
 
   '@avnu/avnu-sdk@3.0.2(ethers@6.14.0)(moment@2.30.1)(qs@6.14.0)(starknet@6.24.1(encoding@0.1.13))':
     dependencies:
