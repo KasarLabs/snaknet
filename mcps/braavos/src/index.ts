@@ -21,20 +21,15 @@ const server = new McpServer({
 // Mock agent interface for MCP compatibility
 const createMockAgent = () => {
   const rpcUrl = process.env.STARKNET_RPC_URL;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
 
-  if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error("Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS");
+  if (!rpcUrl) {
+    throw new Error("Missing required environment variables: STARKNET_RPC_URL");
   }
 
   const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(provider, accountAddress, privateKey);
 
   return {
     getProvider: () => provider,
-    getAccountCredentials: () => ({ accountPublicKey: accountAddress, accountPrivateKey: privateKey }),
-    getAccount: () => account,
   };
 };
 
