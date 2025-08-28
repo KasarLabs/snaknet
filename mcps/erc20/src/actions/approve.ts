@@ -5,6 +5,7 @@ import {
   executeV3Transaction,
   validateToken,
   detectAbiType,
+  extractAssetInfo,
 } from '../utils/utils.js';
 import { z } from 'zod';
 import { approveSchema, approveSignatureSchema } from '../schemas/schema.js';
@@ -25,10 +26,12 @@ export const approve = async (
     const provider = agent.getProvider();
     const accountCredentials = agent.getAccountCredentials();
 
+    const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
+
     const token = await validateToken(
       provider,
-      params.assetSymbol,
-      params.assetAddress
+      assetSymbol,
+      assetAddress
     );
     const abi = await detectAbiType(token.address, provider);
     const { address, amount } = validateAndFormatParams(

@@ -1,6 +1,6 @@
 import { Contract } from 'starknet';
 import { SnakAgentInterface } from '../dependances/types.js';
-import { formatBalance, validateToken, detectAbiType } from '../utils/utils.js';
+import { formatBalance, validateToken, detectAbiType, extractAssetInfo } from '../utils/utils.js';
 import { z } from 'zod';
 import {
   getAllowanceSchema,
@@ -22,10 +22,12 @@ export const getAllowance = async (
   try {
     const provider = agent.getProvider();
 
+    const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
+
     const token = await validateToken(
       provider,
-      params.assetSymbol || undefined,
-      params.assetAddress || undefined
+      assetSymbol || undefined,
+      assetAddress || undefined
     );
     const abi = await detectAbiType(token.address, provider);
 
@@ -66,10 +68,12 @@ export const getMyGivenAllowance = async (
     const provider = agent.getProvider();
     const ownerAddress = agent.getAccountCredentials().accountPublicKey;
 
+    const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
+
     const token = await validateToken(
       provider,
-      params.assetSymbol || undefined,
-      params.assetAddress || undefined
+      assetSymbol || undefined,
+      assetAddress || undefined
     );
     const abi = await detectAbiType(token.address, provider);
 
@@ -110,10 +114,12 @@ export const getAllowanceGivenToMe = async (
     const provider = agent.getProvider();
     const spenderAddress = agent.getAccountCredentials().accountPublicKey;
 
+    const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
+
     const token = await validateToken(
       provider,
-      params.assetSymbol || undefined,
-      params.assetAddress || undefined
+      assetSymbol || undefined,
+      assetAddress || undefined
     );
     const abi = await detectAbiType(token.address, provider);
 

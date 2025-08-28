@@ -5,6 +5,7 @@ import {
   executeV3Transaction,
   validateToken,
   detectAbiType,
+  extractAssetInfo,
 } from '../utils/utils.js';
 import { z } from 'zod';
 import { transferSchema, transferSignatureSchema } from '../schemas/schema.js';
@@ -27,10 +28,12 @@ export const transfer = async (
     const provider = agent.getProvider();
     const credentials = agent.getAccountCredentials();
 
+    const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
+
     const token: validToken = await validateToken(
       provider,
-      params.assetSymbol,
-      params.assetAddress
+      assetSymbol,
+      assetAddress
     );
     const abi = await detectAbiType(token.address, provider);
     const { address, amount } = validateAndFormatParams(

@@ -1,13 +1,14 @@
 import { z } from 'zod';
 
-/**
- * Schema for checking token allowance between two addresses
- * @typedef {Object} AllowanceSchema
- * @property {string} ownerAddress - The address of the account owner of the tokens
- * @property {string} spenderAddress - The address of the account allowed to spend the tokens
- * @property {string} assetSymbol - The symbol of the token (e.g., 'ETH', 'USDC')
- * @property {string} assetAddress - The address of the token contract
- */
+export const assetSchema = z.object({
+  assetType: z
+    .enum(['SYMBOL', 'ADDRESS'])
+    .describe('The type of the asset concerned by the allowance: SYMBOL or ADDRESS'),
+  assetValue: z
+    .string()
+    .describe('The symbol (e.g., "ETH", "USDC") or the contract address of the token')
+});
+
 export const getAllowanceSchema = z.object({
   ownerAddress: z
     .string()
@@ -17,39 +18,19 @@ export const getAllowanceSchema = z.object({
     .describe(
       'The starknet address of the account allowed to spend the tokens'
     ),
-  assetSymbol: z
-    .string()
-    .optional()
-    .nullable()
-    .describe("The symbol of the token (e.g., 'ETH', 'USDC')"),
-  assetAddress: z
-    .string()
-    .optional()
-    .nullable()
-    .describe('The address of the token contract'),
+  asset: assetSchema
+    .describe('The asset information (symbol or contract address)')
 });
 
-/**
- * Schema for checking allowances granted by the current user
- * @typedef {Object} MyGivenAllowanceSchema
- * @property {string} spenderAddress - The address of the account allowed to spend the tokens
- * @property {string} assetSymbol - The symbol of the token (e.g., 'ETH', 'USDC')
- * @property {string} assetAddress - The address of the token contract
- */
+
 export const getMyGivenAllowanceSchema = z.object({
   spenderAddress: z
     .string()
     .describe(
       'The starknet address of the account allowed to spend the tokens'
     ),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe("The symbol of the token (e.g., 'ETH', 'USDC')"),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema
+    .describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -65,14 +46,8 @@ export const getAllowanceGivenToMeSchema = z.object({
     .describe(
       'The starknet address of the account allowed to spend the tokens'
     ),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe("The symbol of the token (e.g., 'ETH', 'USDC')"),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema
+    .describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -82,14 +57,8 @@ export const getAllowanceGivenToMeSchema = z.object({
  * @property {string} assetAddress - The address of the token contract
  */
 export const getTotalSupplySchema = z.object({
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token to get the total supply for'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema
+    .describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -105,14 +74,7 @@ export const transferFromSchema = z.object({
   fromAddress: z.string().describe('The address to transfer tokens from'),
   toAddress: z.string().describe('The address to transfer tokens to'),
   amount: z.string().describe('The amount of tokens to transfer'),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token to transfer'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema.describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -128,14 +90,7 @@ export const transferFromSignatureSchema = z.object({
   fromAddress: z.string().describe('The address to transfer tokens from'),
   toAddress: z.string().describe('The address to transfer tokens to'),
   amount: z.string().describe('The amount of tokens to transfer'),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token to transfer'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema.describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -147,14 +102,7 @@ export const transferFromSignatureSchema = z.object({
  */
 export const getBalanceSchema = z.object({
   accountAddress: z.string().describe('The address to check the balance for'),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token to check the balance of'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema.describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -164,14 +112,7 @@ export const getBalanceSchema = z.object({
  * @property {string} assetAddress - The address of the token contract
  */
 export const getOwnBalanceSchema = z.object({
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token to check the balance of'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema.describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -183,14 +124,7 @@ export const getOwnBalanceSchema = z.object({
  */
 export const getBalanceSignatureSchema = z.object({
   accountAddress: z.string().describe('The address to check the balance for'),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token to check the balance of'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema.describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -206,14 +140,7 @@ export const approveSchema = z.object({
     .string()
     .describe('The address being approved to spend tokens'),
   amount: z.string().describe('The amount of tokens being approved'),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token being approved'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema.describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -229,14 +156,7 @@ export const approveSignatureSchema = z.object({
     .string()
     .describe('The address being approved to spend tokens'),
   amount: z.string().describe('The amount of tokens being approved'),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token being approved'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema.describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -250,14 +170,7 @@ export const approveSignatureSchema = z.object({
 export const transferSchema = z.object({
   recipientAddress: z.string().describe('The address to receive the tokens'),
   amount: z.string().describe('The amount of tokens to transfer'),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token to transfer'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema.describe('The asset information (symbol or contract address)')
 });
 
 /**
@@ -271,14 +184,7 @@ export const transferSchema = z.object({
 export const transferSignatureSchema = z.object({
   recipientAddress: z.string().describe('The address to receive the tokens'),
   amount: z.string().describe('The amount of tokens to transfer'),
-  assetSymbol: z
-    .string()
-    .optional()
-    .describe('The symbol of the token to transfer'),
-  assetAddress: z
-    .string()
-    .optional()
-    .describe('The address of the token contract'),
+  asset: assetSchema.describe('The asset information (symbol or contract address)')
 });
 
 /**

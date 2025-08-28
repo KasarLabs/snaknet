@@ -10,6 +10,7 @@ import {
   executeV3Transaction,
   validateToken,
   detectAbiType,
+  extractAssetInfo,
 } from '../utils/utils.js';
 import { z } from 'zod';
 import {
@@ -33,10 +34,12 @@ export const transferFrom = async (
     const credentials = agent.getAccountCredentials();
     const provider = agent.getProvider();
 
+    const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
+
     const token = await validateToken(
       provider,
-      params.assetSymbol,
-      params.assetAddress
+      assetSymbol,
+      assetAddress
     );
     const abi = await detectAbiType(token.address, provider);
     const { address, amount } = validateAndFormatParams(

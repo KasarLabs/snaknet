@@ -38,7 +38,7 @@ const createMockAgent = () => {
 
   return {
     getProvider: () => provider,
-    getAccountCredentials: () => ({ address: accountAddress, privateKey }),
+    getAccountCredentials: () => ({ accountPublicKey: accountAddress, accountPrivateKey: privateKey }),
     getAccount: () => account,
   };
 };
