@@ -18,7 +18,6 @@ import {
   getClassAtSchema,
   getClassHashAtSchema,
   transactionHashSchema,
-  emptyInputSchema,
 } from '../schema/index.js';
 
 export const registerTools = (RpcToolRegistry: RpcTool[]) => {
@@ -26,14 +25,12 @@ export const registerTools = (RpcToolRegistry: RpcTool[]) => {
     name: 'get_chain_id',
     description:
       'Retrieve the unique identifier (chain ID) of the Starknet network',
-    schema: emptyInputSchema,
     execute: getChainId,
   });
 
   RpcToolRegistry.push({
     name: 'get_syncing_status',
     description: 'Retrieve the syncing status of the Starknet node',
-    schema: emptyInputSchema,
     execute: getSyncingStats,
   });
 
@@ -49,7 +46,6 @@ export const registerTools = (RpcToolRegistry: RpcTool[]) => {
   RpcToolRegistry.push({
     name: 'get_spec_version',
     description: 'Get the current spec version from the Starknet RPC provider',
-    schema: emptyInputSchema,
     execute: getSpecVersion,
   });
 
@@ -79,7 +75,6 @@ export const registerTools = (RpcToolRegistry: RpcTool[]) => {
   RpcToolRegistry.push({
     name: 'get_block_number',
     description: 'Get the current block number from the Starknet network',
-    schema: emptyInputSchema,
     execute: getBlockNumber,
   });
 

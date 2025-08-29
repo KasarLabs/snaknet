@@ -25,7 +25,6 @@ import {
   getClassAtSchema,
   getClassHashAtSchema,
   transactionHashSchema,
-  emptyInputSchema,
 } from './schema/index.js';
 
 dotenv.config();
