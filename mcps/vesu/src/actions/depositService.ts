@@ -59,7 +59,7 @@ export class DepositEarnService {
         ? { value: toBN(res.value), decimals: DEFAULT_DECIMALS }
         : undefined;
     } catch (err) {
-      logger.error('error', err);
+      // logger.error('error', err);
       return undefined;
     }
   }
@@ -165,7 +165,7 @@ export class DepositEarnService {
       if (!collateralPoolAsset) {
         throw new Error('Collateral asset not found in pool');
       }
-      logger.info('params.depositAmount:', params.depositAmount);
+
       const collateralAmount = parseUnits(
         params.depositAmount,
         // 0
@@ -203,7 +203,6 @@ export class DepositEarnService {
         },
       ]);
 
-      logger.info('approval initiated. Transaction hash:', tx.transaction_hash);
       await provider.waitForTransaction(tx.transaction_hash);
 
       const transferResult: DepositResult = {
@@ -216,11 +215,11 @@ export class DepositEarnService {
 
       return transferResult;
     } catch (error) {
-      console.error('Detailed deposit error:', error);
+      // console.error('Detailed deposit error:', error);
       if (error instanceof Error) {
-        console.error('Error type:', error.constructor.name);
-        console.error('Error message:', error.message);
-        console.error('Error stack:', error.stack);
+        //     console.error('Error type:', error.constructor.name);
+        //     console.error('Error message:', error.message);
+        // console.error('Error stack:', error.stack);
       }
       return {
         status: 'failure',
@@ -267,11 +266,11 @@ export const depositEarnPosition = async (
     );
     return JSON.stringify(result);
   } catch (error) {
-    console.error('Detailed deposit error:', error);
+    // console.error('Detailed deposit error:', error);
     if (error instanceof Error) {
-      console.error('Error type:', error.constructor.name);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
+      // console.error('Error type:', error.constructor.name);
+      // console.error('Error message:', error.message);
+      // console.error('Error stack:', error.stack);
     }
     return JSON.stringify({
       status: 'failure',

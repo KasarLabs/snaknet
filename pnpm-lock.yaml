@@ -176,28 +176,6 @@ importers:
         specifier: ^5.8.2
         version: 5.9.2
 
-  mcps/artpeace:
-    dependencies:
-      '@modelcontextprotocol/sdk':
-        specifier: ^1.11.2
-        version: 1.11.2
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.5.0
-      starknet:
-        specifier: ^6.20.5
-        version: 6.24.1(encoding@0.1.13)
-      zod:
-        specifier: ^3.24.2
-        version: 3.24.4
-    devDependencies:
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.15.17
-      typescript:
-        specifier: ^5.8.2
-        version: 5.9.2
-
   mcps/avnu:
     dependencies:
       '@avnu/avnu-sdk':

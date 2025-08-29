@@ -58,7 +58,7 @@ export class WithdrawEarnService {
         ? { value: toBN(res.value), decimals: DEFAULT_DECIMALS }
         : undefined;
     } catch (err) {
-      logger.error('error', err);
+      // logger.error('error', err);
       return undefined;
     }
   }
@@ -187,10 +187,10 @@ export class WithdrawEarnService {
       if (!collateralPoolAsset) {
         throw new Error('Collateral asset not found in pool');
       }
-      logger.info(
-        'collateralPoolAsset.decimals===',
-        collateralPoolAsset.decimals
-      );
+      // logger.info(
+      //   'collateralPoolAsset.decimals===',
+      //   collateralPoolAsset.decimals
+      // );
 
       const vtokenContract = getVTokenContract(
         collateralPoolAsset.vToken.address
@@ -224,7 +224,7 @@ export class WithdrawEarnService {
         },
       ]);
 
-      logger.info('approval initiated. Transaction hash:', tx.transaction_hash);
+      // logger.info('approval initiated. Transaction hash:', tx.transaction_hash);
       await provider.waitForTransaction(tx.transaction_hash);
 
       const transferResult: WithdrawResult = {
@@ -238,9 +238,9 @@ export class WithdrawEarnService {
     } catch (error) {
       console.error('Detailed deposit error:', error);
       if (error instanceof Error) {
-        console.error('Error type:', error.constructor.name);
-        console.error('Error message:', error.message);
-        console.error('Error stack:', error.stack);
+        // console.error('Error type:', error.constructor.name);
+        // console.error('Error message:', error.message);
+        // console.error('Error stack:', error.stack);
       }
       return {
         status: 'failure',
@@ -284,11 +284,11 @@ export const withdrawEarnPosition = async (
     const result = await withdrawEarn.withdrawEarnTransaction(params, agent);
     return JSON.stringify(result);
   } catch (error) {
-    console.error('Detailed withdraw error:', error);
+    // console.error('Detailed withdraw error:', error);
     if (error instanceof Error) {
-      console.error('Error type:', error.constructor.name);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
+      // console.error('Error type:', error.constructor.name);
+      // console.error('Error message:', error.message);
+      // console.error('Error stack:', error.stack);
     }
     return JSON.stringify({
       status: 'failure',
