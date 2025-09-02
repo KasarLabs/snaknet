@@ -5,9 +5,9 @@ import {
   Contract,
   Provider,
   shortString,
+  cairo,
 } from 'starknet';
 import { tokenAddresses } from '../constant/constant.js';
-import { uint256 } from 'starknet';
 import { ParamsValidationResult, ExecuteV3Args } from '../types/types.js';
 import { DECIMALS } from '../types/types.js';
 import { OLD_ERC20_ABI } from '../abis/old.js';
@@ -113,7 +113,7 @@ export const validateAndFormatParams = (
       throw new Error('Amount is required');
     }
     const formattedAmount = formatTokenAmount(amount, decimals);
-    const formattedAmountUint256 = uint256.bnToUint256(formattedAmount);
+    const formattedAmountUint256 = cairo.uint256(formattedAmount);
 
     return {
       address: formattedAddress,
@@ -124,32 +124,32 @@ export const validateAndFormatParams = (
   }
 };
 
-/**
- * Creates a V3 transaction details payload with predefined gas parameters
- * @returns {Object} V3 transaction details payload with gas parameters
- */
-export const getV3DetailsPayload = () => {
-  const maxL1Gas = 2000n;
-  const maxL1GasPrice = 100000n * 10n ** 9n;
+// /**
+//  * Creates a V3 transaction details payload with predefined gas parameters
+//  * @returns {Object} V3 transaction details payload with gas parameters
+//  */
+// export const getV3DetailsPayload = () => {
+//   const maxL1Gas = 2000n;
+//   const maxL1GasPrice = 100000n * 10n ** 9n;
 
-  return {
-    version: 3,
-    maxFee: 10n ** 16n,
-    feeDataAvailabilityMode: RPC.EDataAvailabilityMode.L1,
-    tip: 10n ** 14n,
-    paymasterData: [],
-    resourceBounds: {
-      l1_gas: {
-        max_amount: num.toHex(maxL1Gas),
-        max_price_per_unit: num.toHex(maxL1GasPrice),
-      },
-      l2_gas: {
-        max_amount: num.toHex(0n),
-        max_price_per_unit: num.toHex(0n),
-      },
-    },
-  };
-};
+//   return {
+//     version: 3,
+//     maxFee: 10n ** 16n,
+//     feeDataAvailabilityMode: RPC.EDataAvailabilityMode.L1,
+//     tip: 10n ** 14n,
+//     paymasterData: [],
+//     resourceBounds: {
+//       l1_gas: {
+//         max_amount: num.toHex(maxL1Gas),
+//         max_price_per_unit: num.toHex(maxL1GasPrice),
+//       },
+//       l2_gas: {
+//         max_amount: num.toHex(0n),
+//         max_price_per_unit: num.toHex(0n),
+//       },
+//     },
+//   };
+// };
 
 /**
  * Executes a V3 transaction with preconfigured gas parameters
@@ -161,10 +161,7 @@ export const executeV3Transaction = async ({
   call,
   account,
 }: ExecuteV3Args): Promise<string> => {
-  const { transaction_hash } = await account.execute(
-    call,
-    getV3DetailsPayload()
-  );
+  const { transaction_hash } = await account.execute(call);
 
   const receipt = await account.waitForTransaction(transaction_hash);
   if (!receipt.isSuccess()) {
@@ -207,21 +204,31 @@ export async function validateToken(
       const abi = await detectAbiType(address, provider);
       const contract = new Contract(abi, address, provider);
 
-      const rawSymbol = await contract.symbol();
-      symbol =
-        abi == OLD_ERC20_ABI
-          ? shortString.decodeShortString(rawSymbol)
-          : rawSymbol.toUpperCase();
+      try {
+        const rawSymbol = await contract.symbol();
+        symbol =
+          abi == OLD_ERC20_ABI
+            ? shortString.decodeShortString(rawSymbol)
+            : rawSymbol.toUpperCase();
+      } catch (error) {
+        console.warn(`Error getting symbol: ${error.message}`);
+        symbol = 'UNKNOWN';
+      }
 
-      const decimalsBigInt = await contract
-        .decimals()
-        .catch(() => DECIMALS.DEFAULT);
-      decimals =
-        typeof decimalsBigInt === 'bigint'
-          ? Number(decimalsBigInt)
-          : decimalsBigInt;
+      try {
+        const decimalsBigInt = await contract.decimals();
+        decimals =
+          typeof decimalsBigInt === 'bigint'
+            ? Number(decimalsBigInt)
+            : decimalsBigInt;
+      } catch (error) {
+        console.warn(`Error getting decimals: ${error.message}`);
+        decimals = DECIMALS.DEFAULT;
+      }
     } catch (error) {
       console.warn(`Error retrieving token info: ${error.message}`);
+      symbol = 'UNKNOWN';
+      decimals = DECIMALS.DEFAULT;
     }
   }
   return {
@@ -238,12 +245,18 @@ export async function validateToken(
  * @returns {Promise<string>} The ABI type
  */
 export async function detectAbiType(address: string, provider: Provider) {
-  const contract = new Contract(OLD_ERC20_ABI, address, provider);
-  const symbol = await contract.symbol();
-  if (symbol == 0n) {
+  try {
+    const contract = new Contract(OLD_ERC20_ABI, address, provider);
+    const symbol = await contract.symbol();
+    if (symbol == 0n) {
+      return NEW_ERC20_ABI_MAINNET;
+    }
+    return OLD_ERC20_ABI;
+  } catch (error) {
+    // If old ABI fails, assume new ABI
+    console.warn(`Couldn't detect ABI type, defaulting to NEW_ERC20_ABI_MAINNET: ${error.message}`);
     return NEW_ERC20_ABI_MAINNET;
   }
-  return OLD_ERC20_ABI;
 }
 
 /**
