@@ -13,7 +13,7 @@ import {
   ContractDeclareAndDeployResult,
 } from '../types/types.js';
 import * as fs from 'fs';
-import { getV3DetailsPayload } from './utils.js';
+// import { getV3DetailsPayload } from './utils.js';
 
 /**
  * Class for managing StarkNet contract operations
@@ -82,7 +82,7 @@ export class ContractManager {
 
       const declareResponse = await this.account.declareIfNot(
         declarePayload,
-        getV3DetailsPayload()
+        // getV3DetailsPayload()
       );
       await this.account.waitForTransaction(declareResponse.transaction_hash);
 
@@ -124,7 +124,7 @@ export class ContractManager {
 
       const deployResponse = await this.account.deployContract(
         deployPayload,
-        getV3DetailsPayload()
+        // getV3DetailsPayload()
       );
       await this.account.waitForTransaction(deployResponse.transaction_hash);
 
@@ -161,7 +161,7 @@ export class ContractManager {
 
       const response = await this.account.declareAndDeploy(
         declareAndDeployPayload,
-        getV3DetailsPayload()
+        // getV3DetailsPayload()
       );
       await this.account.waitForTransaction(response.deploy.transaction_hash);
 
