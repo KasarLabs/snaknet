@@ -7,7 +7,7 @@ import {
   Abi,
 } from 'starknet';
 import { ContractDeployResult } from '../types/types.js';
-import { getV3DetailsPayload } from './utils.js';
+// import { getV3DetailsPayload } from './utils.js';
 
 /**
  * Class for managing StarkNet contract operations
@@ -48,7 +48,7 @@ export class ContractManager {
 
       const deployResponse = await this.account.deployContract(
         deployPayload,
-        getV3DetailsPayload()
+        // getV3DetailsPayload()
       );
       await this.account.waitForTransaction(deployResponse.transaction_hash);
 
