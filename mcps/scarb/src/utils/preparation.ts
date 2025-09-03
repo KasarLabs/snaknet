@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import { promisify } from 'util';
 import path from 'path';
 import { getWorkspacePath } from './path.js';
-import { scarb } from '@snakagent/database/queries';
+// import { scarb } from '@snakagent/database/queries';
 
 const execAsync = promisify(exec);
 
@@ -50,19 +50,19 @@ export async function importContract(
  * @param projectDir The Scarb project directory
  */
 export async function addSeveralDependancies(
-  dependencies: scarb.Dependency[],
+  // dependencies: scarb.Dependency[],
   projectDir: string
 ) {
   try {
-    if (dependencies && dependencies.length > 0) {
-      for (const dependency of dependencies) {
-        await addDependency({
-          package: dependency.name,
-          version: dependency.version,
-          path: projectDir,
-        });
-      }
-    }
+    // if (dependencies && dependencies.length > 0) {
+    //   for (const dependency of dependencies) {
+    //     await addDependency({
+    //       package: dependency.name,
+    //       version: dependency.version,
+    //       path: projectDir,
+    //     });
+    //   }
+    // }
   } catch (error) {
     throw new Error(`Failed to add several dependencie: ${error.message}`);
   }

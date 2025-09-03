@@ -1,4 +1,4 @@
-import { checkScarbInstalled } from './install.js';
+import { checkScarbInstalled } from './index.js';
 import { initProject } from './workspace.js';
 import { ScarbBaseParams, TomlSection, CairoProgram } from '../types/index.js';
 import {
@@ -10,7 +10,6 @@ import {
   processContractForExecution,
   importContract,
 } from './preparation.js';
-import { scarb } from '@snakagent/database/queries';
 
 /**
  * Set up a Scarb project
@@ -46,8 +45,8 @@ export async function setupScarbProject(
 export async function setupToml(
   projectDir: string,
   sections: TomlSection[],
-  dependencies?: scarb.Dependency[],
-  requiredDependencies?: scarb.Dependency[]
+  // dependencies?: scarb.Dependency[],
+  // requiredDependencies?: scarb.Dependency[]
 ): Promise<void> {
   for (const section of sections) {
     await addTomlSection({
@@ -56,8 +55,8 @@ export async function setupToml(
       valuesObject: section.valuesObject,
     });
   }
-  await addSeveralDependencies(requiredDependencies || [], projectDir);
-  await addSeveralDependencies(dependencies || [], projectDir);
+  // await addSeveralDependencies(requiredDependencies || [], projectDir);
+  // await addSeveralDependencies(dependencies || [], projectDir);
 }
 
 /**

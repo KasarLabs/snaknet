@@ -24,10 +24,6 @@ export const initProject = async (params: {
   projectDir: string;
 }) => {
   try {
-    try {
-      await fs.mkdir(params.projectDir, { recursive: true });
-    } catch (error) {}
-
     const { stdout, stderr } = await execAsync(
       `scarb init --test-runner cairo-test`,
       { cwd: params.projectDir }
@@ -40,7 +36,7 @@ export const initProject = async (params: {
       errors: stderr || undefined,
     });
   } catch (error) {
-    throw new Error(`Failed to initialize scarb project: ${error.message}`);
+    throw new Error(`${error.message}`);
   }
 };
 
@@ -100,18 +96,26 @@ export const cleanProject = async (params: {
  * @param params The project directory, target, executable function, and arguments
  * @returns The execution results
  */
-export const executeProject = async (params: ExecuteContractParams) => {
+export const executeProject = async (
+  projectDir: string, 
+  mode: string = 'standalone',
+  executableName?: string, 
+  executableFunction?: string,
+  args?: string
+) => {
   try {
-    const projectDir = params.projectDir;
+    let command = `scarb execute --print-program-output --print-resource-usage --target ${mode}`;
 
-    let command = `scarb execute --print-program-output --print-resource-usage --target ${params.target} --executable-function ${params.formattedExecutable}`;
-    if (params.arguments) command += ` --arguments "${params.arguments}"`;
+    if (executableName) command += ` --executable-name ${executableName}`;
+    if (executableFunction) command += ` --executable-function ${executableFunction}`;
+    if (args) command += ` --arguments "${args}"`;
+
     const { stdout, stderr } = await execAsync(command, { cwd: projectDir });
 
     const executionId =
-      params.target === 'standalone' ? getExecutionNumber(stdout) : undefined;
+      mode === 'standalone' ? getExecutionNumber(stdout) : undefined;
     const tracePath =
-      params.target === 'bootloader'
+      mode === 'bootloader'
         ? getBootloaderTracePath(stdout)
         : undefined;
 

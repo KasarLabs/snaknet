@@ -49,12 +49,6 @@ export async function createTempProjectDir(projectName: string): Promise<string>
   return tempDir;
 }
 
-/**
- * Initialize a Scarb project
- */
-export async function initProject(projectDir: string, projectName: string): Promise<void> {
-  await execPromise(`scarb new ${projectName}`, { cwd: path.dirname(projectDir) });
-}
 
 /**
  * Clean up temporary project directory

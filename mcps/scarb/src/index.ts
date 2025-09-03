@@ -4,13 +4,15 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import dotenv from "dotenv";
 
 import { ScarbTool } from "./interfaces/index.js";
-import { compileContract } from './actions/build.js';
+import { initProject } from './actions/init.js';
+import { buildProject } from './actions/build.js';
 import { executeProgram } from './actions/execute.js';
 import { installScarb } from './actions/install.js';
 import { proveProgram } from './actions/prove.js';
 import { verifyProgram } from './actions/verify.js';
 import {
-  compileContractSchema,
+  initProjectSchema,
+  buildProjectSchema,
   executeProgramSchema,
   proveProgramSchema,
   verifyProgramSchema,
@@ -31,10 +33,17 @@ const registerTools = (ScarbToolRegistry: ScarbTool[]) => {
   });
 
   ScarbToolRegistry.push({
-    name: 'compile_contract',
-    description: 'Compile Cairo contracts and programs, outputting sierra/casm files to specified directory',
-    schema: compileContractSchema,
-    execute: compileContract,
+    name: 'init_project',
+    description: 'Initialize a new Scarb project with specified name and options',
+    schema: initProjectSchema,
+    execute: initProject,
+  });
+
+  ScarbToolRegistry.push({
+    name: 'build_project',
+    description: 'Build a Scarb project with specified build options',
+    schema: buildProjectSchema,
+    execute: buildProject,
   });
 
   ScarbToolRegistry.push({
