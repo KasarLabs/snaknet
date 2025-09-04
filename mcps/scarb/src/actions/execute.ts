@@ -4,30 +4,7 @@ import {
   executeProgram as execProgram,
 } from '../utils/index.js';
 import { executeProject } from '../utils/workspace.js';
-
-const executeProgramSchema = z.object({
-  path: z
-    .string()
-    .optional()
-    .describe('Path to the project directory (defaults to current directory)'),
-  executableFunction: z
-    .string()
-    .optional()
-    .describe('The name of the function to run'),
-  executableName: z
-    .string()
-    .optional()
-    .describe('The name of the function to run'),
-  arguments: z
-    .string()
-    .optional()
-    .describe('Comma-separated list of arguments'),
-  mode: z
-    .enum(['standalone', 'bootloader'])
-    .optional()
-    .default('bootloader')
-    .describe('The execution mode'),
-});
+import { executeProgramSchema } from '../schema/index.js';
 
 /**
  * Execute a Cairo program
@@ -40,11 +17,16 @@ export const executeProgram = async (
   try {
     await checkScarbInstalled();
 
+    let executableFile = undefined
+    let executableFunction = undefined
+    if (params.executable?.executableType === 'FILE') executableFile = params.executable?.executableValue;
+    if (params.executable?.executableType === 'FUNCTION') executableFunction = params.executable?.executableValue
+
     const result = await executeProject(
       params.path || (process.cwd() as string),
       params.mode || undefined,
-      params.executableName || undefined,
-      params.executableFunction || undefined,
+      executableFile,
+      executableFunction,
       params.arguments || undefined
     );
 

@@ -23,6 +23,20 @@ export const buildProjectSchema = z.object({
     .describe('Path to the project directory (defaults to current directory)'),
 });
 
+export const executableSchema = z.object({
+  executableType: z
+    .enum(['FILE', 'FUNCTION'])
+    .describe(
+      'The type of the executable to run: "FILE" for a specific file or "FUNCTION" for a specific function'
+    ),
+  executableValue: z
+    .string()
+    .describe(
+      'The name of the executable to run (ex: ...)'
+    ),
+});
+
+
 /**
  * Schema for executing a program
  */
@@ -31,23 +45,18 @@ export const executeProgramSchema = z.object({
     .string()
     .optional()
     .describe('Path to the project directory (defaults to current directory)'),
-  executableName: z
-    .string()
+  executable: executableSchema
     .optional()
-    .describe('The name of the executable to run'),
-  executableFunction: z
-    .string()
-    .optional()
-    .describe('The name of the function to run'),
+    .describe('OPTIONAL: The executable information (filename or function name)'),
   arguments: z
     .string()
     .optional()
-    .describe('Comma-separated list of arguments'),
+    .describe('OPTIONAL: Comma-separated list of arguments'),
   mode: z
     .enum(['standalone', 'bootloader'])
     .optional()
     .default('bootloader')
-    .describe('The execution mode'),
+    .describe('OPTIONAL: The execution mode. Default: bootloader'),
 });
 
 /**
