@@ -22,16 +22,45 @@
 </p>
 </div>
 
-A Agent Engine for creating powerful and secure AI Agents powered by Starknet. Available as both an NPM package and a ready-to-use backend.
+A comprehensive collection of Model Context Protocol (MCP) servers for Starknet blockchain applications. This repository provides ready-to-use MCP servers that enable AI applications to interact with Starknet protocols, wallets, and DeFi applications.
+
+## What is MCP?
+
+Model Context Protocol (MCP) is an open standard that enables AI applications to securely connect to external data sources and tools. MCP servers act as connectors between AI models and external services, providing structured access to blockchain data and operations.
+
+## Available MCP Servers
+
+### Wallet Management
+- **Argent** - Argent X wallet integration
+- **Braavos** - Braavos wallet integration  
+- **OpenZeppelin** - OpenZeppelin account integration
+- **OKX** - OKX wallet integration
+
+### DeFi Protocols
+- **AVNU** - DEX aggregator and swap functionality
+- **Fibrous** - Cross-chain DEX aggregator
+- **Opus** - Lending and borrowing protocol
+- **Vesu** - Yield farming and staking
+- **Unruggable** - Memecoin creation and launch platform
+
+### Core Blockchain Operations
+- **ERC20** - Token operations (transfer, approve, balance, etc.)
+- **ERC721** - NFT operations (transfer, approve, metadata, etc.)
+- **Contract** - Smart contract deployment and interaction
+- **Transaction** - Transaction management and monitoring
+- **RPC** - Starknet RPC operations and blockchain data
+
+### Development Tools
+- **Scarb** - Cairo development and compilation tools
+- **ArtPeace** - NFT marketplace integration
 
 ## Quick Start
 
 ### Prerequisites
 
-- Starknet wallet (recommended: [Argent X](https://www.argent.xyz/argent-x))
-- AI provider API key (Anthropic/OpenAI/Google Gemini/Ollama)
-- Docker and Docker compose installed
-- Node.js and pnpm installed
+- Node.js 16+ and pnpm
+- Starknet wallet credentials
+- AI application that supports MCP (like Claude Desktop, etc.)
 
 ### Installation
 
@@ -39,187 +68,126 @@ A Agent Engine for creating powerful and secure AI Agents powered by Starknet. A
 git clone https://github.com/kasarlabs/snak.git
 cd snak
 pnpm install
+pnpm build
 ```
 
 ### Configuration
 
-1.  Create a `.env` file by copying `.env.example`:
+1. Create a `.env` file by copying `.env.example`:
 
 ```bash
 cp .env.example .env
 ```
 
-Then, fill in the necessary values in your `.env` file:
+2. Configure your Starknet credentials:
 
 ```env
-# --- Starknet configuration (mandatory) ---
+# Starknet configuration (mandatory)
 STARKNET_PUBLIC_ADDRESS="YOUR_STARKNET_PUBLIC_ADDRESS"
 STARKNET_PRIVATE_KEY="YOUR_STARKNET_PRIVATE_KEY"
 STARKNET_RPC_URL="YOUR_STARKNET_RPC_URL"
 
-# --- AI Model API Keys (mandatory) ---
-# Add the API keys for the specific AI providers you use in config/models/default.models.json
-# The agent will automatically load the correct key based on the provider name.
-
-# Example for OpenAI:
-OPENAI_API_KEY="YOUR_OPENAI_API_KEY" # (e.g., sk-...)
-
-# Example for Anthropic:
-ANTHROPIC_API_KEY="YOUR_ANTHROPIC_API_KEY" # (e.g., sk-ant-...)
-
-# Example for Google Gemini:
-GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
-
-# Example for DeepSeek:
-DEEPSEEK_API_KEY="YOUR_DEEPSEEK_API_KEY"
-
-# Note: You do not need an API key if using a local Ollama model.
-
-# --- General Agent Configuration (mandatory) ---
-SERVER_API_KEY="YOUR_SERVER_API_KEY" # A secret key for your agent server API
-SERVER_PORT="3001"
-
-# --- PostgreSQL Database Configuration (mandatory) ---
-POSTGRES_USER=admin
-POSTGRES_HOST=localhost
-POSTGRES_DB=postgres
-POSTGRES_PASSWORD=admin
-POSTGRES_PORT=5432
-
-# --- LangSmith Tracing (Optional) ---
-# Set LANGSMITH_TRACING=true to enable tracing
-LANGSMITH_TRACING=false
-LANGSMITH_ENDPOINT="https://api.smith.langchain.com"
-LANGSMITH_API_KEY="YOUR_LANGSMITH_API_KEY" # (Only needed if LANGSMITH_TRACING=true)
-LANGSMITH_PROJECT="Snak" # (Optional project name for LangSmith)
-
-# --- Node Environment ---
-NODE_ENV="development" # "development" or "production"
+# Optional: Protocol-specific API keys
+AVNU_API_KEY="YOUR_AVNU_API_KEY"
+FIBROUS_API_KEY="YOUR_FIBROUS_API_KEY"
 ```
 
-2.  Configure AI Models (Optional):
-    The `config/models/default.models.json` file defines the default AI models used for different tasks (`fast`, `smart`, `cheap`). You can customize this file or create new model configurations (e.g., `my_models.json`) and specify them when running the agent. See `config/models/example.models.json` for the structure.
+## Usage
 
-    The agent uses the `provider` field in the model configuration to determine which API key to load from the `.env` file (e.g., if `provider` is `openai`, it loads `OPENAI_API_KEY`).
+### Running Individual MCP Servers
 
-3.  Create your agent configuration file (e.g., `default.agent.json` or `my_agent.json`) in the `config/agents/` directory:
+Each MCP server can be run independently:
+
+```bash
+# Run ERC20 MCP server
+cd mcps/erc20
+node build/index.js
+
+# Run Argent wallet MCP server
+cd mcps/argent
+node build/index.js
+
+# Run AVNU DEX MCP server
+cd mcps/avnu
+node build/index.js
+```
+
+### Integration with AI Applications
+
+Configure your AI application to connect to these MCP servers. Example configuration for Claude Desktop:
 
 ```json
 {
-  "name": "Your Agent name",
-  "group": "Your Agent group",
-  "description": "Your AI Agent Description",
-  "lore": ["Some lore of your AI Agent 1", "Some lore of your AI Agent 1"],
-  "objectives": [
-    "first objective that your AI Agent need to follow",
-    "second objective that your AI Agent need to follow"
-  ],
-  "knowledge": [
-    "first knowledge of your AI Agent",
-    "second knowledge of your AI Agent"
-  ],
-  "interval": "Your agent interval beetween each transaction of the Agent in ms,",
-  "chatId": "Your Agent Chat-id for isolating memory",
-  "maxIterations": "The number of iterations your agent will execute before stopping",
-  "mode": "The mode of your agent, can be interactive, autonomous or hybrid",
-  "memory": {
-    "enabled": "true or false to enable or disable memory",
-    "shortTermMemorySize": "The number of messages your agent will remember"
-  },
-  "plugins": ["Your first plugin", "Your second plugin"],
   "mcpServers": {
-    "nxp_server_example": {
-      "command": "npx",
-      "args": ["-y", "@npm_package_example/npx_server_example"],
+    "starknet-erc20": {
+      "command": "node",
+      "args": ["/path/to/snak/mcps/erc20/build/index.js"],
       "env": {
-        "API_KEY": "YOUR_API_KEY"
+        "STARKNET_PUBLIC_ADDRESS": "your_address",
+        "STARKNET_PRIVATE_KEY": "your_private_key",
+        "STARKNET_RPC_URL": "your_rpc_url"
       }
     },
-    "local_server_example": {
-      "command": "node",
-      "args": ["node /path/to/local_server/dist/index.js"]
+    "starknet-argent": {
+      "command": "node", 
+      "args": ["/path/to/snak/mcps/argent/build/index.js"],
+      "env": {
+        "STARKNET_PUBLIC_ADDRESS": "your_address",
+        "STARKNET_PRIVATE_KEY": "your_private_key",
+        "STARKNET_RPC_URL": "your_rpc_url"
+      }
     }
   }
 }
 ```
 
-You can simply create your own agent configuration using our tool on [snakagent](https://www.snakagent.com/create-agent)
+### Example Use Cases
 
-## Usage
+- **Token Management**: Transfer ERC20 tokens, check balances, approve spending
+- **DeFi Operations**: Swap tokens, provide liquidity, borrow/lend assets
+- **Wallet Management**: Create accounts, manage transactions, monitor balances
+- **NFT Operations**: Transfer NFTs, manage collections, interact with marketplaces
+- **Smart Contract Development**: Deploy contracts, interact with deployed contracts
 
-### Prompt Mode
+## Development
 
-Run the promt:
+### Project Structure
 
-```bash
-# start with the default.agent.json
-pnpm run start
-
-# start with your custom configuration
-pnpm run start --agent="name_of_your_config.json" --models="name_of_your_config.json"
+```
+mcps/
+├── argent/          # Argent wallet MCP server
+├── avnu/            # AVNU DEX MCP server
+├── braavos/         # Braavos wallet MCP server
+├── contract/        # Contract deployment MCP server
+├── erc20/           # ERC20 token MCP server
+├── erc721/          # ERC721 NFT MCP server
+├── fibrous/         # Fibrous DEX MCP server
+├── opus/            # Opus lending MCP server
+├── rpc/             # Starknet RPC MCP server
+├── scarb/           # Scarb development MCP server
+├── transaction/     # Transaction management MCP server
+└── ...
 ```
 
-### Server Mode
+### Adding New MCP Servers
 
-Run the server :
+1. Create a new directory in `mcps/`
+2. Follow the existing MCP server structure
+3. Implement the MCP protocol interface
+4. Add tests and documentation
 
-```bash
-# start with the default.agent.json
-pnpm run start:server
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed development guidelines.
 
-# start with your custom configuration
-pnpm run start:server --agent="name_of_your_config.json" --models="name_of_your_config.json"
-```
+## Security
 
-#### Available Modes
-
-|             | Interactive Mode | Autonomous Mode |
-| ----------- | ---------------- | --------------- |
-| Prompt Mode | ✅               | ✅              |
-| Server Mode | ✅               | ✅              |
-
-### Implement Snak in your project
-
-1. Install snak package
-
-```bash
-#using npm
-npm install @snakagent
-
-# using pnpm
-pnpm add @snakagent
-```
-
-2. Create your agent instance
-
-```typescript
-import { SnakAgent } from 'starknet-agent-kit';
-
-const agent = new SnakAgent({
-  provider: new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL }),
-  accountPrivateKey: process.env.STARKNET_PRIVATE_KEY,
-  accountPublicKey: process.env.STARKNET_PUBLIC_ADDRESS,
-  aiModel: process.env.AI_MODEL,
-  aiProvider: process.env.AI_PROVIDER,
-  aiProviderApiKey: process.env.AI_PROVIDER_API_KEY,
-  signature: 'key',
-  agentMode: 'interactive',
-  agentconfig: y,
-});
-
-const response = await agent.execute("What's my ETH balance?");
-```
-
-## Actions
-
-To learn more about actions you can read [this doc section](https://docs.kasar.io/agent-actions).
-A comprehensive interface in the Kit will provide an easy-to-navigate catalog of all available plugins and their actions, making discovery and usage simpler.
-
-To add actions to your agent you can easily follow the step-by-steps guide [here](https://docs.kasar.io/add-agent-actions)
+- All MCP servers implement proper authentication and authorization
+- Private keys are handled securely and never exposed
+- User consent is required for all operations
+- Follow MCP security best practices
 
 ## Contributing
 
-Contributions are welcome! Feel free to submit a Pull Request.
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
