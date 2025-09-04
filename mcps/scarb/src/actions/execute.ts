@@ -3,7 +3,7 @@ import {
   checkScarbInstalled,
   executeProgram as execProgram,
 } from '../utils/index.js';
-import { executeProject } from '@/utils/workspace.js';
+import { executeProject } from '../utils/workspace.js';
 
 const executeProgramSchema = z.object({
   path: z
