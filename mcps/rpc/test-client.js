@@ -7,7 +7,7 @@ async function testRpc() {
     args: ['build/index.js'],
     env: {
       STARKNET_RPC_URL:
-        'https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_7/twNPk5lDPh5t6m0WV6eoXdAD2VfIN0-b',
+        '',
     },
   });
 
