@@ -69,8 +69,6 @@ export class SwapService {
         provider,
         this.walletAddress,
         this.agent.getAccountCredentials().accountPrivateKey,
-        undefined,
-        constants.TRANSACTION_VERSION.V3
       );
 
       const { sellToken, buyToken } = this.tokenService.validateTokenPair(
