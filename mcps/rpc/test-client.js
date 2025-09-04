@@ -6,8 +6,7 @@ async function testRpc() {
     command: 'node',
     args: ['build/index.js'],
     env: {
-      STARKNET_RPC_URL:
-        '',
+      STARKNET_RPC_URL: '',
     },
   });
 
