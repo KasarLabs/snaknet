@@ -1,21 +1,18 @@
 import { z } from 'zod';
 import { Account, constants, RpcProvider } from 'starknet';
 import { declareContractSchema } from '../schema/index.js';
-import { 
-  getStarknetCredentials, 
-  validateFilePaths, 
-  formatContractError 
+import {
+  getStarknetCredentials,
+  validateFilePaths,
+  formatContractError,
 } from '../utils/index.js';
-import { 
-  ContractManager
-} from '../utils/contractManager.js'
+import { ContractManager } from '../utils/contractManager.js';
 
-
-// TODO : 
+// TODO :
 // check if account already declared/deployed and throw error with classhash/contract address
 // check args?
 // allow dl scarb:x.x.x version
-// add tool scarb new 
+// add tool scarb new
 // add tool declare and deploy
 
 /**
@@ -29,10 +26,10 @@ export const declareContract = async (
   try {
     // Validate file paths exist
     await validateFilePaths(params.sierraFilePath, params.casmFilePath);
-    
+
     // Get Starknet credentials
     const credentials = getStarknetCredentials();
-    
+
     // Setup provider and account
     const provider = new RpcProvider({ nodeUrl: credentials.rpcUrl });
     const account = new Account(
@@ -42,33 +39,33 @@ export const declareContract = async (
       undefined,
       constants.TRANSACTION_VERSION.V3
     );
-    
+
     // Load and declare contract
     const contractManager = new ContractManager(account);
     await contractManager.loadContractCompilationFiles(
-      params.sierraFilePath, 
+      params.sierraFilePath,
       params.casmFilePath
     );
-    
+
     const declareResponse = await contractManager.declareContract();
-    
+
     // Calculate class hash locally to ensure it's always returned
     const contractManagerForHash = new ContractManager(account);
     await contractManagerForHash.loadContractCompilationFiles(
-      params.sierraFilePath, 
+      params.sierraFilePath,
       params.casmFilePath
     );
-    const { classHash: calculatedClassHash } = await contractManagerForHash.isContractDeclared();
-    
+    const { classHash: calculatedClassHash } =
+      await contractManagerForHash.isContractDeclared();
+
     return JSON.stringify({
       status: 'success',
       transactionHash: declareResponse.transaction_hash || '',
       classHash: declareResponse.class_hash || calculatedClassHash,
       sierraFilePath: params.sierraFilePath,
       casmFilePath: params.casmFilePath,
-      message: 'Contract declared successfully'
+      message: 'Contract declared successfully',
     });
-    
   } catch (error) {
     const errorMessage = formatContractError(error);
     return JSON.stringify({
@@ -76,7 +73,7 @@ export const declareContract = async (
       error: errorMessage,
       step: 'contract declaration',
       sierraFilePath: params.sierraFilePath,
-      casmFilePath: params.casmFilePath
+      casmFilePath: params.casmFilePath,
     });
   }
 };

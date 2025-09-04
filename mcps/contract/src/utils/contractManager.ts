@@ -92,9 +92,7 @@ export class ContractManager {
         casm: this.compiledCasm,
       };
 
-      const declareResponse = await this.account.declare(
-        declarePayload,
-      );
+      const declareResponse = await this.account.declare(declarePayload);
       await this.account.waitForTransaction(declareResponse.transaction_hash);
 
       return {
@@ -129,9 +127,7 @@ export class ContractManager {
         constructorCalldata: constructorCalldata,
       };
 
-      const deployResponse = await this.account.deployContract(
-        deployPayload,
-      );
+      const deployResponse = await this.account.deployContract(deployPayload);
       await this.account.waitForTransaction(deployResponse.transaction_hash);
 
       return {
@@ -164,7 +160,7 @@ export class ContractManager {
       };
 
       const response = await this.account.declareAndDeploy(
-        declareAndDeployPayload,
+        declareAndDeployPayload
       );
       await this.account.waitForTransaction(response.deploy.transaction_hash);
 

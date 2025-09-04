@@ -254,7 +254,9 @@ export async function detectAbiType(address: string, provider: Provider) {
     return OLD_ERC20_ABI;
   } catch (error) {
     // If old ABI fails, assume new ABI
-    console.warn(`Couldn't detect ABI type, defaulting to NEW_ERC20_ABI_MAINNET: ${error.message}`);
+    console.warn(
+      `Couldn't detect ABI type, defaulting to NEW_ERC20_ABI_MAINNET: ${error.message}`
+    );
     return NEW_ERC20_ABI_MAINNET;
   }
 }
@@ -264,16 +266,19 @@ export async function detectAbiType(address: string, provider: Provider) {
  * @param {Object} asset - The asset object with assetType and assetValue
  * @returns {Object} Object with assetSymbol and assetAddress
  */
-export function extractAssetInfo(asset: { assetType: 'SYMBOL' | 'ADDRESS'; assetValue: string }) {
+export function extractAssetInfo(asset: {
+  assetType: 'SYMBOL' | 'ADDRESS';
+  assetValue: string;
+}) {
   if (asset.assetType === 'SYMBOL') {
     return {
       assetSymbol: asset.assetValue,
-      assetAddress: undefined
+      assetAddress: undefined,
     };
   } else {
     return {
       assetSymbol: undefined,
-      assetAddress: asset.assetValue
+      assetAddress: asset.assetValue,
     };
   }
 }

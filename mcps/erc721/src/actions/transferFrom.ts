@@ -151,4 +151,3 @@ export const transfer = async (
     return JSON.stringify(result);
   }
 };
-

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { Erc721Tool } from "./interfaces/index.js";
-import dotenv from "dotenv";
+import { Erc721Tool } from './interfaces/index.js';
+import dotenv from 'dotenv';
 
 import {
   ownerOfSchema,
@@ -32,8 +32,8 @@ import { deployERC721Contract } from './actions/deployERC721.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: "starknet-erc721",
-  version: "1.0.0",
+  name: 'starknet-erc721',
+  version: '1.0.0',
 });
 
 // Mock agent interface for MCP compatibility
@@ -43,7 +43,9 @@ const createMockAgent = () => {
   const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
 
   if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error("Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS");
+    throw new Error(
+      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
+    );
   }
 
   const provider = new RpcProvider({ nodeUrl: rpcUrl });
@@ -51,7 +53,10 @@ const createMockAgent = () => {
 
   return {
     getProvider: () => provider,
-    getAccountCredentials: () => ({ accountPublicKey: accountAddress, accountPrivateKey: privateKey }),
+    getAccountCredentials: () => ({
+      accountPublicKey: accountAddress,
+      accountPrivateKey: privateKey,
+    }),
     getAccount: () => account,
   };
 };
@@ -182,7 +187,7 @@ export const RegisterToolInServer = async () => {
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(result),
             },
           ],
@@ -198,7 +203,7 @@ export const RegisterToolInServer = async () => {
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: JSON.stringify(result),
               },
             ],
@@ -211,13 +216,13 @@ export const RegisterToolInServer = async () => {
 
 async function main() {
   const transport = new StdioServerTransport();
-  
+
   await RegisterToolInServer();
   await server.connect(transport);
-  console.error("Starknet ERC721 MCP Server running on stdio");
+  console.error('Starknet ERC721 MCP Server running on stdio');
 }
 
 main().catch((error) => {
-  console.error("Fatal error in main():", error);
+  console.error('Fatal error in main():', error);
   process.exit(1);
 });

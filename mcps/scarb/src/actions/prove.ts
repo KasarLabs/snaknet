@@ -3,7 +3,7 @@ import { proveProgramSchema } from '../schema/index.js';
 import {
   checkScarbInstalled,
   cleanProject,
-  formatCompilationError
+  formatCompilationError,
 } from '../utils/index.js';
 import { proveProject } from '../utils/workspace.js';
 import { exec } from 'child_process';
@@ -21,14 +21,16 @@ export const proveProgram = async (
   params: z.infer<typeof proveProgramSchema>
 ): Promise<string> => {
   let projectDir = '';
-  
+
   try {
     await checkScarbInstalled();
 
-    const result = JSON.parse(await proveProject({
+    const result = JSON.parse(
+      await proveProject({
         projectDir: params.path || process.cwd(),
-        executionId: params.executionId.toString()
-      }));
+        executionId: params.executionId.toString(),
+      })
+    );
 
     const fullPath = path.join(projectDir, result.proofPath);
 
@@ -38,9 +40,8 @@ export const proveProgram = async (
       proofPath: fullPath,
       output: result.stdout,
       error: result.stderr,
-      projectPath: projectDir
+      projectPath: projectDir,
     });
-    
   } catch (error) {
     const errors = formatCompilationError(error);
     return JSON.stringify({

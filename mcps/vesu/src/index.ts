@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { VesuTool } from "./interfaces/index.js";
-import dotenv from "dotenv";
+import { VesuTool } from './interfaces/index.js';
+import dotenv from 'dotenv';
 
 import { depositEarnSchema, withdrawEarnSchema } from './schema/index.js';
 import { depositEarnPosition } from './actions/depositService.js';
@@ -13,8 +13,8 @@ import { withdrawEarnPosition } from './actions/withdrawService.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: "starknet-vesu",
-  version: "1.0.0",
+  name: 'starknet-vesu',
+  version: '1.0.0',
 });
 
 // Mock agent interface for MCP compatibility
@@ -24,7 +24,9 @@ const createMockAgent = () => {
   const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
 
   if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error("Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS");
+    throw new Error(
+      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
+    );
   }
 
   const provider = new RpcProvider({ nodeUrl: rpcUrl });
@@ -32,7 +34,10 @@ const createMockAgent = () => {
 
   return {
     getProvider: () => provider,
-    getAccountCredentials: () => ({ accountPublicKey: accountAddress, accountPrivateKey: privateKey }),
+    getAccountCredentials: () => ({
+      accountPublicKey: accountAddress,
+      accountPrivateKey: privateKey,
+    }),
     getAccount: () => account,
   };
 };
@@ -69,7 +74,7 @@ export const RegisterToolInServer = async () => {
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(result),
             },
           ],
@@ -85,7 +90,7 @@ export const RegisterToolInServer = async () => {
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: JSON.stringify(result),
               },
             ],
@@ -98,13 +103,13 @@ export const RegisterToolInServer = async () => {
 
 async function main() {
   const transport = new StdioServerTransport();
-  
+
   await RegisterToolInServer();
   await server.connect(transport);
-  console.error("Starknet Vesu MCP Server running on stdio");
+  console.error('Starknet Vesu MCP Server running on stdio');
 }
 
 main().catch((error) => {
-  console.error("Fatal error in main():", error);
+  console.error('Fatal error in main():', error);
   process.exit(1);
 });

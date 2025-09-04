@@ -1,6 +1,11 @@
 import { Contract } from 'starknet';
 import { SnakAgentInterface } from '../dependances/types.js';
-import { validateToken, formatBalance, detectAbiType, extractAssetInfo } from '../utils/utils.js';
+import {
+  validateToken,
+  formatBalance,
+  detectAbiType,
+  extractAssetInfo,
+} from '../utils/utils.js';
 import { validToken } from '../types/types.js';
 import { z } from 'zod';
 import { getTotalSupplySchema } from '../schemas/schema.js';
@@ -18,7 +23,7 @@ export const getTotalSupply = async (
 ): Promise<string> => {
   try {
     const provider = agent.getProvider();
-    
+
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
     const token: validToken = await validateToken(

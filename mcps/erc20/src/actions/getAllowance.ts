@@ -1,6 +1,11 @@
 import { Contract } from 'starknet';
 import { SnakAgentInterface } from '../dependances/types.js';
-import { formatBalance, validateToken, detectAbiType, extractAssetInfo } from '../utils/utils.js';
+import {
+  formatBalance,
+  validateToken,
+  detectAbiType,
+  extractAssetInfo,
+} from '../utils/utils.js';
 import { z } from 'zod';
 import {
   getAllowanceSchema,

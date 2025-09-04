@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import dotenv from "dotenv";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import dotenv from 'dotenv';
 
-import { ScarbTool } from "./interfaces/index.js";
+import { ScarbTool } from './interfaces/index.js';
 import { initProject } from './actions/init.js';
 import { buildProject } from './actions/build.js';
 import { executeProgram } from './actions/execute.js';
@@ -21,8 +21,8 @@ import {
 dotenv.config();
 
 const server = new McpServer({
-  name: "starknet-scarb",
-  version: "1.0.0",
+  name: 'starknet-scarb',
+  version: '1.0.0',
 });
 
 const registerTools = (ScarbToolRegistry: ScarbTool[]) => {
@@ -34,7 +34,8 @@ const registerTools = (ScarbToolRegistry: ScarbTool[]) => {
 
   ScarbToolRegistry.push({
     name: 'init_project',
-    description: 'Initialize a new Scarb project with specified name and options',
+    description:
+      'Initialize a new Scarb project with specified name and options',
     schema: initProjectSchema,
     execute: initProject,
   });
@@ -55,7 +56,8 @@ const registerTools = (ScarbToolRegistry: ScarbTool[]) => {
 
   ScarbToolRegistry.push({
     name: 'prove_program',
-    description: 'Generate a proof for a Cairo program execution using Stone prover',
+    description:
+      'Generate a proof for a Cairo program execution using Stone prover',
     schema: proveProgramSchema,
     execute: proveProgram,
   });
@@ -71,7 +73,7 @@ const registerTools = (ScarbToolRegistry: ScarbTool[]) => {
 export const RegisterToolInServer = async () => {
   const tools: ScarbTool[] = [];
   registerTools(tools);
-  
+
   for (const tool of tools) {
     if (!tool.schema) {
       server.tool(tool.name, tool.description, async () => {
@@ -79,7 +81,7 @@ export const RegisterToolInServer = async () => {
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: result,
             },
           ],
@@ -95,7 +97,7 @@ export const RegisterToolInServer = async () => {
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: result,
               },
             ],
@@ -108,13 +110,13 @@ export const RegisterToolInServer = async () => {
 
 async function main() {
   const transport = new StdioServerTransport();
-  
+
   await RegisterToolInServer();
   await server.connect(transport);
-  console.error("Starknet Scarb MCP Server running on stdio");
+  console.error('Starknet Scarb MCP Server running on stdio');
 }
 
 main().catch((error) => {
-  console.error("Fatal error in main():", error);
+  console.error('Fatal error in main():', error);
   process.exit(1);
 });

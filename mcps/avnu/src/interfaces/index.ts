@@ -17,7 +17,6 @@ export interface RouteResult {
   error?: string;
 }
 
-
 export interface AvnuTool {
   name: string;
   description: string;

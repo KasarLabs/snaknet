@@ -75,4 +75,3 @@ export const setApprovalForAll = async (
     return JSON.stringify(result);
   }
 };
-

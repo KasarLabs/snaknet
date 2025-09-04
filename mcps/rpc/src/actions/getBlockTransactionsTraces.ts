@@ -1,8 +1,13 @@
 import { RpcProvider } from 'starknet';
 
-export const getBlockTransactionsTraces = async (provider: RpcProvider, params: { blockId: string }) => {
+export const getBlockTransactionsTraces = async (
+  provider: RpcProvider,
+  params: { blockId: string }
+) => {
   try {
-    const blockTransactionsTraces = await provider.getBlockTransactionsTraces(params.blockId);
+    const blockTransactionsTraces = await provider.getBlockTransactionsTraces(
+      params.blockId
+    );
 
     return JSON.stringify({
       status: 'success',

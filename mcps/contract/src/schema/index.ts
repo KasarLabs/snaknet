@@ -14,8 +14,13 @@ export const declareContractSchema = z.object({
 export const deployContractSchema = z.object({
   sierraFilePath: z.string().describe('Path to the sierra JSON file'),
   casmFilePath: z.string().describe('Path to the casm JSON file'),
-  classHash: z.string().describe('Class hash of the declared contract to deploy'),
-  constructorArgs: z.array(z.string()).optional().describe('OPTIONAL: Arguments for the contract constructor'),
+  classHash: z
+    .string()
+    .describe('Class hash of the declared contract to deploy'),
+  constructorArgs: z
+    .array(z.string())
+    .optional()
+    .describe('OPTIONAL: Arguments for the contract constructor'),
 });
 
 /**
@@ -25,5 +30,10 @@ export const getConstructorParamsSchema = z.object({
   sierraFilePath: z.string().describe('Path to the sierra JSON file'),
   casmFilePath: z.string().describe('Path to the casm JSON file'),
   classHash: z.string().describe('Class hash of the declared contract'),
-  constructorArgs: z.array(z.string()).optional().describe('OPTIONAL: Arguments for the contract constructor that need to be ordered'),
+  constructorArgs: z
+    .array(z.string())
+    .optional()
+    .describe(
+      'OPTIONAL: Arguments for the contract constructor that need to be ordered'
+    ),
 });

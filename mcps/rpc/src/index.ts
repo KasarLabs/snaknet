@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { RpcProvider } from "starknet";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { RpcProvider } from 'starknet';
 
-import { RpcTool } from "./interfaces/index.js";
-import dotenv from "dotenv";
+import { RpcTool } from './interfaces/index.js';
+import dotenv from 'dotenv';
 
 import { getSpecVersion } from './actions/getSpecVersion.js';
 import { getBlockWithTxHashes } from './actions/getBlockWithTxHashes.js';
@@ -30,10 +30,9 @@ import {
 dotenv.config();
 
 const server = new McpServer({
-  name: "starknet-rpc",
-  version: "1.0.0",
+  name: 'starknet-rpc',
+  version: '1.0.0',
 });
-
 
 const registerTools = (RpcToolRegistry: RpcTool[]) => {
   RpcToolRegistry.push({
@@ -125,7 +124,6 @@ const registerTools = (RpcToolRegistry: RpcTool[]) => {
   });
 };
 
-
 export const RegisterToolInServer = async (provider: RpcProvider) => {
   const tools: RpcTool[] = [];
   registerTools(tools);
@@ -136,7 +134,7 @@ export const RegisterToolInServer = async (provider: RpcProvider) => {
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(result),
             },
           ],
@@ -152,7 +150,7 @@ export const RegisterToolInServer = async (provider: RpcProvider) => {
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: JSON.stringify(result),
               },
             ],
@@ -166,7 +164,7 @@ export const RegisterToolInServer = async (provider: RpcProvider) => {
 const checkEnv = (): boolean => {
   const rpcUrl = process.env.STARKNET_RPC_URL;
   if (!rpcUrl) {
-    console.error("Missing required environment variable: STARKNET_RPC_URL");
+    console.error('Missing required environment variable: STARKNET_RPC_URL');
     return false;
   }
   return true;
@@ -175,19 +173,19 @@ const checkEnv = (): boolean => {
 async function main() {
   const transport = new StdioServerTransport();
   if (!checkEnv()) {
-    console.error("Failed to initialize RPC Provider");
+    console.error('Failed to initialize RPC Provider');
     process.exit(1);
   }
-  
+
   const rpcUrl = process.env.STARKNET_RPC_URL;
   const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  
+
   await RegisterToolInServer(provider);
   await server.connect(transport);
-  console.error("Starknet RPC MCP Server running on stdio");
+  console.error('Starknet RPC MCP Server running on stdio');
 }
 
 main().catch((error) => {
-  console.error("Fatal error in main():", error);
+  console.error('Fatal error in main():', error);
   process.exit(1);
 });

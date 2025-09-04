@@ -1,8 +1,14 @@
 import { z } from 'zod';
-import { checkScarbInstalled, buildProject as buildScarbProject } from '../utils/index.js';
+import {
+  checkScarbInstalled,
+  buildProject as buildScarbProject,
+} from '../utils/index.js';
 
 const buildProjectSchema = z.object({
-  path: z.string().optional().describe('Path to the project directory (defaults to current directory)'),
+  path: z
+    .string()
+    .optional()
+    .describe('Path to the project directory (defaults to current directory)'),
 });
 
 /**
@@ -15,22 +21,21 @@ export const buildProject = async (
 ): Promise<string> => {
   try {
     await checkScarbInstalled();
-    
+
     const projectDir = params.path || process.cwd();
     const result = await buildScarbProject(projectDir);
-    
+
     return JSON.stringify({
       status: 'success',
       message: 'Project built successfully',
       ...JSON.parse(result),
-      buildPath: projectDir
+      buildPath: projectDir,
     });
-    
   } catch (error) {
     return JSON.stringify({
       status: 'failure',
       message: `Build failed: ${error.message}`,
-      error: error.message
+      error: error.message,
     });
   }
 };

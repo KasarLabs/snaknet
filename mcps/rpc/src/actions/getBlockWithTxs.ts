@@ -1,6 +1,9 @@
 import { RpcProvider } from 'starknet';
 
-export const getBlockWithTxs = async (provider: RpcProvider, params: { blockId: string }) => {
+export const getBlockWithTxs = async (
+  provider: RpcProvider,
+  params: { blockId: string }
+) => {
   try {
     const blockWithTxs = await provider.getBlockWithTxs(params.blockId);
 

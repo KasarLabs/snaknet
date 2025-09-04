@@ -22,7 +22,7 @@
     "zod": "^3.24.2",
     "winston": "^3.17.0",
     "starknet": "^7.6.4",
-    "ethers":"^6.15.0"
+    "ethers": "^6.15.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",

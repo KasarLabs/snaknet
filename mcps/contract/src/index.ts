@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import dotenv from "dotenv";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import dotenv from 'dotenv';
 
-import { ContractTool } from "./interfaces/index.js";
+import { ContractTool } from './interfaces/index.js';
 import { declareContract } from './actions/declareContract.js';
 import { deployContract } from './actions/deployContract.js';
 import { getConstructorParams } from './actions/getConstructorParams.js';
@@ -16,8 +16,8 @@ import {
 dotenv.config();
 
 const server = new McpServer({
-  name: "starknet-contract",
-  version: "1.0.0",
+  name: 'starknet-contract',
+  version: '1.0.0',
 });
 
 const registerTools = (ContractToolRegistry: ContractTool[]) => {
@@ -30,7 +30,8 @@ const registerTools = (ContractToolRegistry: ContractTool[]) => {
 
   ContractToolRegistry.push({
     name: 'deploy_contract',
-    description: 'Deploy a declared Starknet contract using sierra and casm file paths',
+    description:
+      'Deploy a declared Starknet contract using sierra and casm file paths',
     schema: deployContractSchema,
     execute: deployContract,
   });
@@ -46,7 +47,7 @@ const registerTools = (ContractToolRegistry: ContractTool[]) => {
 export const RegisterToolInServer = async () => {
   const tools: ContractTool[] = [];
   registerTools(tools);
-  
+
   for (const tool of tools) {
     if (!tool.schema) {
       server.tool(tool.name, tool.description, async () => {
@@ -54,7 +55,7 @@ export const RegisterToolInServer = async () => {
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: result,
             },
           ],
@@ -70,7 +71,7 @@ export const RegisterToolInServer = async () => {
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: result,
               },
             ],
@@ -85,9 +86,11 @@ const checkEnv = (): boolean => {
   const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
   const privateKey = process.env.STARKNET_PRIVATE_KEY;
   const rpcUrl = process.env.STARKNET_RPC_URL;
-  
+
   if (!accountAddress || !privateKey || !rpcUrl) {
-    console.error("Missing required environment variables: STARKNET_ACCOUNT_ADDRESS, STARKNET_PRIVATE_KEY, STARKNET_RPC_URL");
+    console.error(
+      'Missing required environment variables: STARKNET_ACCOUNT_ADDRESS, STARKNET_PRIVATE_KEY, STARKNET_RPC_URL'
+    );
     return false;
   }
   return true;
@@ -95,18 +98,20 @@ const checkEnv = (): boolean => {
 
 async function main() {
   const transport = new StdioServerTransport();
-  
+
   if (!checkEnv()) {
-    console.error("Failed to initialize Contract Manager - missing environment variables");
+    console.error(
+      'Failed to initialize Contract Manager - missing environment variables'
+    );
     process.exit(1);
   }
-  
+
   await RegisterToolInServer();
   await server.connect(transport);
-  console.error("Starknet Contract MCP Server running on stdio");
+  console.error('Starknet Contract MCP Server running on stdio');
 }
 
 main().catch((error) => {
-  console.error("Fatal error in main():", error);
+  console.error('Fatal error in main():', error);
   process.exit(1);
 });

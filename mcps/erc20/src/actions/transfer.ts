@@ -46,7 +46,7 @@ export const transfer = async (
 
     const account = new Account(
       provider,
-      credentials.accountPublicKey,  // This is actually the account address, not public key
+      credentials.accountPublicKey, // This is actually the account address, not public key
       credentials.accountPrivateKey,
       undefined,
       constants.TRANSACTION_VERSION.V3
@@ -57,7 +57,9 @@ export const transfer = async (
       const nonce = await account.getNonce();
       console.log(`Account nonce: ${nonce}`);
     } catch (error) {
-      throw new Error(`Account not found on this network. Please verify your account address and network. Account: ${credentials.accountPublicKey}. Error: ${error.message}`);
+      throw new Error(
+        `Account not found on this network. Please verify your account address and network. Account: ${credentials.accountPublicKey}. Error: ${error.message}`
+      );
     }
 
     const contract = new Contract(abi, token.address, provider);

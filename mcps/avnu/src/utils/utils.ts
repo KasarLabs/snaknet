@@ -31,9 +31,7 @@ export const executeV3Transaction = async ({
   call,
   account,
 }: ExecuteV3Args): Promise<string> => {
-  const { transaction_hash } = await account.execute(
-    call,
-  );
+  const { transaction_hash } = await account.execute(call);
 
   const receipt = await account.waitForTransaction(transaction_hash);
   if (!receipt.isSuccess()) {

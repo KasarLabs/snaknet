@@ -22,11 +22,14 @@ export class ContractManager {
   /**
    * Load contract compilation files from file paths
    */
-  async loadContractCompilationFiles(sierraPath: string, casmPath: string): Promise<void> {
+  async loadContractCompilationFiles(
+    sierraPath: string,
+    casmPath: string
+  ): Promise<void> {
     try {
       const sierraContent = await fs.readFile(sierraPath, 'utf-8');
       const casmContent = await fs.readFile(casmPath, 'utf-8');
-      
+
       this.sierra = JSON.parse(sierraContent);
       this.casm = JSON.parse(casmContent);
     } catch (error) {
@@ -39,7 +42,9 @@ export class ContractManager {
    */
   async declareContract(): Promise<any> {
     if (!this.sierra || !this.casm) {
-      throw new Error('Contract files not loaded. Call loadContractCompilationFiles first.');
+      throw new Error(
+        'Contract files not loaded. Call loadContractCompilationFiles first.'
+      );
     }
 
     try {
@@ -63,8 +68,9 @@ export class ContractManager {
     constructorArgs: string[] = []
   ): Promise<any> {
     try {
-      const calldata = constructorArgs.length > 0 ? CallData.compile(constructorArgs) : [];
-      
+      const calldata =
+        constructorArgs.length > 0 ? CallData.compile(constructorArgs) : [];
+
       const deployResponse = await this.account.deploy({
         classHash,
         constructorCalldata: calldata,
@@ -81,13 +87,15 @@ export class ContractManager {
    */
   getConstructorParams(): any[] {
     if (!this.sierra) {
-      throw new Error('Sierra file not loaded. Call loadContractCompilationFiles first.');
+      throw new Error(
+        'Sierra file not loaded. Call loadContractCompilationFiles first.'
+      );
     }
 
     try {
       // Look for constructor in the ABI
-      const constructorEntry = this.sierra.abi?.find((entry: any) => 
-        entry.type === 'constructor'
+      const constructorEntry = this.sierra.abi?.find(
+        (entry: any) => entry.type === 'constructor'
       );
 
       return constructorEntry?.inputs || [];
@@ -121,7 +129,10 @@ export function getStarknetCredentials(): StarknetCredentials {
 /**
  * Validate that file paths exist and are readable
  */
-export async function validateFilePaths(sierraPath: string, casmPath: string): Promise<void> {
+export async function validateFilePaths(
+  sierraPath: string,
+  casmPath: string
+): Promise<void> {
   try {
     await fs.access(sierraPath, fs.constants.R_OK);
     await fs.access(casmPath, fs.constants.R_OK);
@@ -137,10 +148,10 @@ export function formatContractError(error: any): string {
   if (typeof error === 'string') {
     return error;
   }
-  
+
   if (error.message) {
     return error.message;
   }
-  
+
   return 'Unknown contract operation error';
 }

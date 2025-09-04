@@ -40,15 +40,15 @@ export async function getScarbVersion(): Promise<string> {
   }
 }
 
-
 /**
  * Create a temporary project directory
  */
-export async function createTempProjectDir(projectName: string): Promise<string> {
+export async function createTempProjectDir(
+  projectName: string
+): Promise<string> {
   const tempDir = await fs.mkdtemp(path.join('/tmp', `scarb-${projectName}-`));
   return tempDir;
 }
-
 
 /**
  * Clean up temporary project directory
@@ -75,8 +75,8 @@ export async function writeSourceFiles(
   // Write lib.cairo first
   if (!sourceFiles['lib.cairo']) {
     const libContent = Object.keys(sourceFiles)
-      .filter(f => f.endsWith('.cairo') && f !== 'lib.cairo')
-      .map(f => `mod ${path.basename(f, '.cairo')};`)
+      .filter((f) => f.endsWith('.cairo') && f !== 'lib.cairo')
+      .map((f) => `mod ${path.basename(f, '.cairo')};`)
       .join('\n');
     await fs.writeFile(path.join(srcDir, 'lib.cairo'), libContent);
   }
@@ -130,7 +130,9 @@ export async function setupToml(
  * Build a Scarb project
  */
 export async function buildProject(projectDir: string): Promise<string> {
-  const { stdout, stderr } = await execPromise('scarb build', { cwd: projectDir });
+  const { stdout, stderr } = await execPromise('scarb build', {
+    cwd: projectDir,
+  });
   return JSON.stringify({ output: stdout, errors: stderr });
 }
 
@@ -145,19 +147,19 @@ export async function executeProgram(
   mode: 'standalone' | 'bootloader' = 'bootloader'
 ): Promise<string> {
   let command = 'scarb cairo-run';
-  
+
   if (executableName) {
     command += ` --package ${executableName}`;
   }
-  
+
   if (executableFunction) {
     command += ` --function ${executableFunction}`;
   }
-  
+
   if (args) {
     command += ` -- ${args}`;
   }
-  
+
   if (mode === 'standalone') {
     command += ' --single-file';
   }
@@ -174,14 +176,16 @@ export async function getCompiledFiles(projectDir: string): Promise<{
   casmFiles: string[];
 }> {
   const targetDir = path.join(projectDir, 'target', 'dev');
-  
+
   try {
     const files = await fs.readdir(targetDir);
-    const sierraFiles = files.filter(f => f.endsWith('.contract_class.json'))
-      .map(f => path.join(targetDir, f));
-    const casmFiles = files.filter(f => f.endsWith('.compiled_contract_class.json'))
-      .map(f => path.join(targetDir, f));
-    
+    const sierraFiles = files
+      .filter((f) => f.endsWith('.contract_class.json'))
+      .map((f) => path.join(targetDir, f));
+    const casmFiles = files
+      .filter((f) => f.endsWith('.compiled_contract_class.json'))
+      .map((f) => path.join(targetDir, f));
+
     return { sierraFiles, casmFiles };
   } catch (error) {
     return { sierraFiles: [], casmFiles: [] };
@@ -196,13 +200,13 @@ export async function copyCompiledFiles(
   outputDirectory: string
 ): Promise<{ sierraFilePaths: string[]; casmFilePaths: string[] }> {
   const { sierraFiles, casmFiles } = await getCompiledFiles(projectDir);
-  
+
   // Ensure output directory exists
   await fs.mkdir(outputDirectory, { recursive: true });
-  
+
   const sierraFilePaths: string[] = [];
   const casmFilePaths: string[] = [];
-  
+
   // Copy sierra files
   for (const sierraFile of sierraFiles) {
     const filename = path.basename(sierraFile);
@@ -210,7 +214,7 @@ export async function copyCompiledFiles(
     await fs.copyFile(sierraFile, outputPath);
     sierraFilePaths.push(outputPath);
   }
-  
+
   // Copy casm files
   for (const casmFile of casmFiles) {
     const filename = path.basename(casmFile);
@@ -218,7 +222,7 @@ export async function copyCompiledFiles(
     await fs.copyFile(casmFile, outputPath);
     casmFilePaths.push(outputPath);
   }
-  
+
   return { sierraFilePaths, casmFilePaths };
 }
 
@@ -229,10 +233,10 @@ export function formatCompilationError(error: any): string[] {
   if (typeof error === 'string') {
     return [error];
   }
-  
+
   if (error.message) {
     return [error.message];
   }
-  
+
   return ['Unknown compilation error'];
 }

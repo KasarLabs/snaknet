@@ -1,9 +1,6 @@
 import { z } from 'zod';
 import { getConstructorParamsSchema } from '../schema/index.js';
-import { 
-  validateFilePaths, 
-  formatContractError 
-} from '../utils/index.js';
+import { validateFilePaths, formatContractError } from '../utils/index.js';
 import { Account, RpcProvider } from 'starknet';
 import { ContractManager } from '../utils/contractManager.js';
 
@@ -18,16 +15,21 @@ export const getConstructorParams = async (
   try {
     // Validate file paths exist
     await validateFilePaths(params.sierraFilePath, params.casmFilePath); // Only need sierra for constructor params
-    
+
     // Create a dummy account for ContractManager (not used for this operation)
-    const provider = new RpcProvider({ nodeUrl: 'https://starknet-mainnet.public.blastapi.io' });
+    const provider = new RpcProvider({
+      nodeUrl: 'https://starknet-mainnet.public.blastapi.io',
+    });
     const dummyAccount = new Account(provider, '0x1', '0x1');
-    
+
     const contractManager = new ContractManager(dummyAccount);
-    await contractManager.loadContractCompilationFiles(params.sierraFilePath, params.casmFilePath);
-    
+    await contractManager.loadContractCompilationFiles(
+      params.sierraFilePath,
+      params.casmFilePath
+    );
+
     const constructorParams = contractManager.extractConstructorParams();
-    
+
     return JSON.stringify({
       status: 'success',
       classHash: params.classHash,
@@ -37,10 +39,9 @@ export const getConstructorParams = async (
       parameters: constructorParams.map((param: any, index: number) => ({
         index,
         name: param.name,
-        type: param.type
-      }))
+        type: param.type,
+      })),
     });
-    
   } catch (error) {
     const errorMessage = formatContractError(error);
     return JSON.stringify({
@@ -49,7 +50,7 @@ export const getConstructorParams = async (
       step: 'getting constructor parameters',
       classHash: params.classHash,
       sierraFilePath: params.sierraFilePath,
-      providedArgs: params.constructorArgs || []
+      providedArgs: params.constructorArgs || [],
     });
   }
 };

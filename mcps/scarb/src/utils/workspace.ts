@@ -97,9 +97,9 @@ export const cleanProject = async (params: {
  * @returns The execution results
  */
 export const executeProject = async (
-  projectDir: string, 
+  projectDir: string,
   mode: string = 'standalone',
-  executableName?: string, 
+  executableName?: string,
   executableFunction?: string,
   args?: string
 ) => {
@@ -107,7 +107,8 @@ export const executeProject = async (
     let command = `scarb execute --print-program-output --print-resource-usage --target ${mode}`;
 
     if (executableName) command += ` --executable-name ${executableName}`;
-    if (executableFunction) command += ` --executable-function ${executableFunction}`;
+    if (executableFunction)
+      command += ` --executable-function ${executableFunction}`;
     if (args) command += ` --arguments "${args}"`;
 
     const { stdout, stderr } = await execAsync(command, { cwd: projectDir });
@@ -115,9 +116,7 @@ export const executeProject = async (
     const executionId =
       mode === 'standalone' ? getExecutionNumber(stdout) : undefined;
     const tracePath =
-      mode === 'bootloader'
-        ? getBootloaderTracePath(stdout)
-        : undefined;
+      mode === 'bootloader' ? getBootloaderTracePath(stdout) : undefined;
 
     return JSON.stringify({
       status: 'success',

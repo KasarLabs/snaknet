@@ -2,7 +2,7 @@ import { SimulateTransactionResponse } from 'starknet';
 
 export const TransactionReponseFormat = (
   transactionResponse: SimulateTransactionResponse
-) : Array<{
+): Array<{
   transaction_number: number;
   fee_estimation: {
     title: string;
@@ -19,7 +19,7 @@ export const TransactionReponseFormat = (
     };
   };
   suggested_max_fee: string;
-}>  => {
+}> => {
   const transactionDetails = transactionResponse.map((transaction, index) => {
     const feeData = transaction.fee_estimation;
     const resourceBounds = transaction.resourceBounds;

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { TransactionTool } from "./interfaces/index.js";
-import dotenv from "dotenv";
+import { TransactionTool } from './interfaces/index.js';
+import dotenv from 'dotenv';
 
 import {
   simulateInvokeTransaction,
@@ -23,8 +23,8 @@ import {
 dotenv.config();
 
 const server = new McpServer({
-  name: "starknet-transaction",
-  version: "1.0.0",
+  name: 'starknet-transaction',
+  version: '1.0.0',
 });
 
 // Mock agent interface for MCP compatibility
@@ -34,7 +34,9 @@ const createMockAgent = () => {
   const privateKey = process.env.STARKNET_PRIVATE_KEY;
 
   if (!rpcUrl || !accountAddress || !privateKey) {
-    throw new Error("Missing required environment variables: STARKNET_RPC_URL, STARKNET_ACCOUNT_ADDRESS, STARKNET_PRIVATE_KEY");
+    throw new Error(
+      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_ACCOUNT_ADDRESS, STARKNET_PRIVATE_KEY'
+    );
   }
 
   const provider = new RpcProvider({ nodeUrl: rpcUrl });
@@ -100,7 +102,7 @@ export const RegisterToolInServer = async () => {
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: result,
             },
           ],
@@ -116,7 +118,7 @@ export const RegisterToolInServer = async () => {
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: result,
               },
             ],
@@ -133,15 +135,19 @@ const checkEnv = (): boolean => {
   const privateKey = process.env.STARKNET_PRIVATE_KEY;
 
   if (!rpcUrl) {
-    console.error("Missing required environment variable: STARKNET_RPC_URL");
+    console.error('Missing required environment variable: STARKNET_RPC_URL');
     return false;
   }
   if (!accountAddress) {
-    console.error("Missing required environment variable: STARKNET_ACCOUNT_ADDRESS");
+    console.error(
+      'Missing required environment variable: STARKNET_ACCOUNT_ADDRESS'
+    );
     return false;
   }
   if (!privateKey) {
-    console.error("Missing required environment variable: STARKNET_PRIVATE_KEY");
+    console.error(
+      'Missing required environment variable: STARKNET_PRIVATE_KEY'
+    );
     return false;
   }
   return true;
@@ -150,16 +156,16 @@ const checkEnv = (): boolean => {
 async function main() {
   const transport = new StdioServerTransport();
   if (!checkEnv()) {
-    console.error("Failed to initialize Transaction Server");
+    console.error('Failed to initialize Transaction Server');
     process.exit(1);
   }
-  
+
   await RegisterToolInServer();
   await server.connect(transport);
-  console.error("Starknet Transaction MCP Server running on stdio");
+  console.error('Starknet Transaction MCP Server running on stdio');
 }
 
 main().catch((error) => {
-  console.error("Fatal error in main():", error);
+  console.error('Fatal error in main():', error);
   process.exit(1);
 });

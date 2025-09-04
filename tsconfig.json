@@ -30,9 +30,9 @@
       // "@server/*": ["packages/server/*"],
       // "@client/*": ["packages/client/*"],
       // "@agents/*": ["packages/agents/*"],
-      "@mcp/*": ["mcps/*"],
+      "@mcp/*": ["mcps/*"]
       // "@core/*": ["packages/core/*"],
       // "@metrics/*": ["packages/metrics/*"]
-    },
+    }
   }
 }

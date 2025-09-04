@@ -31,12 +31,14 @@ Model Context Protocol (MCP) is an open standard that enables AI applications to
 ## Available MCP Servers
 
 ### Wallet Management
+
 - **Argent** - Argent X wallet integration
-- **Braavos** - Braavos wallet integration  
+- **Braavos** - Braavos wallet integration
 - **OpenZeppelin** - OpenZeppelin account integration
 - **OKX** - OKX wallet integration
 
 ### DeFi Protocols
+
 - **AVNU** - DEX aggregator and swap functionality
 - **Fibrous** - Cross-chain DEX aggregator
 - **Opus** - Lending and borrowing protocol
@@ -44,6 +46,7 @@ Model Context Protocol (MCP) is an open standard that enables AI applications to
 - **Unruggable** - Memecoin creation and launch platform
 
 ### Core Blockchain Operations
+
 - **ERC20** - Token operations (transfer, approve, balance, etc.)
 - **ERC721** - NFT operations (transfer, approve, metadata, etc.)
 - **Contract** - Smart contract deployment and interaction
@@ -51,6 +54,7 @@ Model Context Protocol (MCP) is an open standard that enables AI applications to
 - **RPC** - Starknet RPC operations and blockchain data
 
 ### Development Tools
+
 - **Scarb** - Cairo development and compilation tools
 - **ArtPeace** - NFT marketplace integration
 
@@ -129,7 +133,7 @@ Configure your AI application to connect to these MCP servers. Example configura
       }
     },
     "starknet-argent": {
-      "command": "node", 
+      "command": "node",
       "args": ["/path/to/snak/mcps/argent/build/index.js"],
       "env": {
         "STARKNET_PUBLIC_ADDRESS": "your_address",

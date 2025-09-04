@@ -36,7 +36,7 @@ export const installScarb = async (): Promise<string> => {
     return JSON.stringify({
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-      message: 'Failed to check or install Scarb'
+      message: 'Failed to check or install Scarb',
     });
   }
 };

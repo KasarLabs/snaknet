@@ -207,7 +207,6 @@ export async function processContractForExecution(
   }
 }
 
-
 /**
  * Adds a dependency to a Scarb project
  * @param params The dependency parameters

@@ -1,8 +1,13 @@
 import { RpcProvider } from 'starknet';
 
-export const getTransactionStatus = async (provider: RpcProvider, params: { transactionHash: string }) => {
+export const getTransactionStatus = async (
+  provider: RpcProvider,
+  params: { transactionHash: string }
+) => {
   try {
-    const transactionStatus = await provider.getTransactionStatus(params.transactionHash);
+    const transactionStatus = await provider.getTransactionStatus(
+      params.transactionHash
+    );
 
     return JSON.stringify({
       status: 'success',

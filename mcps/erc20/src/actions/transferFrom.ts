@@ -36,11 +36,7 @@ export const transferFrom = async (
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
-    const token = await validateToken(
-      provider,
-      assetSymbol,
-      assetAddress
-    );
+    const token = await validateToken(provider, assetSymbol, assetAddress);
     const abi = await detectAbiType(token.address, provider);
     const { address, amount } = validateAndFormatParams(
       params.fromAddress,

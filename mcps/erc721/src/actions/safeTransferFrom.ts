@@ -85,5 +85,3 @@ export const safeTransferFrom = async (
     return JSON.stringify(result);
   }
 };
-
-

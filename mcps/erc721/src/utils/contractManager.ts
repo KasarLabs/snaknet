@@ -81,7 +81,7 @@ export class ContractManager {
       };
 
       const declareResponse = await this.account.declareIfNot(
-        declarePayload,
+        declarePayload
         // getV3DetailsPayload()
       );
       await this.account.waitForTransaction(declareResponse.transaction_hash);
@@ -123,7 +123,7 @@ export class ContractManager {
       };
 
       const deployResponse = await this.account.deployContract(
-        deployPayload,
+        deployPayload
         // getV3DetailsPayload()
       );
       await this.account.waitForTransaction(deployResponse.transaction_hash);
@@ -160,7 +160,7 @@ export class ContractManager {
       };
 
       const response = await this.account.declareAndDeploy(
-        declareAndDeployPayload,
+        declareAndDeployPayload
         // getV3DetailsPayload()
       );
       await this.account.waitForTransaction(response.deploy.transaction_hash);

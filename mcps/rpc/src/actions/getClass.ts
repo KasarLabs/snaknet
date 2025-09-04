@@ -1,8 +1,14 @@
 import { RpcProvider } from 'starknet';
 
-export const getClass = async (provider: RpcProvider, params: { classHash: string; blockId?: string }) => {
+export const getClass = async (
+  provider: RpcProvider,
+  params: { classHash: string; blockId?: string }
+) => {
   try {
-    const contractClass = await provider.getClass(params.classHash, params.blockId);
+    const contractClass = await provider.getClass(
+      params.classHash,
+      params.blockId
+    );
 
     return JSON.stringify({
       status: 'success',

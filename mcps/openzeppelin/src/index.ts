@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { OpenZeppelinTool } from "./interfaces/index.js";
-import dotenv from "dotenv";
+import { OpenZeppelinTool } from './interfaces/index.js';
+import dotenv from 'dotenv';
 
 import { wrapAccountCreationResponse } from './utils/AccountManager.js';
 import { accountDetailsSchema } from './schemas/schema.js';
@@ -14,15 +14,15 @@ import { CreateOZAccount } from './actions/createAccount.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: "starknet-openzeppelin",
-  version: "1.0.0",
+  name: 'starknet-openzeppelin',
+  version: '1.0.0',
 });
 
 // Mock agent interface for MCP compatibility
 const createMockAgent = () => {
   const rpcUrl = process.env.STARKNET_RPC_URL;
   if (!rpcUrl) {
-    throw new Error("Missing required environment variables: STARKNET_RPC_URL");
+    throw new Error('Missing required environment variables: STARKNET_RPC_URL');
   }
   const provider = new RpcProvider({ nodeUrl: rpcUrl });
   return {
@@ -63,7 +63,7 @@ export const RegisterToolInServer = async () => {
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify(result),
             },
           ],
@@ -79,7 +79,7 @@ export const RegisterToolInServer = async () => {
           return {
             content: [
               {
-                type: "text",
+                type: 'text',
                 text: JSON.stringify(result),
               },
             ],
@@ -92,13 +92,13 @@ export const RegisterToolInServer = async () => {
 
 async function main() {
   const transport = new StdioServerTransport();
-  
+
   await RegisterToolInServer();
   await server.connect(transport);
-  console.error("Starknet OpenZeppelin MCP Server running on stdio");
+  console.error('Starknet OpenZeppelin MCP Server running on stdio');
 }
 
 main().catch((error) => {
-  console.error("Fatal error in main():", error);
+  console.error('Fatal error in main():', error);
   process.exit(1);
 });

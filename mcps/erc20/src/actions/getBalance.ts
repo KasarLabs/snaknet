@@ -1,7 +1,11 @@
 import { Contract } from 'starknet';
 import { SnakAgentInterface } from '../dependances/types.js';
 import { detectAbiType } from '../utils/utils.js';
-import { formatBalance, validateToken, extractAssetInfo } from '../utils/utils.js';
+import {
+  formatBalance,
+  validateToken,
+  extractAssetInfo,
+} from '../utils/utils.js';
 import { validToken } from '../types/types.js';
 import { z } from 'zod';
 import { getBalanceSchema, getOwnBalanceSchema } from '../schemas/schema.js';
@@ -73,14 +77,10 @@ export const getBalance = async (
       throw new Error('Account address are required');
     }
     const provider = agent.getProvider();
-    
+
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
-    const token = await validateToken(
-      provider,
-      assetSymbol,
-      assetAddress
-    );
+    const token = await validateToken(provider, assetSymbol, assetAddress);
     const abi = await detectAbiType(token.address, provider);
     const tokenContract = new Contract(abi, token.address, provider);
 
