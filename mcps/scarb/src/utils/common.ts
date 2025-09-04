@@ -4,7 +4,7 @@ import { ScarbBaseParams, TomlSection, CairoProgram } from '../types/index.js';
 import {
   addSeveralDependancies as addSeveralDependencies,
   isProjectInitialized,
-  addTomlSection,
+  // addTomlSection,
   getProjectDir,
   cleanLibCairo,
   processContractForExecution,
@@ -35,29 +35,29 @@ export async function setupScarbProject(
   }
 }
 
-/**
- * Set up a Scarb project with TOML sections
- * @param projectDir The project directory
- * @param sections The TOML sections
- * @param dependencies The dependencies
- * @param requiredDependencies The required dependencies
- */
-export async function setupToml(
-  projectDir: string,
-  sections: TomlSection[],
-  // dependencies?: scarb.Dependency[],
-  // requiredDependencies?: scarb.Dependency[]
-): Promise<void> {
-  for (const section of sections) {
-    await addTomlSection({
-      workingDir: projectDir,
-      sectionTitle: section.sectionTitle,
-      valuesObject: section.valuesObject,
-    });
-  }
-  // await addSeveralDependencies(requiredDependencies || [], projectDir);
-  // await addSeveralDependencies(dependencies || [], projectDir);
-}
+// /**
+//  * Set up a Scarb project with TOML sections
+//  * @param projectDir The project directory
+//  * @param sections The TOML sections
+//  * @param dependencies The dependencies
+//  * @param requiredDependencies The required dependencies
+//  */
+// export async function setupToml(
+//   projectDir: string,
+//   sections: TomlSection[],
+//   // dependencies?: scarb.Dependency[],
+//   // requiredDependencies?: scarb.Dependency[]
+// ): Promise<void> {
+//   for (const section of sections) {
+//     await addTomlSection({
+//       workingDir: projectDir,
+//       sectionTitle: section.sectionTitle,
+//       valuesObject: section.valuesObject,
+//     });
+//   }
+//   // await addSeveralDependencies(requiredDependencies || [], projectDir);
+//   // await addSeveralDependencies(dependencies || [], projectDir);
+// }
 
 /**
  * Sets up the source code for a Scarb project

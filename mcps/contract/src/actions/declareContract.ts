@@ -28,7 +28,7 @@ export const declareContract = async (
 ): Promise<string> => {
   try {
     // Validate file paths exist
-    // await validateFilePaths(params.sierraFilePath, params.casmFilePath);
+    await validateFilePaths(params.sierraFilePath, params.casmFilePath);
     
     // Get Starknet credentials
     const credentials = getStarknetCredentials();
