@@ -69,32 +69,12 @@ Model Context Protocol (MCP) is an open standard that enables AI applications to
 ### Installation
 
 ```bash
-git clone https://github.com/kasarlabs/snak.git
-cd snak
+git clone https://github.com/kasarlabs/snaknet.git
+cd snaknet
 pnpm install
 pnpm build
 ```
 
-### Configuration
-
-1. Create a `.env` file by copying `.env.example`:
-
-```bash
-cp .env.example .env
-```
-
-2. Configure your Starknet credentials:
-
-```env
-# Starknet configuration (mandatory)
-STARKNET_PUBLIC_ADDRESS="YOUR_STARKNET_PUBLIC_ADDRESS"
-STARKNET_PRIVATE_KEY="YOUR_STARKNET_PRIVATE_KEY"
-STARKNET_RPC_URL="YOUR_STARKNET_RPC_URL"
-
-# Optional: Protocol-specific API keys
-AVNU_API_KEY="YOUR_AVNU_API_KEY"
-FIBROUS_API_KEY="YOUR_FIBROUS_API_KEY"
-```
 
 ## Usage
 
@@ -180,7 +160,6 @@ mcps/
 3. Implement the MCP protocol interface
 4. Add tests and documentation
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed development guidelines.
 
 ## Security
 
@@ -188,10 +167,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed development guidelines.
 - Private keys are handled securely and never exposed
 - User consent is required for all operations
 - Follow MCP security best practices
-
-## Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
