@@ -7,7 +7,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["build/**"]
     },
     "check-types": {
       "dependsOn": ["^check-types"]

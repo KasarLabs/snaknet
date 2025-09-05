@@ -18,6 +18,7 @@ The project uses a monorepo structure managed by Lerna and Turbo:
 ### Key MCP Servers
 
 Each MCP server in `mcps/` follows a consistent structure:
+
 - `src/tools/index.ts`: Tool registration and exports
 - `src/actions/`: Individual action implementations
 - `src/schemas/`: Zod validation schemas
@@ -26,14 +27,16 @@ Each MCP server in `mcps/` follows a consistent structure:
 - `package.json`: Individual server configuration
 
 Available MCP servers:
+
 - **Wallet Management**: argent, braavos, openzeppelin, okx
-- **DeFi Protocols**: avnu, fibrous, opus, vesu, unruggable  
+- **DeFi Protocols**: avnu, fibrous, opus, vesu, unruggable
 - **Core Operations**: erc20, erc721, contract, transaction, rpc
 - **Development**: scarb, artpeace
 
 ## Development Commands
 
 ### Build and Development
+
 ```bash
 # Install dependencies
 pnpm install
@@ -45,7 +48,7 @@ turbo build
 
 # Type checking
 pnpm check-types
-# or 
+# or
 turbo run check-types
 
 # Clean build artifacts
@@ -54,6 +57,7 @@ pnpm clean:all  # includes node_modules
 ```
 
 ### Code Quality
+
 ```bash
 # Lint all code
 pnpm lint
@@ -68,6 +72,7 @@ pnpm prettier:all
 ```
 
 ### Running MCP Servers
+
 ```bash
 # Build first, then run individual servers
 cd mcps/erc20 && pnpm build && pnpm start
@@ -79,9 +84,10 @@ cd mcps/argent && pnpm build && pnpm start
 ## Environment Configuration
 
 MCP servers require Starknet credentials. Each server expects:
+
 ```env
 STARKNET_PUBLIC_ADDRESS="your_address"
-STARKNET_PRIVATE_KEY="your_private_key"  
+STARKNET_PRIVATE_KEY="your_private_key"
 STARKNET_RPC_URL="your_rpc_url"
 ```
 
@@ -98,10 +104,11 @@ When working with MCP servers:
 5. **Error Handling**: All functions return JSON strings with status/message/data structure
 
 Example tool registration pattern:
+
 ```typescript
 StarknetToolRegistry.push({
   name: 'action_name',
-  plugins: 'server_name', 
+  plugins: 'server_name',
   description: 'Clear description of what this tool does',
   schema: validationSchema,
   execute: actionFunction,

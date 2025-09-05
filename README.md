@@ -73,7 +73,6 @@ pnpm install
 pnpm build
 ```
 
-
 ## Usage
 
 ### Running Individual MCP Servers
@@ -157,7 +156,6 @@ mcps/
 2. Follow the existing MCP server structure
 3. Implement the MCP protocol interface
 4. Add tests and documentation
-
 
 ## Security
 
