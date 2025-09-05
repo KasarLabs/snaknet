@@ -8,13 +8,6 @@ import {
 } from '../utils/index.js';
 import { ContractManager } from '../utils/contractManager.js';
 
-// TODO :
-// check if account already declared/deployed and throw error with classhash/contract address
-// check args?
-// allow dl scarb:x.x.x version
-// add tool scarb new
-// add tool declare and deploy
-
 /**
  * Declare a contract on Starknet using file path approach
  * @param params Contract declaration parameters
