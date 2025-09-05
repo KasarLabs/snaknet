@@ -1,5 +1,3 @@
-# SNAKNET
-
 <div align="center">
   <h1>SNAKNET</h1>
   <p><strong>Model Context Protocol Servers for Starknet</strong></p>
