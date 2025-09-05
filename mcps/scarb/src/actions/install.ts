@@ -6,7 +6,12 @@ import { promisify } from 'util';
 const execAsync = promisify(exec);
 
 export const installScarbSchema = z.object({
-  version: z.string().optional().describe('OPTIONAL: Scarb version to install (e.g., "2.10.0", "2.12.1"). If not specified, installs latest version'),
+  version: z
+    .string()
+    .optional()
+    .describe(
+      'OPTIONAL: Scarb version to install (e.g., "2.10.0", "2.12.1"). If not specified, installs latest version'
+    ),
 });
 
 /**
@@ -15,7 +20,7 @@ export const installScarbSchema = z.object({
  * @returns JSON string with installation result
  */
 export const installScarb = async (
-    params: z.infer<typeof installScarbSchema>
+  params: z.infer<typeof installScarbSchema>
 ): Promise<string> => {
   try {
     // Check if Scarb is already installed
@@ -40,7 +45,7 @@ export const installScarb = async (
 
     // Construct installation command
     let installCommand = `curl --proto '=https' --tlsv1.2 -sSf https://docs.swmansion.com/scarb/install.sh | sh -s --`;
-    
+
     if (params.version) {
       installCommand += ` -v ${params.version}`;
     }
@@ -48,12 +53,12 @@ export const installScarb = async (
     const { stdout, stderr } = await execAsync(installCommand, {
       env: {
         ...process.env,
-        PATH: `${process.env.HOME}/.local/bin:${process.env.PATH}`
-      }
+        PATH: `${process.env.HOME}/.local/bin:${process.env.PATH}`,
+      },
     });
 
     // Small delay to ensure symlink is created and readable
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Verify installation
     await checkScarbInstalled();
@@ -61,7 +66,7 @@ export const installScarb = async (
 
     return JSON.stringify({
       status: 'success',
-      message: params.version 
+      message: params.version
         ? `Scarb version ${params.version} installed successfully`
         : 'Scarb installed successfully (latest version)',
       requestedVersion: params.version || 'latest',

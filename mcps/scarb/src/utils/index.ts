@@ -23,9 +23,9 @@ export async function checkScarbInstalled(): Promise<void> {
     // Ensure we have the updated PATH including ~/.local/bin
     const env = {
       ...process.env,
-      PATH: `${process.env.HOME}/.local/bin:${process.env.PATH}`
+      PATH: `${process.env.HOME}/.local/bin:${process.env.PATH}`,
     };
-    
+
     await execPromise('scarb --version', { env });
   } catch (error) {
     throw new Error('Scarb is not installed or not available in PATH');
@@ -42,9 +42,9 @@ export async function getScarbVersion(): Promise<string> {
     // Ensure we have the updated PATH including ~/.local/bin
     const env = {
       ...process.env,
-      PATH: `${process.env.HOME}/.local/bin:${process.env.PATH}`
+      PATH: `${process.env.HOME}/.local/bin:${process.env.PATH}`,
     };
-    
+
     const { stdout } = await execAsync('scarb --version', { env });
     return stdout.trim();
   } catch (error) {

@@ -17,12 +17,18 @@ export const executeProgram = async (
   try {
     await checkScarbInstalled();
 
-    let executableName = undefined
-    let executableFunction = undefined
-    if (params.executable?.executableType === 'TARGET' && params.executable?.executableValue) {
+    let executableName = undefined;
+    let executableFunction = undefined;
+    if (
+      params.executable?.executableType === 'TARGET' &&
+      params.executable?.executableValue
+    ) {
       executableName = params.executable.executableValue;
     }
-    if (params.executable?.executableType === 'FUNCTION' && params.executable?.executableValue) {
+    if (
+      params.executable?.executableType === 'FUNCTION' &&
+      params.executable?.executableValue
+    ) {
       executableFunction = params.executable.executableValue;
     }
 

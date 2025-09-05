@@ -41,12 +41,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --force
 
+      - name: Check formatting with Prettier
+        run: pnpm prettier --check "mcps/**/*.{ts,tsx}"
+
       - name: Build packages in order
         run: pnpm build
-
-      - name: Check formatting with Prettier
-        run: |
-          pnpm prettier --check "mcps/**/*.{ts,tsx}"
 
       - name: Security audit
         run: pnpm audit || true

@@ -38,7 +38,6 @@ export const executableSchema = z.object({
     ),
 });
 
-
 /**
  * Schema for executing a program
  */
@@ -80,5 +79,5 @@ export const verifyProgramSchema = z.object({
     .string()
     .optional()
     .describe('Path to the project directory (defaults to current directory)'),
-  proofFile: z.string().optional().describe('Path to the proof file to verify')
+  proofFile: z.string().optional().describe('Path to the proof file to verify'),
 });

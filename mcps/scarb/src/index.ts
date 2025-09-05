@@ -28,7 +28,8 @@ const server = new McpServer({
 const registerTools = (ScarbToolRegistry: ScarbTool[]) => {
   ScarbToolRegistry.push({
     name: 'install_scarb',
-    description: 'Install Scarb Cairo toolchain with optional version specification',
+    description:
+      'Install Scarb Cairo toolchain with optional version specification',
     schema: installScarbSchema,
     execute: installScarb,
   });
