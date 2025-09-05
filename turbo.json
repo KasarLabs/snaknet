@@ -2,19 +2,9 @@
   "$schema": "https://turbo.build/schema.json",
   "extends": ["//"],
   "tasks": {
-    "dev": {
-      "dependsOn": ["^dev"]
-    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["build/**"]
-    },
-    "check-types": {
-      "dependsOn": ["^check-types"]
-    },
-    "test": {
-      "dependsOn": ["build"],
-      "cache": false
     }
   }
 }
