@@ -1,23 +1,25 @@
 {
   "name": "snaknet",
   "version": "0.0.1",
-  "description": "Build powerful and secure agents powered by Starknet",
+  "description": "Comprehensive collection of Model Context Protocol (MCP) servers for Starknet blockchain applications",
   "author": "Kasar Labs",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kasarlabs/snak.git"
+    "url": "git+https://github.com/kasarlabs/snaknet.git"
   },
   "private": true,
   "packageManager": "pnpm@9.3.0",
   "keywords": [
     "starknet",
     "blockchain",
+    "mcp",
+    "model-context-protocol",
     "AI",
-    "agent",
-    "nestjs"
+    "defi",
+    "wallet"
   ],
   "files": [
     "dist",
@@ -30,8 +32,8 @@
     "clean:dist": "lerna run clean:dist",
     "check-types": "turbo run check-types",
     "build": "turbo build",
-    "dev": "lerna run --scope @snakagent/agents start --",
-    "dev:server": "lerna run dev --scope \"@snakagent/server\"",
+    "dev": "lerna run --scope @snaknet/mcps start --",
+    "dev:server": "lerna run dev --scope \"@snaknet/server\"",
     "lint": "lerna run lint --parallel",
     "lint:fix": "lerna run lint:fix --parallel",
     "lint:all": "eslint mcps/**/*.{ts,tsx,js,jsx}",

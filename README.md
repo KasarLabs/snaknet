@@ -1,23 +1,21 @@
+# SNAKNET
+
 <div align="center">
-  <picture>
-    <!-- For users in dark mode, load a white logo -->
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/KasarLabs/brand/blob/main/projects/snak/snak-full-white-alpha.png?raw=true">
-    <!-- Default image for light mode -->
-    <img src="https://github.com/KasarLabs/brand/blob/main/projects/snak/snak-full-black-alpha.png?raw=true" width="200" alt="Snak Logo">
-  </picture>
+  <h1>SNAKNET</h1>
+  <p><strong>Model Context Protocol Servers for Starknet</strong></p>
 
 <p>
-<a href="https://www.npmjs.com/package/starknet-agent-kit">
-<img src="https://img.shields.io/npm/v/starknet-agent-kit.svg" alt="NPM Version" />
+<a href="https://www.npmjs.com/package/snaknet">
+<img src="https://img.shields.io/npm/v/snaknet.svg" alt="NPM Version" />
 </a>
-<a href="https://github.com/kasarlabs/snak/blob/main/LICENSE">
-<img src="https://img.shields.io/npm/l/starknet-agent-kit.svg" alt="License" />
+<a href="https://github.com/kasarlabs/snaknet/blob/main/LICENSE">
+<img src="https://img.shields.io/npm/l/snaknet.svg" alt="License" />
 </a>
-<a href="https://github.com/kasarlabs/snak/stargazers">
-<img src="https://img.shields.io/github/stars/kasarlabs/snak.svg" alt="GitHub Stars" />
+<a href="https://github.com/kasarlabs/snaknet/stargazers">
+<img src="https://img.shields.io/github/stars/kasarlabs/snaknet.svg" alt="GitHub Stars" />
 </a>
 <a href="https://nodejs.org">
-<img src="https://img.shields.io/node/v/starknet-agent-kit.svg" alt="Node Version" />
+<img src="https://img.shields.io/node/v/snaknet.svg" alt="Node Version" />
 </a>
 </p>
 </div>
@@ -105,7 +103,7 @@ Configure your AI application to connect to these MCP servers. Example configura
   "mcpServers": {
     "starknet-erc20": {
       "command": "node",
-      "args": ["/path/to/snak/mcps/erc20/build/index.js"],
+      "args": ["/path/to/snaknet/mcps/erc20/build/index.js"],
       "env": {
         "STARKNET_PUBLIC_ADDRESS": "your_address",
         "STARKNET_PRIVATE_KEY": "your_private_key",
@@ -114,7 +112,7 @@ Configure your AI application to connect to these MCP servers. Example configura
     },
     "starknet-argent": {
       "command": "node",
-      "args": ["/path/to/snak/mcps/argent/build/index.js"],
+      "args": ["/path/to/snaknet/mcps/argent/build/index.js"],
       "env": {
         "STARKNET_PUBLIC_ADDRESS": "your_address",
         "STARKNET_PRIVATE_KEY": "your_private_key",
