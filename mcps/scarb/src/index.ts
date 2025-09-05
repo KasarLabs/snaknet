@@ -7,7 +7,7 @@ import { ScarbTool } from './interfaces/index.js';
 import { initProject } from './actions/init.js';
 import { buildProject } from './actions/build.js';
 import { executeProgram } from './actions/execute.js';
-import { installScarb } from './actions/install.js';
+import { installScarb, installScarbSchema } from './actions/install.js';
 import { proveProgram } from './actions/prove.js';
 import { verifyProgram } from './actions/verify.js';
 import {
@@ -28,7 +28,8 @@ const server = new McpServer({
 const registerTools = (ScarbToolRegistry: ScarbTool[]) => {
   ScarbToolRegistry.push({
     name: 'install_scarb',
-    description: 'Install or check Scarb Cairo toolchain installation',
+    description: 'Install Scarb Cairo toolchain with optional version specification',
+    schema: installScarbSchema,
     execute: installScarb,
   });
 

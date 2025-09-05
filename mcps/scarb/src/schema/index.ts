@@ -25,14 +25,16 @@ export const buildProjectSchema = z.object({
 
 export const executableSchema = z.object({
   executableType: z
-    .enum(['FILE', 'FUNCTION'])
+    .enum(['TARGET', 'FUNCTION'])
+    .optional()
     .describe(
-      'The type of the executable to run: "FILE" for a specific file or "FUNCTION" for a specific function'
+      'OPTIONAL: The type of the executable to run: "TARGET" for a target name from Scarb.toml or "FUNCTION" for a function path like "package::module::function"'
     ),
   executableValue: z
     .string()
+    .optional()
     .describe(
-      'The name of the executable to run (ex: ...)'
+      'OPTIONAL: The executable value: target name (e.g., "my_executable") or function path (e.g., "my_package::my_module::main")'
     ),
 });
 
@@ -47,7 +49,7 @@ export const executeProgramSchema = z.object({
     .describe('Path to the project directory (defaults to current directory)'),
   executable: executableSchema
     .optional()
-    .describe('OPTIONAL: The executable information (filename or function name)'),
+    .describe('OPTIONAL: The executable information (target or function name)'),
   arguments: z
     .string()
     .optional()

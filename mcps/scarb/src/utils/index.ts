@@ -16,11 +16,17 @@ export interface CairoProgram {
 }
 
 /**
- * Check if Scarb is installed
+ * Check if Scarb is installed with PATH refresh
  */
 export async function checkScarbInstalled(): Promise<void> {
   try {
-    await execPromise('scarb --version');
+    // Ensure we have the updated PATH including ~/.local/bin
+    const env = {
+      ...process.env,
+      PATH: `${process.env.HOME}/.local/bin:${process.env.PATH}`
+    };
+    
+    await execPromise('scarb --version', { env });
   } catch (error) {
     throw new Error('Scarb is not installed or not available in PATH');
   }
@@ -28,12 +34,18 @@ export async function checkScarbInstalled(): Promise<void> {
 
 const execAsync = promisify(exec);
 /**
- * Get the Scarb version
+ * Get the Scarb version with PATH refresh
  * @returns The Scarb version
  */
 export async function getScarbVersion(): Promise<string> {
   try {
-    const { stdout } = await execAsync('scarb --version');
+    // Ensure we have the updated PATH including ~/.local/bin
+    const env = {
+      ...process.env,
+      PATH: `${process.env.HOME}/.local/bin:${process.env.PATH}`
+    };
+    
+    const { stdout } = await execAsync('scarb --version', { env });
     return stdout.trim();
   } catch (error) {
     return 'unknown';

@@ -17,15 +17,19 @@ export const executeProgram = async (
   try {
     await checkScarbInstalled();
 
-    let executableFile = undefined
+    let executableName = undefined
     let executableFunction = undefined
-    if (params.executable?.executableType === 'FILE') executableFile = params.executable?.executableValue;
-    if (params.executable?.executableType === 'FUNCTION') executableFunction = params.executable?.executableValue
+    if (params.executable?.executableType === 'TARGET' && params.executable?.executableValue) {
+      executableName = params.executable.executableValue;
+    }
+    if (params.executable?.executableType === 'FUNCTION' && params.executable?.executableValue) {
+      executableFunction = params.executable.executableValue;
+    }
 
     const result = await executeProject(
       params.path || (process.cwd() as string),
       params.mode || undefined,
-      executableFile,
+      executableName,
       executableFunction,
       params.arguments || undefined
     );
