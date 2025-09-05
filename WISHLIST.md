@@ -1,7 +1,6 @@
-# Snak MCP Servers Wishlist
+# Snaknet MCP Servers Wishlist
 
-Below is a list of MCP servers and features we would like to see added to the Snak collection. We welcome pull requests (PRs) to implement these features through [OnlyDust](https://app.onlydust.com/projects/snak/overview) and merged PRs are rewarded. Please follow the [CONTRIBUTING.md](https://github.com/kasarlabs/snak/blob/main/CONTRIBUTING.md) guide to contribute.
-
+Below is a list of MCP servers and features we would like to see added to the Snaknet collection. We welcome pull requests (PRs) to implement these features.
 ## DeFi Protocol MCP Servers
 
 ### Lending & Borrowing
