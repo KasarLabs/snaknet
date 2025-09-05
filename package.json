@@ -1,0 +1,64 @@
+{
+  "name": "snaknet",
+  "version": "0.0.1",
+  "description": "Comprehensive collection of Model Context Protocol (MCP) servers for Starknet blockchain applications",
+  "author": "Kasar Labs",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kasarlabs/snaknet.git"
+  },
+  "private": true,
+  "packageManager": "pnpm@9.3.0",
+  "keywords": [
+    "starknet",
+    "blockchain",
+    "mcp",
+    "model-context-protocol",
+    "AI",
+    "defi",
+    "wallet"
+  ],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist node_modules",
+    "clean:all": "pnpm -r run clean:all && pnpm clean",
+    "build": "turbo build",
+    "lint": "pnpm -r run lint",
+    "lint:fix": "pnpm -r run lint:fix",
+    "lint:all": "eslint mcps/**/*.{ts,tsx,js,jsx}",
+    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "format": "prettier --write \"mcps/**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^15.15.0",
+    "prettier": "^3.6.1",
+    "turbo": "^2.4.4",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.25.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "tough-cookie": "^4.1.3"
+    }
+  }
+}
