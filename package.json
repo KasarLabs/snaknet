@@ -32,9 +32,9 @@
     "build": "turbo build",
     "lint": "pnpm -r run lint",
     "lint:fix": "pnpm -r run lint:fix",
-    "lint:all": "eslint mcps/**/*.{ts,tsx,js,jsx}",
+    "lint:all": "eslint {mcps,mcp}/**/*.{ts,tsx,js,jsx}",
     "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "format": "prettier --write \"mcps/**/*.{ts,tsx,js,jsx,json,md}\""
+    "format": "prettier --write \"{mcps,mcp}/**/*.{ts,tsx,js,jsx,json,md}\""
   },
   "dependencies": {
     "dotenv": "^16.4.7",

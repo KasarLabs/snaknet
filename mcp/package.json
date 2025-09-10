@@ -1,0 +1,45 @@
+{
+  "name": "@snaknet/mcp-server",
+  "version": "0.0.1",
+  "main": "server.js",
+  "type": "module",
+  "bin": {
+    "mcp_starknet-snaknet": "./bin/mcp_starknet-snaknet.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/server.js",
+    "clean": "rm -rf build",
+    "clean:all": "rm -rf build node_modules",
+    "start": "node build/server.js"
+  },
+  "files": [
+    "build"
+  ],
+  "description": "Starknet MCP Server - Model Context Protocol server for Starknet blockchain",
+  "author": "Kasar Labs",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "starknet",
+    "blockchain",
+    "ai",
+    "server"
+  ],
+  "dependencies": {
+    "@langchain/community": "^0.3.55",
+    "@langchain/core": "^0.3.42",
+    "@langchain/langgraph": "^0.4.9",
+    "@langchain/openai": "^0.6.11",
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
