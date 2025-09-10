@@ -4,43 +4,55 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import dotenv from "dotenv";
 import { z } from 'zod';
 
+import { graph } from './graph/graph.js';
+
+const performStarknetActionsSchema = z.object({
+  userInput: z.string().describe('The actions that the user want to do'),
+});
+type performStarknetActionsInput = z.infer<typeof performStarknetActionsSchema>;
+type envInput = {
+  rpcProvider : string | undefined,
+  accountAddress : string | undefined,
+  privateKey: string | undefined
+}
+
 dotenv.config();
 
 export const performStarknetActions = async (
-  env: envinput,
+  env: envInput,
   input: performStarknetActionsInput
 ) => {
   try {
+    const config = { configurable: { thread_id: `user-${Date.now()}` } };
+    
+    const result = await graph.invoke({
+      messages: [{ role: "human", content: input.userInput }],
+      mcpEnvironment: env
+    }, config);
+    
+    const finalMessage = result.messages[result.messages.length - 1];
+    
     return {
       status: "success",
-      response: "Yes the MCP works"
+      response: finalMessage.content,
+      routing: result.routingInfo
     };
   } catch (error) {
     console.log(error);
     return {
       status: "failure",
-      error: error,
+      error: error instanceof Error ? error.message : "Unknown error",
     };
-  } 
+  }
 }
 
-const performStarknetActionsSchema = z.object({
-  userInput: z.string().describe('The actions that the user want to do'),
-});
-
-type performStarknetActionsInput = z.infer<typeof performStarknetActionsSchema>;
-type envinput = {
-  rpcProvider : string | undefined,
-  accountAddress : string | undefined,
-  privateKey: string | undefined
-}
 
 interface SnaknetTool<P = any> {
   name: string;
   description: string;
   schema?: Zod.AnyZodObject;
   execute: (
-    env: envinput,
+    env: envInput,
     input: P,
   ) => Promise<unknown>;
 }
@@ -59,7 +71,7 @@ const server = new McpServer({
   version: "1.0.0",
 });
 
-export const RegisterToolInServer = async (env: envinput) => {
+export const RegisterToolInServer = async (env: envInput) => {
   const tools: SnaknetTool[] = [];
   await registerTools(tools);
   for (const tool of tools) {
@@ -99,7 +111,7 @@ export const RegisterToolInServer = async (env: envinput) => {
 
 async function main() {
   const transport = new StdioServerTransport();
-  const env : envinput = {
+  const env : envInput = {
     rpcProvider: process.env.STARKNET_RPC_PROVIDER,
     accountAddress: process.env.STARKNET_ACCOUNT_ADDRESS,
     privateKey: process.env.STARKNET_PRIVATE_KEY
