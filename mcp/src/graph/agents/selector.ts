@@ -1,16 +1,18 @@
 import { END } from "@langchain/langgraph";
 import { ChatAnthropic } from "@langchain/anthropic";
 import { z } from 'zod'
+import { BaseChatModel, BaseChatModelCallOptions } from "@langchain/core/language_models/chat_models";
 
 import { GraphAnnotation } from "../graph.js";
 import { AvailableAgents, getMCPDescription } from "../mcps/utilities.js";
 import { logger } from '../../utils/index.js'
+import { AIMessageChunk } from "@langchain/core/messages";
 
 
 const selectorOutputSchema = z.object({
   selectedAgent: z.enum([END, ...AvailableAgents] as [string, ...string[]]),
   reasoning: z.string().describe("Pourquoi cet agent a été choisi")
-});
+}); 
 
 export const selectorAgent = async (state: typeof GraphAnnotation.State) => {
   const lastMessage = state.messages[state.messages.length - 1];
@@ -39,34 +41,12 @@ Respond with the exact name of the chosen agent or "__end__".`;
 
   try {
     const model = new ChatAnthropic({
-      model: "claude-3-5-sonnet-20240620",
+      model: "claude-3-5-sonnet-latest",
       temperature: 0,
-    });
+    }) as BaseChatModel<BaseChatModelCallOptions, AIMessageChunk>; 
 
-    // const response = await model.withStructuredOutput({
-    //   schema: selectorOutputSchema
-    // }).invoke([
-    //   { role: "system", content: systemPrompt },
-    //   { role: "user", content: `User's request : "${userInput}"` }
-    // ]);
-    
-    const response = await model
-        .withStructuredOutput({
-        type: "object",
-        properties: {
-          selectedAgent: { 
-            type: "string", 
-            description: "The selected agent name",
-            enum: [END, ...AvailableAgents]
-          },
-          reasoning: { 
-            type: "string", 
-            description: "Why this agent was chosen"
-          }
-        },
-        required: ["selectedAgent", "reasoning"]
-      })
-      .invoke([
+    const structuredModel = model.withStructuredOutput(selectorOutputSchema);
+    const response = await structuredModel.invoke([
       { role: "system", content: systemPrompt },
       { role: "user", content: `User's request : "${userInput}"` }
     ]);

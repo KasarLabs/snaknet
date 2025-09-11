@@ -6,20 +6,21 @@ import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { getMCPClientConfig } from "../mcps/utilities.js";
 import { GraphAnnotation } from "../graph.js";
 import { logger } from '../../utils/index.js'
+import { MCPEnvironment } from "../mcps/interfaces.js";
 
-async function specializedAgent(mcpServerName: string) {
+async function specializedAgent(mcpServerName: string, env: MCPEnvironment | undefined) {
     try {
         const client = new MultiServerMCPClient({
             mcpServers: {
-                [mcpServerName]: getMCPClientConfig(mcpServerName)
+                [mcpServerName]: getMCPClientConfig(mcpServerName, env)
             }
         });
-        
+
         const tools = await client.getTools();
         logger.error(
             `Loaded ${tools.length} MCP tools: ${tools
                 .map((tool) => tool.name)
-                .join(", ")}`
+                .join(", ")}`, {}
         );
         
         const model = new ChatAnthropic({
@@ -37,22 +38,16 @@ async function specializedAgent(mcpServerName: string) {
 }
 
 export const specializedNode = async (state: typeof GraphAnnotation.State) => {
-    logger.error(`Specialized node executing for agent: ${state.next}`);
+    logger.error(`Specialized node executing for agent: ${state.next}`, {});
 
     try {
-        const { model, toolNode } = await specializedAgent(state.next);
+        const { model, toolNode } = await specializedAgent(state.next, state.mcpEnvironment);
         
-        // Call the model with the current messages
         const response = await model.invoke(state.messages);
         
-        // Check if there are tool calls
         if (response.tool_calls && response.tool_calls.length > 0) {
-            logger.error(`Tool calls detected: ${response.tool_calls.map(tc => tc.name).join(', ')}`);
-            
-            // Execute tools
+            logger.error(`Tool calls detected: ${response.tool_calls.map(tc => tc.name).join(', ')}`, {});
             const toolResults = await toolNode.invoke({ messages: [...state.messages, response] });
-            
-            // Call model again with tool results
             const finalResponse = await model.invoke([
                 ...state.messages, 
                 response, 
@@ -61,8 +56,10 @@ export const specializedNode = async (state: typeof GraphAnnotation.State) => {
             
             logger.error('Agent response with tools completed', {
                 agent: state.next,
-                toolCalls: response.tool_calls.length,
-                messageLength: finalResponse.content.length
+                toolCalls: response.tool_calls,
+                toolResults: toolResults,
+                toolArgs: response.tool_calls[0].args,
+                toolArgsType: typeof response.tool_calls[0].args
             });
             
             return {

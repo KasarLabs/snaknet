@@ -37,15 +37,11 @@ export const performStarknetActions = async (
     
     const finalMessage = result.messages[result.messages.length - 1];
     
-    logger.info('Graph execution completed', { 
-      routing: result.routingInfo,
-      messageCount: result.messages.length 
-    });
+    logger.error('Graph execution completed!!!!!!!!!!!!!!!!!!');
     
     return {
       status: "success",
       response: finalMessage.content,
-      routing: result.routingInfo
     };
   } catch (error) {
     logger.error('Graph execution failed', error);

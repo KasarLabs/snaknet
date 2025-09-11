@@ -4,6 +4,8 @@ import {
     MCPClientConfig
 } from './interfaces.js'
 
+import { logger } from '../../utils/index.js';
+
 export const AvailableAgents = Object.keys(mcpsInfo);
 export type AgentName = typeof AvailableAgents[number]
 
@@ -21,12 +23,12 @@ export const getMCPClientConfig = (
   if (env) {
     config.env = {
       ...config.env,
-      STARKNET_RPC_PROVIDER: env.rpcProvider || '',
+      STARKNET_RPC_URL: env.rpcProvider || '',
       STARKNET_ACCOUNT_ADDRESS: env.accountAddress || '',
       STARKNET_PRIVATE_KEY: env.privateKey || '',
     };
   }
-  
+  logger.error('CONFIG: ', config);
   return config;
 };
 

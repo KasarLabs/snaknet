@@ -15,10 +15,17 @@ const client = new Client({
 try {
   await client.connect(transport);
   
+  // const result = await client.callTool({
+  //   name: "perform_starknet_actions",
+  //   arguments: {
+  //     userInput: "I want to create a new Argent account, then transfer 0.2 STRK to it with my account, then deploy it"
+  //   }
+  // });
+
   const result = await client.callTool({
     name: "perform_starknet_actions",
     arguments: {
-      userInput: "I want to create a new Argent account"
+      userInput: "I want to transfer 0.001 STRK to account 0x07b67cA77BC41CB7DD972eb0Dc2bBAbCfCE9d586570e609f70E73C746D6565E8"
     }
   });
 

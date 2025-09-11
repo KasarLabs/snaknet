@@ -36,7 +36,6 @@ export const GraphAnnotation = Annotation.Root({
 });
 
 export const routingFunction = async (state: typeof GraphAnnotation.State) => {
-    logger.error('state', state);
     return state.next != END ? "specialized" : END;
 };
 
