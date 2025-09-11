@@ -5,6 +5,7 @@ import { selectorAgent } from "./agents/selector.js";
 import { AgentName } from "./mcps/utilities.js";
 import { MCPEnvironment } from "./mcps/interfaces.js";
 import { specializedNode } from "./agents/specialized.js";
+import { logger } from "../utils/index.js";
 
 export const GraphAnnotation = Annotation.Root({
   messages: Annotation<BaseMessage[]>({
@@ -35,6 +36,7 @@ export const GraphAnnotation = Annotation.Root({
 });
 
 export const routingFunction = async (state: typeof GraphAnnotation.State) => {
+    logger.info(`state = ${state}`);
     return state.next != END ? "specialized" : END;
 };
 

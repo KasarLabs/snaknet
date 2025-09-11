@@ -4,10 +4,8 @@ import { z } from 'zod'
 
 import { GraphAnnotation } from "../graph.js";
 import { AvailableAgents, getMCPDescription } from "../mcps/utilities.js";
+import { logger } from '../../utils/index.js'
 
-const model = new ChatAnthropic({
-  model: "claude-3-5-sonnet-latest",
-});
 
 const selectorOutputSchema = z.object({
   selectedAgent: z.enum([END, ...AvailableAgents] as [string, ...string[]]),
@@ -17,7 +15,7 @@ const selectorOutputSchema = z.object({
 export const selectorAgent = async (state: typeof GraphAnnotation.State) => {
   const lastMessage = state.messages[state.messages.length - 1];
   const userInput = lastMessage.content;
-
+  
   const agentDescriptions = AvailableAgents.map(agent => 
     `- ${agent}: ${getMCPDescription(agent)}`
   ).join('\n');
@@ -35,6 +33,10 @@ Instructions:
 Respond with the exact name of the chosen agent.`;
 
   try {
+    const model = new ChatAnthropic({
+      model: "claude-3-5-sonnet-latest",
+    });
+    
     const response = await model.withStructuredOutput({
       schema: selectorOutputSchema
     }).invoke([
@@ -42,7 +44,10 @@ Respond with the exact name of the chosen agent.`;
       { role: "user", content: `User's request : "${userInput}"` }
     ]);
 
-    console.log(`Routing: ${response.selectedAgent} - Reasoning: ${response.reasoning}`);
+    logger.info(`Routing decision`, { 
+      selectedAgent: response.selectedAgent, 
+      reasoning: response.reasoning 
+    });
 
     return {
       next: response.selectedAgent,

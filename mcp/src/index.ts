@@ -2,9 +2,13 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import dotenv from "dotenv";
+dotenv.config({ path: './.env' });
 import { z } from 'zod';
 
 import { graph } from './graph/graph.js';
+import { logger } from './utils/index.js'
+import { HumanMessage } from "@langchain/core/messages";
+
 
 const performStarknetActionsSchema = z.object({
   userInput: z.string().describe('The actions that the user want to do'),
@@ -16,21 +20,27 @@ type envInput = {
   privateKey: string | undefined
 }
 
-dotenv.config();
 
 export const performStarknetActions = async (
   env: envInput,
   input: performStarknetActionsInput
 ) => {
+  logger.info('Graph execution started', { userInput: input.userInput, env });
+  
   try {
     const config = { configurable: { thread_id: `user-${Date.now()}` } };
     
     const result = await graph.invoke({
-      messages: [{ role: "human", content: input.userInput }],
+      messages: [new HumanMessage(input.userInput)],
       mcpEnvironment: env
     }, config);
     
     const finalMessage = result.messages[result.messages.length - 1];
+    
+    logger.info('Graph execution completed', { 
+      routing: result.routingInfo,
+      messageCount: result.messages.length 
+    });
     
     return {
       status: "success",
@@ -38,7 +48,7 @@ export const performStarknetActions = async (
       routing: result.routingInfo
     };
   } catch (error) {
-    console.log(error);
+    logger.error('Graph execution failed', error);
     return {
       status: "failure",
       error: error instanceof Error ? error.message : "Unknown error",
