@@ -15,7 +15,7 @@ const selectorOutputSchema = z.object({
 export const selectorAgent = async (state: typeof GraphAnnotation.State) => {
   const lastMessage = state.messages[state.messages.length - 1];
   const userInput = lastMessage.content;
-  
+
   const agentDescriptions = AvailableAgents.map(agent => 
     `- ${agent}: ${getMCPDescription(agent)}`
   ).join('\n');
@@ -27,24 +27,51 @@ ${agentDescriptions}
 
 Instructions:
 - Analyze the user's request
-- Choose the most appropriate agent based on their domain
-- If no agent can handle the request, choose "FINISH"
+- If the user's original request has been COMPLETED by a previous agent response, choose "__end__"
+- If a previous agent has already provided a complete answer or completed the requested action, choose "__end__"
+- Only choose a specialized agent if the request is NEW or INCOMPLETE
+- If no agent can handle the request, choose "__end__"
 
-Respond with the exact name of the chosen agent.`;
+
+IMPORTANT: Look at the conversation history. If an agent has already successfully completed the user's request (like creating an account, providing information, etc.), you MUST choose "__end__" to stop the conversation.
+
+Respond with the exact name of the chosen agent or "__end__".`;
 
   try {
     const model = new ChatAnthropic({
-      model: "claude-3-5-sonnet-latest",
+      model: "claude-3-5-sonnet-20240620",
+      temperature: 0,
     });
+
+    // const response = await model.withStructuredOutput({
+    //   schema: selectorOutputSchema
+    // }).invoke([
+    //   { role: "system", content: systemPrompt },
+    //   { role: "user", content: `User's request : "${userInput}"` }
+    // ]);
     
-    const response = await model.withStructuredOutput({
-      schema: selectorOutputSchema
-    }).invoke([
+    const response = await model
+        .withStructuredOutput({
+        type: "object",
+        properties: {
+          selectedAgent: { 
+            type: "string", 
+            description: "The selected agent name",
+            enum: [END, ...AvailableAgents]
+          },
+          reasoning: { 
+            type: "string", 
+            description: "Why this agent was chosen"
+          }
+        },
+        required: ["selectedAgent", "reasoning"]
+      })
+      .invoke([
       { role: "system", content: systemPrompt },
       { role: "user", content: `User's request : "${userInput}"` }
     ]);
 
-    logger.info(`Routing decision`, { 
+    logger.error(`Routing decision`, { 
       selectedAgent: response.selectedAgent, 
       reasoning: response.reasoning 
     });

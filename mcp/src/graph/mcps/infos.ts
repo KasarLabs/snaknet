@@ -4,7 +4,7 @@ export const mcpsInfo: Record<string, MCPServerInfo> = {
   argent: {
     client: {
         command: "node",
-        args: ["../../../mcps/argent/build/index.js"],
+        args: ["../mcps/argent/build/index.js"],
         transport: "stdio",
     },
     description: "Gestion des comptes Argent sur Starknet",
