@@ -39,7 +39,7 @@ async function specializedAgent(mcpServerName: string, env: MCPEnvironment | und
 
 export const specializedNode = async (state: typeof GraphAnnotation.State) => {
     logger.error(`Specialized node executing for agent: ${state.next}`, {});
-
+ 
     try {
         const { model, toolNode } = await specializedAgent(state.next, state.mcpEnvironment);
         
