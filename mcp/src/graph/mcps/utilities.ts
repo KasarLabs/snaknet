@@ -1,24 +1,53 @@
-import { mcpsInfo } from './infos.js'
-import { 
-    MCPEnvironment,
-    MCPClientConfig
-} from './interfaces.js'
-
+import { readFileSync } from 'fs'
+import { join } from 'path'
+import { MCPServerInfo, MCPEnvironment, MCPClientConfig } from './interfaces.js'
 import { logger } from '../../utils/index.js';
 
-export const AvailableAgents = Object.keys(mcpsInfo);
+function loadMcpsConfig(): Record<string, MCPServerInfo> {
+  try {
+    const configPath = join(process.cwd(), '../mcps.json')
+    const configContent = readFileSync(configPath, 'utf-8')
+    return JSON.parse(configContent)
+  } catch (error) {
+    console.error('Error loading mcps.json:', error)
+    return {}
+  }
+}
+
+export function getMcpInfo(name: string): MCPServerInfo | undefined {
+  const config = loadMcpsConfig()
+  return config[name]
+}
+
+export function getAllMcpInfo(): Record<string, MCPServerInfo> {
+  return loadMcpsConfig()
+}
+
+export function getMcpNames(): string[] {
+  const config = loadMcpsConfig()
+  return Object.keys(config)
+}
+
+export const AvailableAgents = getMcpNames();
 export type AgentName = typeof AvailableAgents[number]
 
 export const getMCPClientConfig = (
   serverName: string, 
   env?: MCPEnvironment
 ): MCPClientConfig => {
-  const serverInfo = mcpsInfo[serverName];
+  const serverInfo = getMcpInfo(serverName);
   if (!serverInfo) {
     throw new Error(`Configuration MCP introuvable pour ${serverName}`);
   }
   
   const config = { ...serverInfo.client };
+  
+  // Construct the full path: ../mcps/{serverName}/{relativePath}
+  if (config.args && config.args.length > 0) {
+    config.args = config.args.map(arg => 
+      arg.includes('build/') ? `../mcps/${serverName}/${arg}` : arg
+    );
+  }
 
   if (env) {
     config.env = {
@@ -33,11 +62,14 @@ export const getMCPClientConfig = (
 };
 
 export const getMCPDescription = (serverName: string): string => {
-  return mcpsInfo[serverName]?.description;
+  return getMcpInfo(serverName)?.description || '';
 };
 
 export const getMCPPromptInfo = (serverName: string): { expertise: string; toolsList: string } => {
-  const serverInfo = mcpsInfo[serverName];
+  const serverInfo = getMcpInfo(serverName);
+  if (!serverInfo) {
+    return { expertise: '', toolsList: '' };
+  }
   return {
     expertise: serverInfo.promptInfo.expertise,
     toolsList: serverInfo.promptInfo.tools.join(', ')
