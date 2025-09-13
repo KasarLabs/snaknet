@@ -6,18 +6,18 @@ import { RpcProvider } from 'starknet';
 import { RpcTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
-import { getSpecVersion } from './actions/getSpecVersion.js';
-import { getBlockWithTxHashes } from './actions/getBlockWithTxHashes.js';
-import { getBlockWithReceipts } from './actions/getBlockWithReceipts.js';
-import { getTransactionStatus } from './actions/getTransactionStatus.js';
-import { getClass } from './actions/getClass.js';
-import { getChainId } from './actions/getChainId.js';
-import { getSyncingStats } from './actions/getSyncingStats.js';
-import { getBlockNumber } from './actions/getBlockNumber.js';
-import { getBlockTransactionCount } from './actions/getBlockTransactionCount.js';
-import { getStorageAt } from './actions/getStorageAt.js';
-import { getClassAt } from './actions/getClassAt.js';
-import { getClassHashAt } from './actions/getClassHashAt.js';
+import { getSpecVersion } from './tools/getSpecVersion.js';
+import { getBlockWithTxHashes } from './tools/getBlockWithTxHashes.js';
+import { getBlockWithReceipts } from './tools/getBlockWithReceipts.js';
+import { getTransactionStatus } from './tools/getTransactionStatus.js';
+import { getClass } from './tools/getClass.js';
+import { getChainId } from './tools/getChainId.js';
+import { getSyncingStats } from './tools/getSyncingStats.js';
+import { getBlockNumber } from './tools/getBlockNumber.js';
+import { getBlockTransactionCount } from './tools/getBlockTransactionCount.js';
+import { getStorageAt } from './tools/getStorageAt.js';
+import { getClassAt } from './tools/getClassAt.js';
+import { getClassHashAt } from './tools/getClassHashAt.js';
 import {
   getStorageAtSchema,
   blockIdSchema,

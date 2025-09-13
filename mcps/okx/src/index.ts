@@ -8,8 +8,8 @@ import dotenv from 'dotenv';
 
 import { wrapAccountCreationResponse } from './utils/AccountManager.js';
 import { accountDetailsSchema } from './schemas/schema.js';
-import { DeployOKXAccount } from './actions/deployAccount.js';
-import { CreateOKXAccount } from './actions/createAccount.js';
+import { DeployOKXAccount } from './tools/deployAccount.js';
+import { CreateOKXAccount } from './tools/createAccount.js';
 
 dotenv.config();
 

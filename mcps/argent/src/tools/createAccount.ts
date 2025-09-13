@@ -1,6 +1,6 @@
 import { RpcProvider } from 'starknet';
-import { ARGENT_CLASS_HASH } from '../constant/contract.js';
-import { AccountManager } from '../utils/AccountManager.js';
+import { ARGENT_CLASS_HASH } from '../lib/constant/contract.js';
+import { AccountManager } from '../lib/utils/AccountManager.js';
 
 /**
  * Creates a new Argent account.

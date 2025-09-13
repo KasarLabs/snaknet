@@ -19,15 +19,15 @@ import {
   deployERC20Schema,
 } from './schemas/schema.js';
 
-import { getAllowance } from './actions/getAllowance.js';
-import { getTotalSupply } from './actions/getTotalSupply.js';
-import { transferFrom } from './actions/transferFrom.js';
-import { getBalance, getOwnBalance } from './actions/getBalance.js';
-import { approve } from './actions/approve.js';
-import { transfer } from './actions/transfer.js';
-import { getMyGivenAllowance } from './actions/getAllowance.js';
-import { getAllowanceGivenToMe } from './actions/getAllowance.js';
-import { deployERC20Contract } from './actions/deployERC20.js';
+import { getAllowance } from './tools/getAllowance.js';
+import { getTotalSupply } from './tools/getTotalSupply.js';
+import { transferFrom } from './tools/transferFrom.js';
+import { getBalance, getOwnBalance } from './tools/getBalance.js';
+import { approve } from './tools/approve.js';
+import { transfer } from './tools/transfer.js';
+import { getMyGivenAllowance } from './tools/getAllowance.js';
+import { getAllowanceGivenToMe } from './tools/getAllowance.js';
+import { deployERC20Contract } from './tools/deployERC20.js';
 
 dotenv.config();
 

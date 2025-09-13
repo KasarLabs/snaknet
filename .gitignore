@@ -47,3 +47,6 @@ tsconfig.tsbuildinfo
 *.tgz
 
 CLAUDE.md
+
+mcps/*/build/
+mcp/build/

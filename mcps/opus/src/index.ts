@@ -14,16 +14,16 @@ import {
   openTroveSchema,
   repayTroveSchema,
 } from './schemas/index.js';
-import { openTrove } from './actions/openTrove.js';
+import { openTrove } from './tools/openTrove.js';
 import {
   getBorrowFee,
   getTroveHealth,
   getUserTroves,
-} from './actions/getters.js';
-import { depositTrove } from './actions/depositTrove.js';
-import { withdrawTrove } from './actions/withdrawTrove.js';
-import { borrowTrove } from './actions/borrowTrove.js';
-import { repayTrove } from './actions/repayTrove.js';
+} from './tools/getters.js';
+import { depositTrove } from './tools/depositTrove.js';
+import { withdrawTrove } from './tools/withdrawTrove.js';
+import { borrowTrove } from './tools/borrowTrove.js';
+import { repayTrove } from './tools/repayTrove.js';
 
 dotenv.config();
 

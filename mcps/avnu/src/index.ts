@@ -7,8 +7,8 @@ import { AvnuTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import { routeSchema, swapSchema } from './schemas/index.js';
-import { swapTokens } from './actions/swap.js';
-import { getRoute } from './actions/fetchRoute.js';
+import { swapTokens } from './tools/swap.js';
+import { getRoute } from './tools/fetchRoute.js';
 
 dotenv.config();
 

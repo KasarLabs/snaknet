@@ -7,8 +7,8 @@ import { VesuTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import { depositEarnSchema, withdrawEarnSchema } from './schema/index.js';
-import { depositEarnPosition } from './actions/depositService.js';
-import { withdrawEarnPosition } from './actions/withdrawService.js';
+import { depositEarnPosition } from './tools/depositService.js';
+import { withdrawEarnPosition } from './tools/withdrawService.js';
 
 dotenv.config();
 

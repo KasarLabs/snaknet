@@ -11,10 +11,10 @@ import {
   launchOnEkuboSchema,
   createMemecoinSchema,
 } from './schema/index.js';
-import { getLockedLiquidity } from './actions/getLockedLiquidity.js';
-import { isMemecoin } from './actions/isMemecoin.js';
-import { createMemecoin } from './actions/createMemecoin.js';
-import { launchOnEkubo } from './actions/launchOnEkubo.js';
+import { getLockedLiquidity } from './tools/getLockedLiquidity.js';
+import { isMemecoin } from './tools/isMemecoin.js';
+import { createMemecoin } from './tools/createMemecoin.js';
+import { launchOnEkubo } from './tools/launchOnEkubo.js';
 
 dotenv.config();
 

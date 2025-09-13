@@ -4,12 +4,12 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import dotenv from 'dotenv';
 
 import { ScarbTool } from './interfaces/index.js';
-import { initProject } from './actions/init.js';
-import { buildProject } from './actions/build.js';
-import { executeProgram } from './actions/execute.js';
-import { installScarb, installScarbSchema } from './actions/install.js';
-import { proveProgram } from './actions/prove.js';
-import { verifyProgram } from './actions/verify.js';
+import { initProject } from './tools/init.js';
+import { buildProject } from './tools/build.js';
+import { executeProgram } from './tools/execute.js';
+import { installScarb, installScarbSchema } from './tools/install.js';
+import { proveProgram } from './tools/prove.js';
+import { verifyProgram } from './tools/verify.js';
 import {
   initProjectSchema,
   buildProjectSchema,

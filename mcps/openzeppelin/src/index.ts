@@ -8,8 +8,8 @@ import dotenv from 'dotenv';
 
 import { wrapAccountCreationResponse } from './utils/AccountManager.js';
 import { accountDetailsSchema } from './schemas/schema.js';
-import { DeployOZAccount } from './actions/deployAccount.js';
-import { CreateOZAccount } from './actions/createAccount.js';
+import { DeployOZAccount } from './tools/deployAccount.js';
+import { CreateOZAccount } from './tools/createAccount.js';
 
 dotenv.config();
 

@@ -8,8 +8,8 @@ import dotenv from 'dotenv';
 
 import { wrapAccountCreationResponse } from './utils/AccountManager.js';
 import { accountDetailsSchema } from './schemas/schema.js';
-import { DeployBraavosAccount } from './actions/deployAccount.js';
-import { CreateBraavosAccount } from './actions/createAccount.js';
+import { DeployBraavosAccount } from './tools/deployAccount.js';
+import { CreateBraavosAccount } from './tools/createAccount.js';
 
 dotenv.config();
 

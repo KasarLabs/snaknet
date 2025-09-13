@@ -6,7 +6,7 @@ import { RpcProvider, Account } from 'starknet';
 import { ArtPeaceTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
-import { placePixel } from './actions/placePixel.js';
+import { placePixel } from './tools/placePixel.js';
 import { placePixelSchema } from './schema/index.js';
 
 dotenv.config();

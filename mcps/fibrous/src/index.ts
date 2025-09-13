@@ -12,9 +12,9 @@ import {
   routeSchema,
   RouteSchemaType,
 } from './schema/index.js';
-import { swapTokensFibrous } from './actions/swap.js';
-import { batchSwapTokens } from './actions/batchSwap.js';
-import { getRouteFibrous } from './actions/fetchRoute.js';
+import { swapTokensFibrous } from './tools/swap.js';
+import { batchSwapTokens } from './tools/batchSwap.js';
+import { getRouteFibrous } from './tools/fetchRoute.js';
 
 dotenv.config();
 

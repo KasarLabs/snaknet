@@ -11,7 +11,7 @@ import {
   simulateDeployAccountTransaction,
   simulateDeployTransaction,
   simulateDeclareTransaction,
-} from './actions/simulateTransaction.js';
+} from './tools/simulateTransaction.js';
 
 import {
   simulateInvokeTransactionSchema,

@@ -4,9 +4,9 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import dotenv from 'dotenv';
 
 import { ContractTool } from './interfaces/index.js';
-import { declareContract } from './actions/declareContract.js';
-import { deployContract } from './actions/deployContract.js';
-import { getConstructorParams } from './actions/getConstructorParams.js';
+import { declareContract } from './tools/declareContract.js';
+import { deployContract } from './tools/deployContract.js';
+import { getConstructorParams } from './tools/getConstructorParams.js';
 import {
   declareContractSchema,
   deployContractSchema,

@@ -6,9 +6,9 @@ import { RpcProvider, Account } from 'starknet';
 import { ArgentTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
-import { wrapAccountCreationResponse } from './utils/AccountManager.js';
-import { CreateArgentAccount } from './actions/createAccount.js';
-import { DeployArgentAccount } from './actions/deployAccount.js';
+import { wrapAccountCreationResponse } from './lib/utils/AccountManager.js';
+import { CreateArgentAccount } from './tools/createAccount.js';
+import { DeployArgentAccount } from './tools/deployAccount.js';
 import { accountDetailsSchema } from './schemas/schema.js';
 
 dotenv.config();
