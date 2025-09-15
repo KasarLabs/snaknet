@@ -53,13 +53,13 @@ export const getMCPClientConfig = (
     );
   }
 
-  if (env) {
-    config.env = {
-      ...config.env,
-      STARKNET_RPC_URL: env.rpcProvider || '',
-      STARKNET_ACCOUNT_ADDRESS: env.accountAddress || '',
-      STARKNET_PRIVATE_KEY: env.privateKey || '',
-    };
+  if (env && serverInfo.client.env) {
+    config.env = config.env || {};
+
+    // Pour chaque variable demandée par le MCP dans mcps.json (maintenant objet)
+    for (const envVar in serverInfo.client.env) {
+      config.env[envVar] = env[envVar] || '';
+    }
   }
   logger.error('CONFIG: ', config);
   return config;

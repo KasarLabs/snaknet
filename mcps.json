@@ -3,7 +3,10 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
     },
     "description": "Management of Argent accounts on Starknet",
     "promptInfo": {
@@ -16,7 +19,11 @@
       "command": "node",
       "args": ["build/index.js"],
       "transport": "stdio",
-      "env": ["STARKNET_RPC_URL", "STARKNET_ACCOUNT_ADDRESS", "STARKNET_PRIVATE_KEY"]
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
+      }
     },
     "description": "Management of ERC20 operations (transfer, balance, deployment) on Starknet",
     "promptInfo": {
@@ -39,7 +46,10 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
     },
     "description": "Management of Braavos wallet accounts on Starknet",
     "promptInfo": {
@@ -51,7 +61,12 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
+      }
     },
     "description": "AVNU decentralized exchange integration for token swaps on Starknet",
     "promptInfo": {
@@ -63,7 +78,12 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
+      }
     },
     "description": "Comprehensive ERC721 NFT operations on Starknet",
     "promptInfo": {
@@ -87,7 +107,12 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
+      }
     },
     "description": "Transaction simulation tools for Starknet",
     "promptInfo": {
@@ -104,7 +129,14 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": "",
+        "PATH_UPLOAD_DIR": "",
+        "SECRET_PHRASE": ""
+      }
     },
     "description": "Collaborative pixel art creation on a shared canvas",
     "promptInfo": {
@@ -116,7 +148,12 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
+      }
     },
     "description": "Starknet contract declaration and deployment operations",
     "promptInfo": {
@@ -128,7 +165,12 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
+      }
     },
     "description": "Fibrous decentralized exchange for single and batch token swaps",
     "promptInfo": {
@@ -140,7 +182,10 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
     },
     "description": "OKX wallet account creation and deployment on Starknet",
     "promptInfo": {
@@ -152,7 +197,10 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
     },
     "description": "OpenZeppelin account contract creation and deployment on Starknet",
     "promptInfo": {
@@ -167,7 +215,12 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
+      }
     },
     "description": "Opus lending protocol for Trove management and borrowing",
     "promptInfo": {
@@ -188,7 +241,10 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
     },
     "description": "Direct blockchain interaction via RPC methods for on-chain data access",
     "promptInfo": {
@@ -232,7 +288,12 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
+      }
     },
     "description": "Memecoin creation and analysis with focus on safer token launches",
     "promptInfo": {
@@ -249,7 +310,12 @@
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
+      }
     },
     "description": "Vesu protocol for deposit and withdrawal operations for earning positions",
     "promptInfo": {

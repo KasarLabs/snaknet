@@ -11,9 +11,22 @@ async function getMCPTools(mcpName) {
   return new Promise((resolve, reject) => {
     const mcpPath = path.join('mcps', mcpName, 'build', 'index.js');
     
+    // Set up environment variables if needed
+    const envVars = { ...process.env };
+
+    // Add any environment variables declared in the MCP config
+    const mcpConfig = mcpsConfig[mcpName];
+    if (mcpConfig.client && mcpConfig.client.env) {
+      for (const [envVar, defaultValue] of Object.entries(mcpConfig.client.env)) {
+        if (!envVars[envVar]) {
+          envVars[envVar] = defaultValue || 'test-value';
+        }
+      }
+    }
+
     const child = spawn('node', [mcpPath], {
       stdio: ['pipe', 'pipe', 'pipe'],
-      env: { ...process.env }
+      env: envVars
     });
     
     let stdout = '';
