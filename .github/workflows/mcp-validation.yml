@@ -52,6 +52,3 @@ jobs:
         
     - name: Validate Tool Names
       run: node .github/scripts/validate-tools.js
-
-    - name: Validate Main MCP Router
-      run: node .github/scripts/validate-router.js

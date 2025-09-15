@@ -19,11 +19,10 @@ try {
 const mcpsDir = path.join(process.cwd(), 'mcps');
 let actualMcps = [];
 try {
-  actualMcps = fs.readdirSync(mcpsDir)
-    .filter(name => {
-      const fullPath = path.join(mcpsDir, name);
-      return fs.statSync(fullPath).isDirectory();
-    });
+  actualMcps = fs.readdirSync(mcpsDir).filter((name) => {
+    const fullPath = path.join(mcpsDir, name);
+    return fs.statSync(fullPath).isDirectory();
+  });
   console.log('✅ Found MCP directories:', actualMcps.join(', '));
 } catch (error) {
   console.error('❌ Error reading mcps directory:', error.message);
@@ -37,18 +36,20 @@ console.log('✅ Configured MCPs:', configuredMcps.join(', '));
 let hasErrors = false;
 
 // Check for missing directories
-const missingDirs = configuredMcps.filter(name => !actualMcps.includes(name));
+const missingDirs = configuredMcps.filter((name) => !actualMcps.includes(name));
 if (missingDirs.length > 0) {
   console.error('\n❌ MCPs configured but missing directories:');
-  missingDirs.forEach(name => console.error('   -', name));
+  missingDirs.forEach((name) => console.error('   -', name));
   hasErrors = true;
 }
 
 // Check for unconfigured directories
-const unconfiguredDirs = actualMcps.filter(name => !configuredMcps.includes(name));
+const unconfiguredDirs = actualMcps.filter(
+  (name) => !configuredMcps.includes(name)
+);
 if (unconfiguredDirs.length > 0) {
   console.error('\n❌ MCP directories not configured in mcps.json:');
-  unconfiguredDirs.forEach(name => console.error('   -', name));
+  unconfiguredDirs.forEach((name) => console.error('   -', name));
   hasErrors = true;
 }
 
@@ -56,22 +57,22 @@ if (unconfiguredDirs.length > 0) {
 console.log('\n🔍 Validating individual MCPs...');
 for (const mcpName of configuredMcps) {
   console.log('\n📁 Checking', mcpName);
-  
+
   const mcpDir = path.join(mcpsDir, mcpName);
   const config = mcpsConfig[mcpName];
-  
+
   // Check required config structure
   if (!config.client) {
     console.error('❌ Missing client configuration');
     hasErrors = true;
     continue;
   }
-  
+
   if (!config.description) {
     console.error('❌ Missing description');
     hasErrors = true;
   }
-  
+
   if (!config.promptInfo) {
     console.error('❌ Missing promptInfo');
     hasErrors = true;
@@ -85,21 +86,21 @@ for (const mcpName of configuredMcps) {
       hasErrors = true;
     }
   }
-  
+
   // Check if package.json exists
   const packageJsonPath = path.join(mcpDir, 'package.json');
   if (!fs.existsSync(packageJsonPath)) {
     console.error('❌ Missing package.json');
     hasErrors = true;
   }
-  
+
   // Check if src/index.ts exists
   const srcIndexPath = path.join(mcpDir, 'src', 'index.ts');
   if (!fs.existsSync(srcIndexPath)) {
     console.error('❌ Missing src/index.ts');
     hasErrors = true;
   }
-  
+
   // Check if bin script exists
   const binPath = path.join(mcpDir, 'bin');
   if (fs.existsSync(binPath)) {
@@ -115,7 +116,7 @@ for (const mcpName of configuredMcps) {
     console.error('❌ Missing bin directory');
     hasErrors = true;
   }
-  
+
   console.log('✅', mcpName, 'basic structure OK');
 }
 
