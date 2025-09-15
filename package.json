@@ -30,6 +30,7 @@
     "clean": "rm -rf dist node_modules",
     "clean:all": "pnpm -r run clean:all && pnpm clean",
     "build": "turbo build",
+    "build:mcps": "turbo build --filter \"./mcps/*\"",
     "lint": "pnpm -r run lint",
     "lint:fix": "pnpm -r run lint:fix",
     "lint:all": "eslint {mcps,mcp}/**/*.{ts,tsx,js,jsx}",
