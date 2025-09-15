@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export interface ArgentTool {
+export interface mcpTool {
   name: string;
   description: string;
   schema?: z.ZodObject<any>;

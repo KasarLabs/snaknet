@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { ArgentTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import { wrapAccountCreationResponse } from './lib/utils/AccountManager.js';
@@ -18,7 +18,6 @@ const server = new McpServer({
   version: '1.0.0',
 });
 
-// Mock agent interface for MCP compatibility
 const createMockAgent = () => {
   const rpcUrl = process.env.STARKNET_RPC_URL;
   if (!rpcUrl) {
@@ -32,7 +31,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (ArgentToolRegistry: ArgentTool[]) => {
+const registerTools = (ArgentToolRegistry: mcpTool[]) => {
   ArgentToolRegistry.push({
     name: 'create_new_argent_account',
     description:
@@ -56,7 +55,7 @@ const registerTools = (ArgentToolRegistry: ArgentTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: ArgentTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {
