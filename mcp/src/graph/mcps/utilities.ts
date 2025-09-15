@@ -41,7 +41,7 @@ export const getMCPClientConfig = (
 ): MCPClientConfig => {
   const serverInfo = getMcpInfo(serverName);
   if (!serverInfo) {
-    throw new Error(`Configuration MCP introuvable pour ${serverName}`);
+    throw new Error(`MCP configuration not found for ${serverName}`);
   }
 
   const config = { ...serverInfo.client };
@@ -55,26 +55,21 @@ export const getMCPClientConfig = (
 
   if (env && serverInfo.client.env) {
     config.env = config.env || {};
-
-    // Variables requises mais manquantes
     const missingVars: string[] = [];
-
-    // Mapping dynamique direct entre les noms des variables
     for (const envVar in serverInfo.client.env) {
       if (env[envVar]) {
-        config.env[envVar] = env[envVar]!; // ! car on vient de vérifier que c'est défini
+        config.env[envVar] = env[envVar];
       } else {
         config.env[envVar] = '';
         missingVars.push(envVar);
       }
     }
 
-    // Validation : lever une erreur si des variables requises sont manquantes
     if (missingVars.length > 0) {
       throw new Error(
-        `Variables d'environnement manquantes pour le MCP '${serverName}': ${missingVars.join(', ')}\n` +
-        `Variables disponibles: ${Object.keys(env).join(', ')}\n` +
-        `Variables requises: ${Object.keys(serverInfo.client.env).join(', ')}`
+        `Missing environment variables for MCP '${serverName}': ${missingVars.join(', ')}\n` +
+        `Available variables: ${Object.keys(env).join(', ')}\n` +
+        `Required variables: ${Object.keys(serverInfo.client.env).join(', ')}`
       );
     }
   }

@@ -13,7 +13,7 @@ import { AIMessageChunk } from '@langchain/core/messages';
 
 const selectorOutputSchema = z.object({
   selectedAgent: z.enum([END, ...AvailableAgents] as [string, ...string[]]),
-  reasoning: z.string().describe('Pourquoi cet agent a été choisi'),
+  reasoning: z.string().describe('Why this agent was chosen'),
 });
 
 export const selectorAgent = async (state: typeof GraphAnnotation.State) => {
