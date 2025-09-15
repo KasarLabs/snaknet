@@ -8,17 +8,15 @@
     "description": "Management of Argent accounts on Starknet",
     "promptInfo": {
       "expertise": "Argent wallet accounts on Starknet",
-      "tools": [
-        "create_new_argent_account",
-        "deploy_existing_argent_account"
-      ]
+      "tools": ["create_new_argent_account", "deploy_existing_argent_account"]
     }
   },
   "erc20": {
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": ["STARKNET_RPC_URL", "STARKNET_ACCOUNT_ADDRESS", "STARKNET_PRIVATE_KEY"]
     },
     "description": "Management of ERC20 operations (transfer, balance, deployment) on Starknet",
     "promptInfo": {
@@ -46,10 +44,7 @@
     "description": "Management of Braavos wallet accounts on Starknet",
     "promptInfo": {
       "expertise": "Braavos wallet accounts on Starknet",
-      "tools": [
-        "create_new_braavos_account",
-        "deploy_existing_braavos_account"
-      ]
+      "tools": ["create_new_braavos_account", "deploy_existing_braavos_account"]
     }
   },
   "avnu": {
@@ -61,10 +56,7 @@
     "description": "AVNU decentralized exchange integration for token swaps on Starknet",
     "promptInfo": {
       "expertise": "AVNU DEX token swapping on Starknet",
-      "tools": [
-        "avnu_swap_tokens",
-        "avnu_get_route"
-      ]
+      "tools": ["avnu_swap_tokens", "avnu_get_route"]
     }
   },
   "erc721": {
@@ -117,9 +109,7 @@
     "description": "Collaborative pixel art creation on a shared canvas",
     "promptInfo": {
       "expertise": "Pixel art and canvas interaction",
-      "tools": [
-        "place_pixel"
-      ]
+      "tools": ["place_pixel"]
     }
   },
   "contract": {
@@ -131,11 +121,7 @@
     "description": "Starknet contract declaration and deployment operations",
     "promptInfo": {
       "expertise": "Smart contract deployment on Starknet",
-      "tools": [
-        "declare_contract",
-        "deploy_contract",
-        "get_constructor_params"
-      ]
+      "tools": ["declare_contract", "deploy_contract", "get_constructor_params"]
     }
   },
   "fibrous": {
@@ -147,11 +133,7 @@
     "description": "Fibrous decentralized exchange for single and batch token swaps",
     "promptInfo": {
       "expertise": "Fibrous DEX token swapping",
-      "tools": [
-        "fibrous_swap",
-        "fibrous_batch_swap",
-        "fibrous_get_route"
-      ]
+      "tools": ["fibrous_swap", "fibrous_batch_swap", "fibrous_get_route"]
     }
   },
   "okx": {
@@ -163,10 +145,7 @@
     "description": "OKX wallet account creation and deployment on Starknet",
     "promptInfo": {
       "expertise": "OKX wallet accounts on Starknet",
-      "tools": [
-        "create_new_okx_account",
-        "deploy_existing_okx_account"
-      ]
+      "tools": ["create_new_okx_account", "deploy_existing_okx_account"]
     }
   },
   "openzeppelin": {
@@ -275,10 +254,7 @@
     "description": "Vesu protocol for deposit and withdrawal operations for earning positions",
     "promptInfo": {
       "expertise": "Vesu protocol yield farming",
-      "tools": [
-        "vesu_deposit_earn",
-        "vesu_withdraw_earn"
-      ]
+      "tools": ["vesu_deposit_earn", "vesu_withdraw_earn"]
     }
   }
 }

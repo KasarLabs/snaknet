@@ -1,6 +1,7 @@
 # Creating New MCPs
 
 ## Project Structure
+
 ```
 mcps/your-mcp/
 ├── src/
@@ -19,6 +20,7 @@ mcps/your-mcp/
 ```
 
 ## Tool Functions (src/tools/action.ts)
+
 ```typescript
 import { z } from 'zod';
 import { yourSchema } from '../schemas/index.js';
@@ -29,7 +31,7 @@ export const yourAction = async (
   try {
     // Your logic here
     const result = await doSomething(params);
-    
+
     return JSON.stringify({
       status: 'success',
       data: result,
@@ -44,6 +46,7 @@ export const yourAction = async (
 ```
 
 ## Schemas (src/schemas/index.ts)
+
 ```typescript
 import { z } from 'zod';
 
@@ -54,6 +57,7 @@ export const yourSchema = z.object({
 ```
 
 ## Interface (src/interfaces/index.ts)
+
 ```typescript
 import { z } from 'zod';
 
@@ -66,6 +70,7 @@ export interface mcpTool {
 ```
 
 ## MCP Server (src/index.ts)
+
 ```typescript
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -94,7 +99,7 @@ const registerTools = (toolRegistry: mcpTool[]) => {
 export const RegisterToolInServer = async () => {
   const tools: mcpTool[] = [];
   registerTools(tools);
-  
+
   for (const tool of tools) {
     if (!tool.schema) {
       server.tool(tool.name, tool.description, async () => {
@@ -130,6 +135,7 @@ main().catch(console.error);
 ```
 
 ## Register in mcps.json
+
 ```json
 {
   "yourname": {
@@ -148,13 +154,16 @@ main().catch(console.error);
 ```
 
 ## Executable (bin/mcp_starknet-yourname.js)
+
 ```javascript
 #!/usr/bin/env node
 import('../build/index.js').catch(console.error);
 ```
 
 ## Environment Variables
+
 Auto-injected for Starknet:
+
 - `STARKNET_RPC_URL`
 - `STARKNET_ACCOUNT_ADDRESS`
 - `STARKNET_PRIVATE_KEY`

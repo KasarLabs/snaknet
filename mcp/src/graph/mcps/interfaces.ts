@@ -7,11 +7,11 @@ export interface MCPEnvironment {
 export interface MCPClientConfig {
   command: string;
   args: string[];
-  transport: "stdio";
+  transport: 'stdio';
 
   env?: Record<string, string>;
   encoding?: string;
-  stderr?: "overlapped" | "pipe" | "ignore" | "inherit";
+  stderr?: 'overlapped' | 'pipe' | 'ignore' | 'inherit';
   cwd?: string;
   restart?: {
     enabled?: boolean;
@@ -21,8 +21,8 @@ export interface MCPClientConfig {
 }
 
 export interface MCPPromptInfo {
-    expertise: string;
-    tools: string[]
+  expertise: string;
+  tools: string[];
 }
 
 export interface MCPServerInfo {

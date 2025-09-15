@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { getConstructorParamsSchema } from '../schemas/index.js';
-import { validateFilePaths, formatContractError, ContractManager } from '../lib/index.js';
+import {
+  validateFilePaths,
+  formatContractError,
+  ContractManager,
+} from '../lib/index.js';
 import { Account, RpcProvider } from 'starknet';
 
 /**

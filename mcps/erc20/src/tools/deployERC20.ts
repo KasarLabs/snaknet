@@ -6,7 +6,10 @@ import {
   ERC20_CLASSHASH_SEPOLIA,
   ERC20_CLASSHASH_MAINNET,
 } from '../lib/constants/constant.js';
-import { NEW_ERC20_ABI_SEPOLIA, NEW_ERC20_ABI_MAINNET } from '../lib/abis/new.js';
+import {
+  NEW_ERC20_ABI_SEPOLIA,
+  NEW_ERC20_ABI_MAINNET,
+} from '../lib/abis/new.js';
 import { z } from 'zod';
 
 /**

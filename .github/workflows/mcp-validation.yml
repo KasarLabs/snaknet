@@ -1,0 +1,35 @@
+name: MCP Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  validate-mcps:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Make scripts executable
+      run: chmod +x .github/scripts/*.js
+        
+    - name: Validate MCP Configuration
+      run: node .github/scripts/validate-config.js
+        
+    - name: Build All MCPs
+      run: node .github/scripts/build-mcps.js
+        
+    - name: Validate Tool Names
+      run: node .github/scripts/validate-tools.js
+
+    - name: Validate Main MCP Router
+      run: node .github/scripts/validate-router.js

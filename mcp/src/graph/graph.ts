@@ -1,11 +1,17 @@
-import { StateGraph, MemorySaver, Annotation, START, END } from "@langchain/langgraph";
-import type { BaseMessage } from "@langchain/core/messages";
+import {
+  StateGraph,
+  MemorySaver,
+  Annotation,
+  START,
+  END,
+} from '@langchain/langgraph';
+import type { BaseMessage } from '@langchain/core/messages';
 
-import { selectorAgent } from "./agents/selector.js";
-import { AgentName } from "./mcps/utilities.js";
-import { MCPEnvironment } from "./mcps/interfaces.js";
-import { specializedNode } from "./agents/specialized.js";
-import { logger } from "../utils/index.js";
+import { selectorAgent } from './agents/selector.js';
+import { AgentName } from './mcps/utilities.js';
+import { MCPEnvironment } from './mcps/interfaces.js';
+import { specializedNode } from './agents/specialized.js';
+import { logger } from '../utils/index.js';
 
 export const GraphAnnotation = Annotation.Root({
   messages: Annotation<BaseMessage[]>({
@@ -22,8 +28,8 @@ export const GraphAnnotation = Annotation.Root({
       return {
         rpcProvider: process.env.STARKNET_RPC_PROVIDER || undefined,
         accountAddress: process.env.STARKNET_ACCOUNT_ADDRESS || undefined,
-        privateKey: process.env.STARKNET_PRIVATE_KEY || undefined
-      }
+        privateKey: process.env.STARKNET_PRIVATE_KEY || undefined,
+      };
     },
   }),
   routingInfo: Annotation<{
@@ -36,14 +42,13 @@ export const GraphAnnotation = Annotation.Root({
 });
 
 export const routingFunction = async (state: typeof GraphAnnotation.State) => {
-    return state.next != END ? "specialized" : END;
+  return state.next != END ? 'specialized' : END;
 };
 
 export const graph = new StateGraph(GraphAnnotation)
-  .addNode("selector", selectorAgent)
-  .addNode("specialized", specializedNode)
-  .addEdge(START, "selector")
-  .addConditionalEdges("selector", routingFunction)
-  .addEdge("specialized", "selector")
+  .addNode('selector', selectorAgent)
+  .addNode('specialized', specializedNode)
+  .addEdge(START, 'selector')
+  .addConditionalEdges('selector', routingFunction)
+  .addEdge('specialized', 'selector')
   .compile({ checkpointer: new MemorySaver() });
-
