@@ -1,7 +1,4 @@
 export interface MCPEnvironment {
-  rpcProvider?: string | undefined;
-  accountAddress?: string | undefined;
-  privateKey?: string | undefined;
   [key: string]: string | undefined;
 }
 

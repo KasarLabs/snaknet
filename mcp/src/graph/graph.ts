@@ -25,11 +25,14 @@ export const GraphAnnotation = Annotation.Root({
   mcpEnvironment: Annotation<MCPEnvironment | undefined>({
     reducer: (x, y) => y ?? x,
     default: () => {
-      return {
-        rpcProvider: process.env.STARKNET_RPC_URL || undefined,
-        accountAddress: process.env.STARKNET_ACCOUNT_ADDRESS || undefined,
-        privateKey: process.env.STARKNET_PRIVATE_KEY || undefined,
-      };
+      // Charger dynamiquement toutes les variables d'environnement STARKNET_*
+      const env: MCPEnvironment = {};
+      Object.keys(process.env).forEach(key => {
+        if (key.startsWith('STARKNET_') && process.env[key]) {
+          env[key] = process.env[key];
+        }
+      });
+      return env;
     },
   }),
   routingInfo: Annotation<{

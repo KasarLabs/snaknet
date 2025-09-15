@@ -14,9 +14,7 @@ const performStarknetActionsSchema = z.object({
 });
 type performStarknetActionsInput = z.infer<typeof performStarknetActionsSchema>;
 type envInput = {
-  rpcProvider: string | undefined;
-  accountAddress: string | undefined;
-  privateKey: string | undefined;
+  [key: string]: string | undefined;
 };
 
 export const performStarknetActions = async (
@@ -113,11 +111,13 @@ export const RegisterToolInServer = async (env: envInput) => {
 
 async function main() {
   const transport = new StdioServerTransport();
-  const env: envInput = {
-    rpcProvider: process.env.STARKNET_RPC_URL,
-    accountAddress: process.env.STARKNET_ACCOUNT_ADDRESS,
-    privateKey: process.env.STARKNET_PRIVATE_KEY,
-  };
+  // Charger dynamiquement toutes les variables d'environnement STARKNET_*
+  const env: envInput = {};
+  Object.keys(process.env).forEach(key => {
+    if (key.startsWith('STARKNET_') && process.env[key]) {
+      env[key] = process.env[key];
+    }
+  });
 
   await RegisterToolInServer(env);
   await server.connect(transport);

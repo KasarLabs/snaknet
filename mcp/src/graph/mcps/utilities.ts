@@ -56,14 +56,26 @@ export const getMCPClientConfig = (
   if (env && serverInfo.client.env) {
     config.env = config.env || {};
 
-    const envMapping: Record<string, string | undefined> = {
-      'STARKNET_RPC_URL': env.rpcProvider,
-      'STARKNET_ACCOUNT_ADDRESS': env.accountAddress,
-      'STARKNET_PRIVATE_KEY': env.privateKey
-    };
+    // Variables requises mais manquantes
+    const missingVars: string[] = [];
 
+    // Mapping dynamique direct entre les noms des variables
     for (const envVar in serverInfo.client.env) {
-      config.env[envVar] = envMapping[envVar] || '';
+      if (env[envVar]) {
+        config.env[envVar] = env[envVar]!; // ! car on vient de vérifier que c'est défini
+      } else {
+        config.env[envVar] = '';
+        missingVars.push(envVar);
+      }
+    }
+
+    // Validation : lever une erreur si des variables requises sont manquantes
+    if (missingVars.length > 0) {
+      throw new Error(
+        `Variables d'environnement manquantes pour le MCP '${serverName}': ${missingVars.join(', ')}\n` +
+        `Variables disponibles: ${Object.keys(env).join(', ')}\n` +
+        `Variables requises: ${Object.keys(serverInfo.client.env).join(', ')}`
+      );
     }
   }
   return config;
