@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import dotenv from 'dotenv';
 
-import { ContractTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import { declareContract } from './tools/declareContract.js';
 import { deployContract } from './tools/deployContract.js';
 import { getConstructorParams } from './tools/getConstructorParams.js';
@@ -11,7 +11,7 @@ import {
   declareContractSchema,
   deployContractSchema,
   getConstructorParamsSchema,
-} from './schema/index.js';
+} from './schemas/index.js';
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ const server = new McpServer({
   version: '1.0.0',
 });
 
-const registerTools = (ContractToolRegistry: ContractTool[]) => {
+const registerTools = (ContractToolRegistry: mcpTool[]) => {
   ContractToolRegistry.push({
     name: 'declare_contract',
     description: 'Declare a Starknet contract using sierra and casm file paths',
@@ -45,7 +45,7 @@ const registerTools = (ContractToolRegistry: ContractTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: ContractTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
 
   for (const tool of tools) {

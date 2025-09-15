@@ -1,16 +1,36 @@
 import { z } from 'zod';
 
 /**
+ * Schema for installing Scarb
+ */
+export const installScarbSchema = z.object({
+  version: z
+    .string()
+    .optional()
+    .describe(
+      'OPTIONAL: Scarb version to install (e.g., "2.10.0", "2.12.1"). If not specified, installs latest version'
+    ),
+});
+
+/**
  * Schema for initializing a Scarb project
  */
 export const initProjectSchema = z.object({
   projectName: z.string().describe('Name of the project to initialize'),
+  projectType: z
+    .enum(['lib', 'bin'])
+    .default('lib')
+    .describe('Project type (lib or bin)'),
   path: z
     .string()
     .optional()
     .describe(
       'Path where to initialize the project (defaults to current directory)'
     ),
+  vcs: z
+    .enum(['git', 'none'])
+    .default('git')
+    .describe('Version control system to use'),
 });
 
 /**

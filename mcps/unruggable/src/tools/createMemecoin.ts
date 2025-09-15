@@ -1,7 +1,7 @@
-import { CreateMemecoinParams } from '../schema/index.js';
+import { CreateMemecoinParams } from '../schemas/index.js';
 import { stark, uint256 } from 'starknet';
-import { execute, decimalsScale } from '../utils/helper.js';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { execute, decimalsScale } from '../lib/utils/helper.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 
 /**
  * Creates a new memecoin using the Unruggable Factory.

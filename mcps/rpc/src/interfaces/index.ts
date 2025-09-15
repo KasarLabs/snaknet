@@ -1,9 +1,8 @@
-import { RpcProvider } from 'starknet';
 import { z } from 'zod';
 
-export interface RpcTool {
+export interface mcpTool {
   name: string;
   description: string;
   schema?: z.ZodObject<any>;
-  execute: (provider: RpcProvider, params?: any) => Promise<string>;
+  execute: (params: any) => Promise<any>;
 }

@@ -3,11 +3,11 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { OpenZeppelinTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
-import { wrapAccountCreationResponse } from './utils/AccountManager.js';
-import { accountDetailsSchema } from './schemas/schema.js';
+import { wrapAccountCreationResponse } from './lib/utils/AccountManager.js';
+import { accountDetailsSchema } from './schemas/index.js';
 import { DeployOZAccount } from './tools/deployAccount.js';
 import { CreateOZAccount } from './tools/createAccount.js';
 
@@ -30,7 +30,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (OpenZeppelinToolRegistry: OpenZeppelinTool[]) => {
+const registerTools = (OpenZeppelinToolRegistry: mcpTool[]) => {
   OpenZeppelinToolRegistry.push({
     name: 'create_new_openzeppelin_account',
     description:
@@ -54,7 +54,7 @@ const registerTools = (OpenZeppelinToolRegistry: OpenZeppelinTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: OpenZeppelinTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

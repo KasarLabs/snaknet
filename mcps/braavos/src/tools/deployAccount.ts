@@ -1,13 +1,13 @@
 import { RpcProvider } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { AccountManager } from '../utils/AccountManager.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { AccountManager } from '../lib/utils/AccountManager.js';
 import { z } from 'zod';
-import { accountDetailsSchema } from '../schemas/schema.js';
+import { accountDetailsSchema } from '../schemas/index.js';
 import {
   BRAAVOS_ACCOUNT_CLASSHASH,
   BRAAVOS_INITIAL_CLASSHASH,
   BRAAVOS_PROXY_CLASSHASH,
-} from '../constant/contract.js';
+} from '../lib/constants/contract.js';
 
 /**
  * Deploys a Braavos account using a Starknet agent.

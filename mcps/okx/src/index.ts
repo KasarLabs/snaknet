@@ -3,10 +3,10 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { OkxTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
-import { wrapAccountCreationResponse } from './utils/AccountManager.js';
+import { wrapAccountCreationResponse } from './lib/utils/AccountManager.js';
 import { accountDetailsSchema } from './schemas/schema.js';
 import { DeployOKXAccount } from './tools/deployAccount.js';
 import { CreateOKXAccount } from './tools/createAccount.js';
@@ -33,7 +33,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (OkxToolRegistry: OkxTool[]) => {
+const registerTools = (OkxToolRegistry: mcpTool[]) => {
   OkxToolRegistry.push({
     name: 'create_new_okx_account',
     description:
@@ -57,7 +57,7 @@ const registerTools = (OkxToolRegistry: OkxTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: OkxTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

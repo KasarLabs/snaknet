@@ -1,5 +1,5 @@
 import { Account, Call } from 'starknet';
-import { logger, SnakAgentInterface } from '../dependances/types.js';
+import { logger, SnakAgentInterface } from '../lib/dependances/types.js';
 import { z } from 'zod';
 import {
   Address,
@@ -15,13 +15,13 @@ import {
   DEFAULT_DECIMALS,
   GENESIS_POOLID,
   VESU_API_URL,
-} from '../constants/index.js';
-import { Hex, toBN, toU256 } from '../utils/num.js';
+} from '../lib/constants/index.js';
+import { Hex, toBN, toU256 } from '../lib/utils/num.js';
 import {
   getErc20Contract,
   getExtensionContract,
   getVTokenContract,
-} from '../utils/contracts.js';
+} from '../lib/utils/contracts.js';
 
 /**
  * Service for managing withdrawal operations from earning positions

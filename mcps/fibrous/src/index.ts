@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { FibrousTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import {
@@ -11,7 +11,7 @@ import {
   batchSwapSchema,
   routeSchema,
   RouteSchemaType,
-} from './schema/index.js';
+} from './schemas/index.js';
 import { swapTokensFibrous } from './tools/swap.js';
 import { batchSwapTokens } from './tools/batchSwap.js';
 import { getRouteFibrous } from './tools/fetchRoute.js';
@@ -48,7 +48,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (FibrousToolRegistry: FibrousTool[]) => {
+const registerTools = (FibrousToolRegistry: mcpTool[]) => {
   FibrousToolRegistry.push({
     name: 'fibrous_swap',
     description: 'Swap a token for another token',
@@ -81,7 +81,7 @@ const registerTools = (FibrousToolRegistry: FibrousTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: FibrousTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

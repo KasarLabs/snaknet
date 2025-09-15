@@ -1,10 +1,10 @@
 import { Account, Contract, constants } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { INTERACT_ERC721_ABI } from '../abis/interact.js';
-import { executeV3Transaction } from '../utils/utils.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { INTERACT_ERC721_ABI } from '../lib/abis/interact.js';
+import { executeV3Transaction } from '../lib/utils/utils.js';
 import { z } from 'zod';
-import { setApprovalForAllSchema } from '../schemas/schema.js';
-import { TransactionResult } from '../types/types.js';
+import { setApprovalForAllSchema } from '../schemas/index.js';
+import { TransactionResult } from '../lib/types/types.js';
 import { validateAndParseAddress } from 'starknet';
 
 /**

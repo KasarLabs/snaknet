@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { AvnuTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import { routeSchema, swapSchema } from './schemas/index.js';
@@ -42,7 +42,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (AvnuToolRegistry: AvnuTool[]) => {
+const registerTools = (AvnuToolRegistry: mcpTool[]) => {
   AvnuToolRegistry.push({
     name: 'avnu_swap_tokens',
     description: 'Swap a specified amount of one token for another token',
@@ -65,7 +65,7 @@ const registerTools = (AvnuToolRegistry: AvnuTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: AvnuTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

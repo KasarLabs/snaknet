@@ -12,9 +12,7 @@ export const swapSchema = z.object({
 
 export const batchSwapSchema = z.object({
   sellTokenSymbols: z.array(z.string()).describe('Symbols of tokens to sell'),
-  buyTokenSymbol: z
-    .string()
-    .describe("Symbol of the token to buy (e.g., 'ETH', 'USDC')"),
+  buyTokenSymbols: z.array(z.string()).describe('Symbols of tokens to buy'),
   sellAmounts: z.array(z.number()).describe('Amounts of tokens to sell'),
 });
 

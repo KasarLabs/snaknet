@@ -3,10 +3,10 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { VesuTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
-import { depositEarnSchema, withdrawEarnSchema } from './schema/index.js';
+import { depositEarnSchema, withdrawEarnSchema } from './schemas/index.js';
 import { depositEarnPosition } from './tools/depositService.js';
 import { withdrawEarnPosition } from './tools/withdrawService.js';
 
@@ -42,7 +42,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (VesuToolRegistry: VesuTool[]) => {
+const registerTools = (VesuToolRegistry: mcpTool[]) => {
   VesuToolRegistry.push({
     name: 'vesu_deposit_earn',
     description: 'Deposit tokens to earn yield on Vesu protocol',
@@ -65,7 +65,7 @@ const registerTools = (VesuToolRegistry: VesuTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: VesuTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

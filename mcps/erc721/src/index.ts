@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { Erc721Tool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import {
@@ -18,7 +18,7 @@ import {
   deployERC721Schema,
   getOwnBalanceSchema,
   transferSchema,
-} from './schemas/schema.js';
+} from './schemas/index.js';
 import { getOwner } from './tools/ownerOf.js';
 import { transferFrom, transfer } from './tools/transferFrom.js';
 import { getBalance, getOwnBalance } from './tools/balanceOf.js';
@@ -61,7 +61,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (Erc721ToolRegistry: Erc721Tool[]) => {
+const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
   Erc721ToolRegistry.push({
     name: 'erc721_owner_of',
     description: 'Get the owner of a specific NFT',
@@ -178,7 +178,7 @@ const registerTools = (Erc721ToolRegistry: Erc721Tool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: Erc721Tool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

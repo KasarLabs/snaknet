@@ -1,9 +1,9 @@
 import { fetchQuotes, QuoteRequest } from '@avnu/avnu-sdk';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import { TokenService } from './fetchTokens.js';
 import { RouteSchemaType } from '../schemas/index.js';
 import { RouteResult } from '../interfaces/index.js';
-import { ContractInteractor } from '../utils/contractInteractor.js';
+import { ContractInteractor } from '../lib/utils/contractInteractor.js';
 
 /**
  * Service class for fetching trading routes

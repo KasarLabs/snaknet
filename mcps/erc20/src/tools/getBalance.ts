@@ -1,14 +1,14 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { detectAbiType } from '../utils/utils.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { detectAbiType } from '../lib/utils/utils.js';
 import {
   formatBalance,
   validateToken,
   extractAssetInfo,
-} from '../utils/utils.js';
-import { validToken } from '../types/types.js';
+} from '../lib/utils/utils.js';
+import { validToken } from '../lib/types/types.js';
 import { z } from 'zod';
-import { getBalanceSchema, getOwnBalanceSchema } from '../schemas/schema.js';
+import { getBalanceSchema, getOwnBalanceSchema } from '../schemas/index.js';
 
 /**
  * Gets own token balance

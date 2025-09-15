@@ -1,15 +1,15 @@
 import { Account, shortString } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { ContractManager } from '../utils/contractManager.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { ContractManager } from '../lib/utils/contractManager.js';
 import {
   ERC721_CLASSHASH_SEPOLIA,
   ERC721_CLASSHASH_MAINNET,
-} from '../constant/constant.js';
-import { deployERC721Schema } from '../schemas/schema.js';
+} from '../lib/constant/constant.js';
+import { deployERC721Schema } from '../schemas/index.js';
 import {
   DEPLOY_ERC721_ABI_SEPOLIA,
   DEPLOY_ERC721_ABI_MAINNET,
-} from '../abis/deploy.js';
+} from '../lib/abis/deploy.js';
 import { z } from 'zod';
 
 /**

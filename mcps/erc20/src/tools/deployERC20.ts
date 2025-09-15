@@ -1,12 +1,12 @@
 import { Account, shortString, cairo } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { ContractManager } from '../utils/contractManager.js';
-import { deployERC20Schema } from '../schemas/schema.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { ContractManager } from '../lib/utils/contractManager.js';
+import { deployERC20Schema } from '../schemas/index.js';
 import {
   ERC20_CLASSHASH_SEPOLIA,
   ERC20_CLASSHASH_MAINNET,
-} from '../constant/constant.js';
-import { NEW_ERC20_ABI_SEPOLIA, NEW_ERC20_ABI_MAINNET } from '../abis/new.js';
+} from '../lib/constants/constant.js';
+import { NEW_ERC20_ABI_SEPOLIA, NEW_ERC20_ABI_MAINNET } from '../lib/abis/new.js';
 import { z } from 'zod';
 
 /**

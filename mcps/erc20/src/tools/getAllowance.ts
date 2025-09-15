@@ -1,17 +1,17 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import {
   formatBalance,
   validateToken,
   detectAbiType,
   extractAssetInfo,
-} from '../utils/utils.js';
+} from '../lib/utils/utils.js';
 import { z } from 'zod';
 import {
   getAllowanceSchema,
   getMyGivenAllowanceSchema,
   getAllowanceGivenToMeSchema,
-} from '../schemas/schema.js';
+} from '../schemas/index.js';
 
 /**
  * Gets the amount of tokens that a spender is allowed to spend on behalf of an owner.

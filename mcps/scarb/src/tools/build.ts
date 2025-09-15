@@ -2,14 +2,8 @@ import { z } from 'zod';
 import {
   checkScarbInstalled,
   buildProject as buildScarbProject,
-} from '../utils/index.js';
-
-const buildProjectSchema = z.object({
-  path: z
-    .string()
-    .optional()
-    .describe('Path to the project directory (defaults to current directory)'),
-});
+} from '../lib/utils/index.js';
+import { buildProjectSchema } from '../schemas/index.js';
 
 /**
  * Build a Scarb project
@@ -40,4 +34,4 @@ export const buildProject = async (
   }
 };
 
-export { buildProjectSchema };
+// buildProjectSchema is now exported from schemas/index.js

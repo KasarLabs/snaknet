@@ -1,14 +1,9 @@
 import { z } from 'zod';
-import { checkScarbInstalled } from '../utils/index.js';
-import { verifyProject } from '../utils/workspace.js';
+import { checkScarbInstalled } from '../lib/utils/index.js';
+import { verifyProject } from '../lib/utils/workspace.js';
+import { verifyProgramSchema } from '../schemas/index.js';
 
-const verifyProgramSchema = z.object({
-  path: z
-    .string()
-    .optional()
-    .describe('Path to the project directory (defaults to current directory)'),
-  proofFile: z.string().optional().describe('Path to the proof file to verify'),
-});
+// verifyProgramSchema is now imported from schemas/index.js
 
 /**
  * Verify a Cairo program proof
@@ -44,4 +39,4 @@ export const verifyProgram = async (
   }
 };
 
-export { verifyProgramSchema };
+// verifyProgramSchema is now exported from schemas/index.js

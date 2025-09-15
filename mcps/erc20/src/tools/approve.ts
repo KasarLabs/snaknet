@@ -1,15 +1,15 @@
 import { Account, Contract, RpcProvider, constants } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import {
   validateAndFormatParams,
   executeV3Transaction,
   validateToken,
   detectAbiType,
   extractAssetInfo,
-} from '../utils/utils.js';
+} from '../lib/utils/utils.js';
 import { z } from 'zod';
-import { approveSchema, approveSignatureSchema } from '../schemas/schema.js';
-import { validToken } from '../types/types.js';
+import { approveSchema, approveSignatureSchema } from '../schemas/index.js';
+import { validToken } from '../lib/types/types.js';
 
 /**
  * Approves token spending

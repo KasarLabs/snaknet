@@ -1,10 +1,10 @@
-import { SnakAgentInterface } from '../dependances/types.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import { Account, constants, Contract } from 'starknet';
-import { artpeaceAbi } from '../abis/artpeaceAbi.js';
-import { artpeaceAddr } from '../constants/artpeace.js';
-import { ArtpeaceHelper } from '../utils/helper.js';
-import { placePixelParam } from '../schema/index.js';
-import { Checker } from '../utils/checker.js';
+import { artpeaceAbi } from '../lib/abis/artpeaceAbi.js';
+import { artpeaceAddr } from '../lib/constants/artpeace.js';
+import { ArtpeaceHelper } from '../lib/utils/helper.js';
+import { placePixelParam } from '../schemas/index.js';
+import { Checker } from '../lib/utils/checker.js';
 
 /**
  * Places pixels on a Starknet canvas using the Artpeace contract

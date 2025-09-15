@@ -1,8 +1,8 @@
-import { ContractAddressParams } from '../schema/index.js';
+import { ContractAddressParams } from '../schemas/index.js';
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { FACTORY_ABI } from '../abis/unruggableFactory.js';
-import { FACTORY_ADDRESS } from '../constants/index.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { FACTORY_ABI } from '../lib/abis/unruggableFactory.js';
+import { FACTORY_ADDRESS } from '../lib/constants/index.js';
 
 /**
  * Checks if a given contract address is a memecoin created by the Unruggable Factory.

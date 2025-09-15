@@ -1,18 +1,12 @@
 import { z } from 'zod';
-import { getScarbVersion, checkScarbInstalled } from '../utils/index.js';
+import { getScarbVersion, checkScarbInstalled } from '../lib/utils/index.js';
+import { installScarbSchema } from '../schemas/index.js';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
-export const installScarbSchema = z.object({
-  version: z
-    .string()
-    .optional()
-    .describe(
-      'OPTIONAL: Scarb version to install (e.g., "2.10.0", "2.12.1"). If not specified, installs latest version'
-    ),
-});
+// installScarbSchema is now imported from schemas/index.js
 
 /**
  * Install Scarb with specified version

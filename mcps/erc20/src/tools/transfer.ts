@@ -1,16 +1,16 @@
 import { Account, constants, Contract } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import {
   validateAndFormatParams,
   executeV3Transaction,
   validateToken,
   detectAbiType,
   extractAssetInfo,
-} from '../utils/utils.js';
+} from '../lib/utils/utils.js';
 import { z } from 'zod';
-import { transferSchema, transferSignatureSchema } from '../schemas/schema.js';
-import { TransferResult } from '../types/types.js';
-import { validToken } from '../types/types.js';
+import { transferSchema, transferSignatureSchema } from '../schemas/index.js';
+import { TransferResult } from '../lib/types/types.js';
+import { validToken } from '../lib/types/types.js';
 import { RpcProvider } from 'starknet';
 
 /**

@@ -3,20 +3,21 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import dotenv from 'dotenv';
 
-import { ScarbTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import { initProject } from './tools/init.js';
 import { buildProject } from './tools/build.js';
 import { executeProgram } from './tools/execute.js';
-import { installScarb, installScarbSchema } from './tools/install.js';
+import { installScarb } from './tools/install.js';
 import { proveProgram } from './tools/prove.js';
 import { verifyProgram } from './tools/verify.js';
 import {
+  installScarbSchema,
   initProjectSchema,
   buildProjectSchema,
   executeProgramSchema,
   proveProgramSchema,
   verifyProgramSchema,
-} from './schema/index.js';
+} from './schemas/index.js';
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ const server = new McpServer({
   version: '1.0.0',
 });
 
-const registerTools = (ScarbToolRegistry: ScarbTool[]) => {
+const registerTools = (ScarbToolRegistry: mcpTool[]) => {
   ScarbToolRegistry.push({
     name: 'install_scarb',
     description:
@@ -73,7 +74,7 @@ const registerTools = (ScarbToolRegistry: ScarbTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: ScarbTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
 
   for (const tool of tools) {

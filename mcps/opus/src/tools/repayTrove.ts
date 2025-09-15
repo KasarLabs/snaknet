@@ -1,6 +1,6 @@
-import { SnakAgentInterface } from '../dependances/types.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import { RepayTroveParams } from '../schemas/index.js';
-import { createTroveManager } from '../utils/troveManager.js';
+import { createTroveManager } from '../lib/utils/troveManager.js';
 
 export const repayTrove = async (
   agent: SnakAgentInterface,

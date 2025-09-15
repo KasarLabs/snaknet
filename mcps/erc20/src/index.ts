@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { Erc20Tool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import {
@@ -17,7 +17,7 @@ import {
   getMyGivenAllowanceSchema,
   getAllowanceGivenToMeSchema,
   deployERC20Schema,
-} from './schemas/schema.js';
+} from './schemas/index.js';
 
 import { getAllowance } from './tools/getAllowance.js';
 import { getTotalSupply } from './tools/getTotalSupply.js';
@@ -61,7 +61,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (Erc20ToolRegistry: Erc20Tool[]) => {
+const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
   Erc20ToolRegistry.push({
     name: 'erc20_get_allowance',
     description:
@@ -169,7 +169,7 @@ const registerTools = (Erc20ToolRegistry: Erc20Tool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: Erc20Tool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

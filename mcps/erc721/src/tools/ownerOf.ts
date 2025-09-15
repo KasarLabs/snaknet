@@ -1,10 +1,10 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { INTERACT_ERC721_ABI } from '../abis/interact.js';
-import { validateAndFormatTokenId } from '../utils/utils.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { INTERACT_ERC721_ABI } from '../lib/abis/interact.js';
+import { validateAndFormatTokenId } from '../lib/utils/utils.js';
 import { z } from 'zod';
-import { ownerOfSchema } from '../schemas/schema.js';
-import { bigintToHex } from '../utils/utils.js';
+import { ownerOfSchema } from '../schemas/index.js';
+import { bigintToHex } from '../lib/utils/utils.js';
 import { validateAndParseAddress } from 'starknet';
 
 /**

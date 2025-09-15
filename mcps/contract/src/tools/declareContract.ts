@@ -1,12 +1,12 @@
 import { z } from 'zod';
 import { Account, constants, RpcProvider } from 'starknet';
-import { declareContractSchema } from '../schema/index.js';
+import { declareContractSchema } from '../schemas/index.js';
 import {
   getStarknetCredentials,
   validateFilePaths,
   formatContractError,
-} from '../utils/index.js';
-import { ContractManager } from '../utils/contractManager.js';
+  ContractManager,
+} from '../lib/index.js';
 
 /**
  * Declare a contract on Starknet using file path approach

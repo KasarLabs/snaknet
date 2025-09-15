@@ -1,7 +1,7 @@
 import { TokenService } from './fetchTokens.js';
 import { Router as FibrousRouter, RouteResponse } from 'fibrous-router-sdk';
 import { BigNumber } from '@ethersproject/bignumber';
-import { RouteSchemaType } from '../schema/index.js';
+import { RouteSchemaType } from '../schemas/index.js';
 
 export interface RouteResult {
   status: 'success' | 'failure';

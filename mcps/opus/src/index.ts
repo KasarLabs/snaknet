@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { OpusTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import {
@@ -57,7 +57,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (OpusToolRegistry: OpusTool[]) => {
+const registerTools = (OpusToolRegistry: mcpTool[]) => {
   OpusToolRegistry.push({
     name: 'open_trove',
     description: 'Open a Trove on Opus',
@@ -139,7 +139,7 @@ const registerTools = (OpusToolRegistry: OpusTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: OpusTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

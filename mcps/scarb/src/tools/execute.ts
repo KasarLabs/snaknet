@@ -2,9 +2,9 @@ import { z } from 'zod';
 import {
   checkScarbInstalled,
   executeProgram as execProgram,
-} from '../utils/index.js';
-import { executeProject } from '../utils/workspace.js';
-import { executeProgramSchema } from '../schema/index.js';
+} from '../lib/utils/index.js';
+import { executeProject } from '../lib/utils/workspace.js';
+import { executeProgramSchema } from '../schemas/index.js';
 
 /**
  * Execute a Cairo program

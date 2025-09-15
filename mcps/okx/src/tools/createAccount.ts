@@ -1,6 +1,6 @@
 import { RpcProvider } from 'starknet';
-import { OKX_CLASSHASH } from '../constant/contract.js';
-import { AccountManager } from '../utils/AccountManager.js';
+import { OKX_CLASSHASH } from '../lib/constant/contract.js';
+import { AccountManager } from '../lib/utils/AccountManager.js';
 
 /**
  * Creates a new OKX account.

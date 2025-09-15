@@ -1,14 +1,14 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import {
   validateToken,
   formatBalance,
   detectAbiType,
   extractAssetInfo,
-} from '../utils/utils.js';
-import { validToken } from '../types/types.js';
+} from '../lib/utils/utils.js';
+import { validToken } from '../lib/types/types.js';
 import { z } from 'zod';
-import { getTotalSupplySchema } from '../schemas/schema.js';
+import { getTotalSupplySchema } from '../schemas/index.js';
 
 /**
  * Gets the total supply of a token

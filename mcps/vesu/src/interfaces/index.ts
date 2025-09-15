@@ -1,12 +1,12 @@
 import { z } from 'zod';
-import { Hex, hexSchemaBase } from '../utils/num.js';
+import { Hex, hexSchemaBase } from '../lib/utils/num.js';
 import { validateChecksumAddress } from 'starknet';
 
-export interface VesuTool {
+export interface mcpTool {
   name: string;
   description: string;
   schema?: z.ZodObject<any>;
-  execute: (params?: any) => Promise<string>;
+  execute: (params: any) => Promise<any>;
 }
 
 export type Address = `0x${string}`;

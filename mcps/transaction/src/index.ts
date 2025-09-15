@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { TransactionTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import {
@@ -18,7 +18,7 @@ import {
   simulateDeployAccountTransactionSchema,
   simulateDeployTransactionSchema,
   simulateDeclareTransactionSchema,
-} from './schema/index.js';
+} from './schemas/index.js';
 
 dotenv.config();
 
@@ -50,7 +50,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (TransactionToolRegistry: TransactionTool[]) => {
+const registerTools = (TransactionToolRegistry: mcpTool[]) => {
   TransactionToolRegistry.push({
     name: 'simulate_transaction',
     description: 'Simulate a transaction without executing it',
@@ -93,7 +93,7 @@ const registerTools = (TransactionToolRegistry: TransactionTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: TransactionTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

@@ -3,14 +3,14 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { UnruggableTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import {
   contractAddressSchema,
   launchOnEkuboSchema,
   createMemecoinSchema,
-} from './schema/index.js';
+} from './schemas/index.js';
 import { getLockedLiquidity } from './tools/getLockedLiquidity.js';
 import { isMemecoin } from './tools/isMemecoin.js';
 import { createMemecoin } from './tools/createMemecoin.js';
@@ -48,7 +48,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (UnruggableToolRegistry: UnruggableTool[]) => {
+const registerTools = (UnruggableToolRegistry: mcpTool[]) => {
   UnruggableToolRegistry.push({
     name: 'is_memecoin',
     description: 'Check if address is a memecoin',
@@ -93,7 +93,7 @@ const registerTools = (UnruggableToolRegistry: UnruggableTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: UnruggableTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

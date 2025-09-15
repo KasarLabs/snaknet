@@ -17,7 +17,7 @@ export interface RouteResult {
   error?: string;
 }
 
-export interface AvnuTool {
+export interface mcpTool {
   name: string;
   description: string;
   schema?: z.ZodObject<any>;

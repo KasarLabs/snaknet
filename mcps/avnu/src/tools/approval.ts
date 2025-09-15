@@ -1,8 +1,8 @@
 import { Account, uint256 } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { ERC20_ABI } from '../abi/erc20Abi.js';
-import { ContractInteractor } from '../utils/contractInteractor.js';
-import { TransactionMonitor } from '../utils/transactionMonitor.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { ERC20_ABI } from '../lib/abis/erc20Abi.js';
+import { ContractInteractor } from '../lib/utils/contractInteractor.js';
+import { TransactionMonitor } from '../lib/utils/transactionMonitor.js';
 
 /**
  * Service handling token approvals on Starknet

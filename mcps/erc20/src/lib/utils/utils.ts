@@ -7,7 +7,7 @@ import {
   shortString,
   cairo,
 } from 'starknet';
-import { tokenAddresses } from '../constant/constant.js';
+import { tokenAddresses } from '../constants/constant.js';
 import { ParamsValidationResult, ExecuteV3Args } from '../types/types.js';
 import { DECIMALS } from '../types/types.js';
 import { OLD_ERC20_ABI } from '../abis/old.js';

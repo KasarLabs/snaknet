@@ -1,6 +1,6 @@
 import { RpcProvider } from 'starknet';
-import { OZ_CLASSHASH } from '../constant/contract.js';
-import { AccountManager } from '../utils/AccountManager.js';
+import { OZ_CLASSHASH } from '../lib/constant/contract.js';
+import { AccountManager } from '../lib/utils/AccountManager.js';
 
 /**
  * Creates a new OpenZeppelin account.

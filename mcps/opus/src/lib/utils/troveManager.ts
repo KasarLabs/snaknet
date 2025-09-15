@@ -16,7 +16,7 @@ import {
   OpenTroveResult,
   RepayTroveResult,
   WithdrawTroveResult,
-} from '../interfaces/index.js';
+} from '../../interfaces/index.js';
 import {
   AssetBalance,
   AssetBalanceInput,
@@ -33,14 +33,14 @@ import {
   troveOpenedEventSchema,
   wadSchema,
   WithdrawTroveParams,
-} from '../schemas/index.js';
+} from '../../schemas/index.js';
 import {
   getAbbotContract,
   getErc20Contract,
   getSentinelContract,
   getShrineContract,
 } from './contracts.js';
-import { tokenAddresses } from '../constants/erc20.js';
+import { tokenAddresses } from '../constant/erc20.js';
 
 const FORGE_FEE_PAID_EVENT_IDENTIFIER =
   'opus::core::shrine::shrine::ForgeFeePaid';

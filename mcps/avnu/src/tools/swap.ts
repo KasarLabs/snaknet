@@ -2,12 +2,12 @@ import { executeSwap, fetchQuotes, QuoteRequest, Quote } from '@avnu/avnu-sdk';
 import { Account, constants } from 'starknet';
 
 import { ApprovalService } from './approval.js';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { SwapParams, SwapResult } from '../types/index.js';
-import { DEFAULT_QUOTE_SIZE, SLIPPAGE_PERCENTAGE } from '../constants/index.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { SwapParams, SwapResult } from '../lib/types/index.js';
+import { DEFAULT_QUOTE_SIZE, SLIPPAGE_PERCENTAGE } from '../lib/constants/index.js';
 import { TokenService } from './fetchTokens.js';
-import { ContractInteractor } from '../utils/contractInteractor.js';
-import { TransactionMonitor } from '../utils/transactionMonitor.js';
+import { ContractInteractor } from '../lib/utils/contractInteractor.js';
+import { TransactionMonitor } from '../lib/utils/transactionMonitor.js';
 
 /**
  * Service handling token swap operations using AVNU SDK

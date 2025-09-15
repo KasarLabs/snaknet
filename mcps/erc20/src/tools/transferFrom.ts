@@ -4,19 +4,19 @@ import {
   validateAndParseAddress,
   constants,
 } from 'starknet';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import {
   validateAndFormatParams,
   executeV3Transaction,
   validateToken,
   detectAbiType,
   extractAssetInfo,
-} from '../utils/utils.js';
+} from '../lib/utils/utils.js';
 import { z } from 'zod';
 import {
   transferFromSchema,
   transferFromSignatureSchema,
-} from '../schemas/schema.js';
+} from '../schemas/index.js';
 import { RpcProvider } from 'starknet';
 
 /**

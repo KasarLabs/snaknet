@@ -1,8 +1,7 @@
 import { z } from 'zod';
-import { getConstructorParamsSchema } from '../schema/index.js';
-import { validateFilePaths, formatContractError } from '../utils/index.js';
+import { getConstructorParamsSchema } from '../schemas/index.js';
+import { validateFilePaths, formatContractError, ContractManager } from '../lib/index.js';
 import { Account, RpcProvider } from 'starknet';
-import { ContractManager } from '../utils/contractManager.js';
 
 /**
  * Get constructor parameters from a contract sierra file

@@ -1,11 +1,11 @@
 import { z } from 'zod';
-import { proveProgramSchema } from '../schema/index.js';
+import { proveProgramSchema } from '../schemas/index.js';
 import {
   checkScarbInstalled,
   cleanProject,
   formatCompilationError,
-} from '../utils/index.js';
-import { proveProject } from '../utils/workspace.js';
+} from '../lib/utils/index.js';
+import { proveProject } from '../lib/utils/workspace.js';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import * as path from 'path';

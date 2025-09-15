@@ -1,4 +1,4 @@
-import { placePixelParam } from '../schema/index.js';
+import { placePixelParam } from '../../schemas/index.js';
 import { Checker } from './checker.js';
 
 /**

@@ -1,14 +1,14 @@
 import { Account, Call, constants } from 'starknet';
 
 import { ApprovalService } from './approval.js';
-import { SnakAgentInterface } from '../dependances/types.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import { TokenService } from './fetchTokens.js';
 import { Router as FibrousRouter, RouteSuccess } from 'fibrous-router-sdk';
 import { BigNumber } from '@ethersproject/bignumber';
-import { getV3DetailsPayload } from '../utils/utils.js';
-import { TransactionMonitor } from '../utils/transactionMonitor.js';
-import { BatchSwapParams } from '../types/index.js';
-import { SLIPPAGE_PERCENTAGE } from '../constants/index.js';
+import { getV3DetailsPayload } from '../lib/utils/utils.js';
+import { TransactionMonitor } from '../lib/utils/transactionMonitor.js';
+import { BatchSwapParams } from '../lib/types/index.js';
+import { SLIPPAGE_PERCENTAGE } from '../lib/constants/index.js';
 
 export class BatchSwapService {
   private tokenService: TokenService;

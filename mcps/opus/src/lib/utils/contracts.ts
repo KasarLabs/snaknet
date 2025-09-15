@@ -3,7 +3,7 @@ import { abbotAbi } from '../abis/abbotAbi.js';
 import { erc20Abi } from '../abis/erc20Abi.js';
 import { shrineAbi } from '../abis/shrineAbi.js';
 import { sentinelAbi } from '../abis/sentinelAbi.js';
-import { getOpusContractAddress } from '../constants/index.js';
+import { getOpusContractAddress } from '../constant/index.js';
 
 export const getErc20Contract = (address: string) => {
   const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });

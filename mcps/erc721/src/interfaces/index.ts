@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export interface Erc721Tool {
+export interface mcpTool {
   name: string;
   description: string;
   schema?: z.ZodObject<any>;

@@ -8,10 +8,10 @@ import {
   Invocation_Deploy,
   SimulateDeclareTransactionAccountParams,
   Invocation_Declare,
-} from '../types/simulateTransactionTypes.js';
-import { SnakAgentInterface } from '../dependances/types.js';
-import { TransactionReponseFormat } from '../utils/outputSimulateTransaction.js';
-import { DEFAULT_NONCE } from '../constant/index.js';
+} from '../lib/types/simulateTransactionTypes.js';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { TransactionReponseFormat } from '../lib/utils/outputSimulateTransaction.js';
+import { DEFAULT_NONCE } from '../lib/constant/index.js';
 
 /**
  * Simulates invoke transaction

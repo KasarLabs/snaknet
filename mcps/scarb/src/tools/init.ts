@@ -1,24 +1,9 @@
 import { z } from 'zod';
-import { checkScarbInstalled } from '../utils/index.js';
-import { initProject as initScarbProject } from '../utils/workspace.js';
+import { checkScarbInstalled } from '../lib/utils/index.js';
+import { initProject as initScarbProject } from '../lib/utils/workspace.js';
+import { initProjectSchema } from '../schemas/index.js';
 
-const initProjectSchema = z.object({
-  projectName: z.string().describe('Name of the project to initialize'),
-  projectType: z
-    .enum(['lib', 'bin'])
-    .default('lib')
-    .describe('Project type (lib or bin)'),
-  path: z
-    .string()
-    .optional()
-    .describe(
-      'Path where to initialize the project (defaults to current directory)'
-    ),
-  vcs: z
-    .enum(['git', 'none'])
-    .default('git')
-    .describe('Version control system to use'),
-});
+// initProjectSchema is now imported from schemas/index.js
 
 /**
  * Initialize a new Scarb project
@@ -49,4 +34,4 @@ export const initProject = async (
   }
 };
 
-export { initProjectSchema };
+// initProjectSchema is now exported from schemas/index.js

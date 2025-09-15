@@ -3,11 +3,11 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { ArtPeaceTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
 import { placePixel } from './tools/placePixel.js';
-import { placePixelSchema } from './schema/index.js';
+import { placePixelSchema } from './schemas/index.js';
 
 dotenv.config();
 
@@ -39,7 +39,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (ArtPeaceToolRegistry: ArtPeaceTool[]) => {
+const registerTools = (ArtPeaceToolRegistry: mcpTool[]) => {
   ArtPeaceToolRegistry.push({
     name: 'place_pixel',
     description: 'Places a pixel, all parameters are optional',
@@ -52,7 +52,7 @@ const registerTools = (ArtPeaceToolRegistry: ArtPeaceTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: ArtPeaceTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {

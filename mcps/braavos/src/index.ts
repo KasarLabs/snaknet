@@ -3,11 +3,11 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { BraavosTool } from './interfaces/index.js';
+import { mcpTool } from './interfaces/index.js';
 import dotenv from 'dotenv';
 
-import { wrapAccountCreationResponse } from './utils/AccountManager.js';
-import { accountDetailsSchema } from './schemas/schema.js';
+import { wrapAccountCreationResponse } from './lib/utils/AccountManager.js';
+import { accountDetailsSchema } from './schemas/index.js';
 import { DeployBraavosAccount } from './tools/deployAccount.js';
 import { CreateBraavosAccount } from './tools/createAccount.js';
 
@@ -33,7 +33,7 @@ const createMockAgent = () => {
   };
 };
 
-const registerTools = (BraavosToolRegistry: BraavosTool[]) => {
+const registerTools = (BraavosToolRegistry: mcpTool[]) => {
   BraavosToolRegistry.push({
     name: 'create_new_braavos_account',
     description:
@@ -57,7 +57,7 @@ const registerTools = (BraavosToolRegistry: BraavosTool[]) => {
 };
 
 export const RegisterToolInServer = async () => {
-  const tools: BraavosTool[] = [];
+  const tools: mcpTool[] = [];
   registerTools(tools);
   for (const tool of tools) {
     if (!tool.schema) {
