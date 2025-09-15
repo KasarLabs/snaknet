@@ -26,7 +26,7 @@ export const GraphAnnotation = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => {
       return {
-        rpcProvider: process.env.STARKNET_RPC_PROVIDER || undefined,
+        rpcProvider: process.env.STARKNET_RPC_URL || undefined,
         accountAddress: process.env.STARKNET_ACCOUNT_ADDRESS || undefined,
         privateKey: process.env.STARKNET_PRIVATE_KEY || undefined,
       };

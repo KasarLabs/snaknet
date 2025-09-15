@@ -114,7 +114,7 @@ export const RegisterToolInServer = async (env: envInput) => {
 async function main() {
   const transport = new StdioServerTransport();
   const env: envInput = {
-    rpcProvider: process.env.STARKNET_RPC_PROVIDER,
+    rpcProvider: process.env.STARKNET_RPC_URL,
     accountAddress: process.env.STARKNET_ACCOUNT_ADDRESS,
     privateKey: process.env.STARKNET_PRIVATE_KEY,
   };
