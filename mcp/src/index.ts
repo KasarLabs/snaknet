@@ -56,7 +56,7 @@ export const performStarknetActions = async (
 interface SnaknetTool<P = any> {
   name: string;
   description: string;
-  schema?: Zod.AnyZodObject;
+  schema?: z.AnyZodObject;
   execute: (env: envInput, input: P) => Promise<unknown>;
 }
 
