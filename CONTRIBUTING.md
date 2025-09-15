@@ -162,8 +162,26 @@ import('../build/index.js').catch(console.error);
 
 ## Environment Variables
 
-Auto-injected for Starknet:
+The MCP system now supports dynamic environment variable loading. Each MCP can specify required environment variables in the `mcps.json` configuration.
 
-- `STARKNET_RPC_URL`
-- `STARKNET_ACCOUNT_ADDRESS`
-- `STARKNET_PRIVATE_KEY`
+### Environment Variable Configuration
+
+Environment variables are configured in the `mcps.json` file under each MCP's `client.env` section:
+
+```json
+{
+  "your-mcp": {
+    "client": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "CUSTOM_VARIABLE": ""
+      }
+    }
+  }
+}
+```
+
+The MCP system will dynamically load and validate these environment variables when building MCP clients, ensuring all required variables are provided before initialization.
