@@ -25,13 +25,21 @@ export const GraphAnnotation = Annotation.Root({
   mcpEnvironment: Annotation<MCPEnvironment | undefined>({
     reducer: (x, y) => y ?? x,
     default: () => {
-      // Charger dynamiquement toutes les variables d'environnement STARKNET_*
+      // Load required environment variables
       const env: MCPEnvironment = {};
+
+      // Load STARKNET_* variables
       Object.keys(process.env).forEach(key => {
         if (key.startsWith('STARKNET_') && process.env[key]) {
           env[key] = process.env[key];
         }
       });
+
+      // Load ANTHROPIC_API_KEY if available
+      if (process.env.ANTHROPIC_API_KEY) {
+        env.ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+      }
+
       return env;
     },
   }),

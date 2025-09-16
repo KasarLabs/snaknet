@@ -45,6 +45,7 @@ Respond with the exact name of the chosen agent or "__end__".`;
     const model = new ChatAnthropic({
       model: 'claude-3-5-sonnet-latest',
       temperature: 0,
+      apiKey: state.mcpEnvironment?.ANTHROPIC_API_KEY,
     }) as BaseChatModel<BaseChatModelCallOptions, AIMessageChunk>;
 
     const structuredModel = model.withStructuredOutput(selectorOutputSchema);

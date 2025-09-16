@@ -109,15 +109,62 @@ export const RegisterToolInServer = async (env: envInput) => {
   }
 };
 
-async function main() {
-  const transport = new StdioServerTransport();
-  // Charger dynamiquement toutes les variables d'environnement STARKNET_*
+// Required environment variables for the main MCP
+const REQUIRED_ENV_VARS = [
+  'STARKNET_RPC_URL',
+  'STARKNET_ACCOUNT_ADDRESS',
+  'STARKNET_PRIVATE_KEY',
+  'ANTHROPIC_API_KEY'
+] as const;
+
+function validateRequiredEnvironmentVariables(): envInput {
   const env: envInput = {};
+  const missingVars: string[] = [];
+
+  // Check required variables
+  REQUIRED_ENV_VARS.forEach(varName => {
+    if (process.env[varName]) {
+      env[varName] = process.env[varName];
+    } else {
+      missingVars.push(varName);
+    }
+  });
+
+  // Load additional STARKNET_* variables if they exist
   Object.keys(process.env).forEach(key => {
-    if (key.startsWith('STARKNET_') && process.env[key]) {
+    if (key.startsWith('STARKNET_') && process.env[key] && !env[key]) {
       env[key] = process.env[key];
     }
   });
+
+  if (missingVars.length > 0) {
+    console.error('❌ Missing required environment variables:');
+    missingVars.forEach(varName => {
+      console.error(`   - ${varName}`);
+    });
+    console.error('\nPlease set these environment variables before starting the MCP server.');
+    console.error('Example:');
+    console.error('export STARKNET_RPC_URL="https://starknet-mainnet.public.blastapi.io"');
+    console.error('export STARKNET_ACCOUNT_ADDRESS="0x..."');
+    console.error('export STARKNET_PRIVATE_KEY="0x..."');
+    console.error('export ANTHROPIC_API_KEY="sk-..."');
+    process.exit(1);
+  }
+
+  console.error('✅ All required environment variables are set');
+  console.error(`   - STARKNET_RPC_URL: ${env.STARKNET_RPC_URL?.substring(0, 30)}...`);
+  console.error(`   - STARKNET_ACCOUNT_ADDRESS: ${env.STARKNET_ACCOUNT_ADDRESS?.substring(0, 10)}...`);
+  console.error(`   - STARKNET_PRIVATE_KEY: ***hidden***`);
+  console.error(`   - ANTHROPIC_API_KEY: ***hidden***`);
+
+  return env;
+}
+
+async function main() {
+  const transport = new StdioServerTransport();
+
+  // Validate and load all required environment variables
+  const env = validateRequiredEnvironmentVariables();
 
   await RegisterToolInServer(env);
   await server.connect(transport);

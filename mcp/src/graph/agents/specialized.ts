@@ -30,6 +30,7 @@ async function specializedAgent(
     const model = new ChatAnthropic({
       model: 'claude-3-5-sonnet-latest',
       temperature: 0,
+      apiKey: env?.ANTHROPIC_API_KEY,
     }).bindTools(tools);
 
     const toolNode = new ToolNode(tools);
