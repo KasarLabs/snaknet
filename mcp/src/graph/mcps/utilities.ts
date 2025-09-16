@@ -68,8 +68,8 @@ export const getMCPClientConfig = (
     if (missingVars.length > 0) {
       throw new Error(
         `Missing environment variables for MCP '${serverName}': ${missingVars.join(', ')}\n` +
-        `Available variables: ${Object.keys(env).join(', ')}\n` +
-        `Required variables: ${Object.keys(serverInfo.client.env).join(', ')}`
+          `Available variables: ${Object.keys(env).join(', ')}\n` +
+          `Required variables: ${Object.keys(serverInfo.client.env).join(', ')}`
       );
     }
   }

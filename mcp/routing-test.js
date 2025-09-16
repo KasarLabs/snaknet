@@ -150,22 +150,22 @@ const testCases = [
   {
     name: 'Block Information',
     query: 'Get the latest block number',
-    expectedAgent: 'rpc',
+    expectedAgent: 'starknet-rpc',
   },
   {
     name: 'Transaction Status',
     query: 'Check the status of my transaction',
-    expectedAgent: 'rpc',
+    expectedAgent: 'starknet-rpc',
   },
   {
     name: 'Chain ID Check',
     query: "What's the current chain ID?",
-    expectedAgent: 'rpc',
+    expectedAgent: 'starknet-rpc',
   },
   {
     name: 'Contract Storage',
     query: 'Get storage value from a contract',
-    expectedAgent: 'rpc',
+    expectedAgent: 'starknet-rpc',
   },
 
   // Transaction Simulation Tests

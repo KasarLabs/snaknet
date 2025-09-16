@@ -29,7 +29,7 @@ export const GraphAnnotation = Annotation.Root({
       const env: MCPEnvironment = {};
 
       // Load STARKNET_* variables
-      Object.keys(process.env).forEach(key => {
+      Object.keys(process.env).forEach((key) => {
         if (key.startsWith('STARKNET_') && process.env[key]) {
           env[key] = process.env[key];
         }

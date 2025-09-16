@@ -114,7 +114,7 @@ const REQUIRED_ENV_VARS = [
   'STARKNET_RPC_URL',
   'STARKNET_ACCOUNT_ADDRESS',
   'STARKNET_PRIVATE_KEY',
-  'ANTHROPIC_API_KEY'
+  'ANTHROPIC_API_KEY',
 ] as const;
 
 function validateRequiredEnvironmentVariables(): envInput {
@@ -122,7 +122,7 @@ function validateRequiredEnvironmentVariables(): envInput {
   const missingVars: string[] = [];
 
   // Check required variables
-  REQUIRED_ENV_VARS.forEach(varName => {
+  REQUIRED_ENV_VARS.forEach((varName) => {
     if (process.env[varName]) {
       env[varName] = process.env[varName];
     } else {
@@ -131,7 +131,7 @@ function validateRequiredEnvironmentVariables(): envInput {
   });
 
   // Load additional STARKNET_* variables if they exist
-  Object.keys(process.env).forEach(key => {
+  Object.keys(process.env).forEach((key) => {
     if (key.startsWith('STARKNET_') && process.env[key] && !env[key]) {
       env[key] = process.env[key];
     }
@@ -139,12 +139,16 @@ function validateRequiredEnvironmentVariables(): envInput {
 
   if (missingVars.length > 0) {
     console.error('❌ Missing required environment variables:');
-    missingVars.forEach(varName => {
+    missingVars.forEach((varName) => {
       console.error(`   - ${varName}`);
     });
-    console.error('\nPlease set these environment variables before starting the MCP server.');
+    console.error(
+      '\nPlease set these environment variables before starting the MCP server.'
+    );
     console.error('Example:');
-    console.error('export STARKNET_RPC_URL="https://starknet-mainnet.public.blastapi.io"');
+    console.error(
+      'export STARKNET_RPC_URL="https://starknet-mainnet.public.blastapi.io"'
+    );
     console.error('export STARKNET_ACCOUNT_ADDRESS="0x..."');
     console.error('export STARKNET_PRIVATE_KEY="0x..."');
     console.error('export ANTHROPIC_API_KEY="sk-..."');
@@ -152,8 +156,12 @@ function validateRequiredEnvironmentVariables(): envInput {
   }
 
   console.error('✅ All required environment variables are set');
-  console.error(`   - STARKNET_RPC_URL: ${env.STARKNET_RPC_URL?.substring(0, 30)}...`);
-  console.error(`   - STARKNET_ACCOUNT_ADDRESS: ${env.STARKNET_ACCOUNT_ADDRESS?.substring(0, 10)}...`);
+  console.error(
+    `   - STARKNET_RPC_URL: ${env.STARKNET_RPC_URL?.substring(0, 30)}...`
+  );
+  console.error(
+    `   - STARKNET_ACCOUNT_ADDRESS: ${env.STARKNET_ACCOUNT_ADDRESS?.substring(0, 10)}...`
+  );
   console.error(`   - STARKNET_PRIVATE_KEY: ***hidden***`);
   console.error(`   - ANTHROPIC_API_KEY: ***hidden***`);
 

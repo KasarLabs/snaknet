@@ -237,7 +237,7 @@
       ]
     }
   },
-  "rpc": {
+  "starknet-rpc": {
     "client": {
       "command": "node",
       "args": ["build/index.js"],
