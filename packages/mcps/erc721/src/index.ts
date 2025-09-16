@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import{ mcpTool } from '@snaknet/core';;
+import { mcpTool, registerToolsWithServer } from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import {
@@ -180,38 +180,7 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
 export const RegisterToolInServer = async () => {
   const tools: mcpTool[] = [];
   registerTools(tools);
-  for (const tool of tools) {
-    if (!tool.schema) {
-      server.tool(tool.name, tool.description, async () => {
-        const result = await tool.execute({});
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(result),
-            },
-          ],
-        };
-      });
-    } else {
-      server.tool(
-        tool.name,
-        tool.description,
-        tool.schema.shape,
-        async (params: any, extra: any) => {
-          const result = await tool.execute(params);
-          return {
-            content: [
-              {
-                type: 'text',
-                text: JSON.stringify(result),
-              },
-            ],
-          };
-        }
-      );
-    }
-  }
+  await registerToolsWithServer(server, tools);
 };
 
 async function main() {

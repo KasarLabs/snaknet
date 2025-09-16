@@ -1,4 +1,3 @@
-
 /**
  * Base interface for operation status
  */

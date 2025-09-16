@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import dotenv from 'dotenv';
 
-import{ mcpTool } from '@snaknet/core';;
+import { mcpTool, registerToolsWithServer } from '@snaknet/core';
 import { declareContract } from './tools/declareContract.js';
 import { deployContract } from './tools/deployContract.js';
 import { getConstructorParams } from './tools/getConstructorParams.js';
@@ -47,39 +47,7 @@ const registerTools = (ContractToolRegistry: mcpTool[]) => {
 export const RegisterToolInServer = async () => {
   const tools: mcpTool[] = [];
   registerTools(tools);
-
-  for (const tool of tools) {
-    if (!tool.schema) {
-      server.tool(tool.name, tool.description, async () => {
-        const result = await tool.execute({});
-        return {
-          content: [
-            {
-              type: 'text',
-              text: result,
-            },
-          ],
-        };
-      });
-    } else {
-      server.tool(
-        tool.name,
-        tool.description,
-        tool.schema.shape,
-        async (params: any, extra: any) => {
-          const result = await tool.execute(params);
-          return {
-            content: [
-              {
-                type: 'text',
-                text: result,
-              },
-            ],
-          };
-        }
-      );
-    }
-  }
+  await registerToolsWithServer(server, tools);
 };
 
 const checkEnv = (): boolean => {

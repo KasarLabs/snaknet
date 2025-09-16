@@ -10,7 +10,7 @@ import { CreateArgentAccount } from './tools/createAccount.js';
 import { DeployArgentAccount } from './tools/deployAccount.js';
 import { accountDetailsSchema } from './schemas/schema.js';
 
-import { mcpTool } from '@snaknet/core';
+import { mcpTool, registerToolsWithServer } from '@snaknet/core';
 
 dotenv.config();
 
@@ -58,38 +58,7 @@ const registerTools = (ArgentToolRegistry: mcpTool[]) => {
 export const RegisterToolInServer = async () => {
   const tools: mcpTool[] = [];
   registerTools(tools);
-  for (const tool of tools) {
-    if (!tool.schema) {
-      server.tool(tool.name, tool.description, async () => {
-        const result = await tool.execute({});
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(result),
-            },
-          ],
-        };
-      });
-    } else {
-      server.tool(
-        tool.name,
-        tool.description,
-        tool.schema.shape,
-        async (params: any, extra: any) => {
-          const result = await tool.execute(params);
-          return {
-            content: [
-              {
-                type: 'text',
-                text: JSON.stringify(result),
-              },
-            ],
-          };
-        }
-      );
-    }
-  }
+  await registerToolsWithServer(server, tools);
 };
 
 async function main() {

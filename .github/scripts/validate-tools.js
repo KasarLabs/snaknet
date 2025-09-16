@@ -5,7 +5,9 @@ const { spawn } = require('child_process');
 
 console.log('🧪 Testing MCP tool registration...\n');
 
-const mcpsConfig = JSON.parse(fs.readFileSync('packages/mcps/mcps.json', 'utf8'));
+const mcpsConfig = JSON.parse(
+  fs.readFileSync('packages/mcps/mcps.json', 'utf8')
+);
 
 async function getMCPTools(mcpName) {
   return new Promise((resolve, reject) => {
