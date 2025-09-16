@@ -1,10 +1,10 @@
 {
-  "name": "@snaknet/mcp-server",
+  "name": "snaknet",
   "version": "0.0.1",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-snaknet": "./bin/mcp_starknet-snaknet.js"
+    "snaknet": "./bin/snaknet.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

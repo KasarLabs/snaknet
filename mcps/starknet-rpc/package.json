@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-rpc",
+  "name": "starknet-rpc-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-rpc": "./bin/mcp_starknet-rpc.js"
+    "starknet-rpc-mcp": "./bin/starknet-rpc-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-argent",
+  "name": "argent-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-argent": "./bin/mcp_starknet-argent.js"
+    "argent-mcp": "./bin/argent-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

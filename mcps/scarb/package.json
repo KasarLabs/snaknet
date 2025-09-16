@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-scarb",
+  "name": "scarb-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-scarb": "./bin/mcp_starknet-scarb.js"
+    "scarb-mcp": "./bin/scarb-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

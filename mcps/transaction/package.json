@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-transaction",
+  "name": "transaction-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-transaction": "./bin/mcp_starknet-transaction.js"
+    "transaction-mcp": "./bin/transaction-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

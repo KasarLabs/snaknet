@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-avnu",
+  "name": "avnu-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-avnu": "./bin/mcp_starknet-avnu.js"
+    "avnu-mcp": "./bin/avnu-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

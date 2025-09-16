@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-opus",
+  "name": "opus-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-opus": "./bin/mcp_starknet-opus.js"
+    "opus-mcp": "./bin/opus-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

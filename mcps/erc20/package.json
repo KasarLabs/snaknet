@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-erc20",
+  "name": "erc20-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-erc20": "./bin/mcp_starknet-erc20.js"
+    "erc20-mcp": "./bin/erc20-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

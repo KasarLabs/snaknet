@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-openzeppelin",
+  "name": "openzeppelin-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-openzeppelin": "./bin/mcp_starknet-openzeppelin.js"
+    "openzeppelin-mcp": "./bin/openzeppelin-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

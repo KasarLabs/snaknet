@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-unruggable",
+  "name": "unruggable-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-unruggable": "./bin/mcp_starknet-unruggable.js"
+    "unruggable-mcp": "./bin/unruggable-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

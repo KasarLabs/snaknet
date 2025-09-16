@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-vesu",
+  "name": "vesu-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-vesu": "./bin/mcp_starknet-vesu.js"
+    "vesu-mcp": "./bin/vesu-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

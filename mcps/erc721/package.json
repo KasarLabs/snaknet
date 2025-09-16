@@ -1,10 +1,10 @@
 {
-  "name": "mcp_starknet-erc721",
+  "name": "erc721-mcp",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "mcp_starknet-erc721": "./bin/mcp_starknet-erc721.js"
+    "erc721-mcp": "./bin/erc721-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",
