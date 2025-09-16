@@ -5,6 +5,9 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["build/**"]
+    },
+    "clean:all": {
+      "cache": false
     }
   }
 }

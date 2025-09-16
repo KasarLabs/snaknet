@@ -5,11 +5,11 @@ const { spawn } = require('child_process');
 
 console.log('🧪 Testing MCP tool registration...\n');
 
-const mcpsConfig = JSON.parse(fs.readFileSync('mcps.json', 'utf8'));
+const mcpsConfig = JSON.parse(fs.readFileSync('packages/mcps/mcps.json', 'utf8'));
 
 async function getMCPTools(mcpName) {
   return new Promise((resolve, reject) => {
-    const mcpPath = path.join('mcps', mcpName, 'build', 'index.js');
+    const mcpPath = path.join('packages/mcps', mcpName, 'build', 'index.js');
 
     // Set up environment variables if needed
     const envVars = { ...process.env };
@@ -105,7 +105,7 @@ async function validateAllTools() {
   for (const [mcpName, config] of Object.entries(mcpsConfig)) {
     console.log(`\n📋 Testing ${mcpName}...`);
 
-    const mcpPath = path.join('mcps', mcpName, 'build', 'index.js');
+    const mcpPath = path.join('packages/mcps', mcpName, 'build', 'index.js');
     if (!fs.existsSync(mcpPath)) {
       console.error(`❌ Build not found: ${mcpPath}`);
       hasErrors = true;

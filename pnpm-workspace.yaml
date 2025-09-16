@@ -1,3 +1,4 @@
 packages:
-  - 'mcps/*'
-  - 'mcp'
+  - 'packages/mcps/*'
+  - 'packages/mcp'
+  - 'packages/core'

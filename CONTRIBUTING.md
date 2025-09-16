@@ -134,7 +134,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-## Register in mcps.json
+## Register in packages/mcps/mcps.json
 
 ```json
 {
@@ -162,11 +162,11 @@ import('../build/index.js').catch(console.error);
 
 ## Environment Variables
 
-The MCP system now supports dynamic environment variable loading. Each MCP can specify required environment variables in the `mcps.json` configuration.
+The MCP system now supports dynamic environment variable loading. Each MCP can specify required environment variables in the `packages/mcps/mcps.json` configuration.
 
 ### Environment Variable Configuration
 
-Environment variables are configured in the `mcps.json` file under each MCP's `client.env` section:
+Environment variables are configured in the `packages/mcps/mcps.json` file under each MCP's `client.env` section:
 
 ```json
 {

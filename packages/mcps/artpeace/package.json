@@ -1,0 +1,39 @@
+{
+  "name": "@snaknet/artpeace-mcp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "artpeace-mcp": "./bin/artpeace-mcp.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "clean": "rm -rf build",
+    "clean:all": "rm -rf build node_modules",
+    "start": "node build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "dependencies": {
+    "@langchain/core": "^0.3.42",
+    "@modelcontextprotocol/sdk": "^1.11.2",
+    "@nestjs/common": "^11.1.6",
+    "dotenv": "^16.4.7",
+    "starknet": "^7.1.0",
+    "winston": "^3.17.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  },
+  "keywords": [
+    "mcp",
+    "starknet",
+    "artpeace"
+  ],
+  "author": "kasarlabs",
+  "license": "MIT",
+  "description": "MCP server for collaborative pixel art creation on a shared canvas."
+}

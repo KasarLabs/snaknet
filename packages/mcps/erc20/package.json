@@ -1,0 +1,38 @@
+{
+  "name": "@snaknet/erc20-mcp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "erc20-mcp": "./bin/erc20-mcp.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "clean": "rm -rf build",
+    "clean:all": "rm -rf build node_modules",
+    "start": "node build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.2",
+    "dotenv": "^16.4.7",
+    "@langchain/core": "^0.3.42",
+    "zod": "^3.24.2",
+    "winston": "^3.17.0",
+    "starknet": "^7.6.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  },
+  "keywords": [
+    "mcp",
+    "starknet",
+    "erc20"
+  ],
+  "author": "kasarlabs",
+  "license": "MIT",
+  "description": "MCP server for comprehensive ERC20 token operations including transfers, allowances, and contract deployment."
+}
