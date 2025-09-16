@@ -105,8 +105,26 @@ for (const mcpName of configuredMcps) {
   const binPath = path.join(mcpDir, 'bin');
   if (fs.existsSync(binPath)) {
     const binFiles = fs.readdirSync(binPath);
-    const expectedBinName = `mcp_starknet-${mcpName}.js`;
-    if (!binFiles.includes(expectedBinName)) {
+
+    // Get the expected bin name from package.json
+    let expectedBinName = null;
+    try {
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+      if (packageJson.bin) {
+        const binEntry = Object.values(packageJson.bin)[0];
+        if (binEntry && typeof binEntry === 'string') {
+          expectedBinName = path.basename(binEntry);
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error reading package.json for bin validation');
+      hasErrors = true;
+    }
+
+    if (!expectedBinName) {
+      console.error('❌ No bin entry found in package.json');
+      hasErrors = true;
+    } else if (!binFiles.includes(expectedBinName)) {
       console.error(`❌ Missing bin/${expectedBinName}`);
       hasErrors = true;
     } else {
