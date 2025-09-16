@@ -2,13 +2,6 @@ import { z } from 'zod';
 import { Hex, hexSchemaBase } from '../lib/utils/num.js';
 import { validateChecksumAddress } from 'starknet';
 
-export interface mcpTool {
-  name: string;
-  description: string;
-  schema?: z.ZodObject<any>;
-  execute: (params: any) => Promise<any>;
-}
-
 export type Address = `0x${string}`;
 
 export const addressSchema = hexSchemaBase

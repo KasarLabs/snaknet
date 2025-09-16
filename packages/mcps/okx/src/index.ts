@@ -3,7 +3,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool } from './interfaces/index.js';
+import{ mcpTool } from '@snaknet/core';;
 import dotenv from 'dotenv';
 
 import { wrapAccountCreationResponse } from './lib/utils/AccountManager.js';

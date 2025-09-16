@@ -1,4 +1,3 @@
-import { z } from 'zod';
 
 import { Quote, Route } from '@avnu/avnu-sdk';
 
@@ -15,11 +14,4 @@ export interface RouteResult {
   route?: Route;
   quote?: Quote;
   error?: string;
-}
-
-export interface mcpTool {
-  name: string;
-  description: string;
-  schema?: z.ZodObject<any>;
-  execute: (params: any) => Promise<any>;
 }

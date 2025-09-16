@@ -76,7 +76,7 @@ export interface mcpTool {
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 
-import { mcpTool } from './interfaces/index.js';
+import{ mcpTool } from '@snaknet/core';;
 import { yourAction } from './tools/action.js';
 import { yourSchema } from './schemas/index.js';
 

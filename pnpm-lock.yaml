@@ -147,6 +147,9 @@ importers:
       '@nestjs/common':
         specifier: ^11.1.6
         version: 11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -175,6 +178,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -197,6 +203,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -219,6 +228,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -247,6 +259,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -275,6 +290,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -303,6 +321,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -328,6 +349,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -353,6 +377,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -381,6 +408,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -409,6 +439,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -440,6 +473,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -465,6 +501,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -493,6 +532,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -521,6 +563,9 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
       dotenv:
         specifier: ^16.4.7
         version: 16.5.0
@@ -5444,7 +5489,7 @@ snapshots:
       isstream: 0.1.2
       jsonwebtoken: 9.0.2
       mime-types: 2.1.35
-      retry-axios: 2.6.0(axios@1.11.0(debug@4.4.1))
+      retry-axios: 2.6.0(axios@1.11.0)
       tough-cookie: 4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -6350,7 +6395,7 @@ snapshots:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
-  retry-axios@2.6.0(axios@1.11.0(debug@4.4.1)):
+  retry-axios@2.6.0(axios@1.11.0):
     dependencies:
       axios: 1.11.0(debug@4.4.1)
 
