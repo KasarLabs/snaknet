@@ -223,6 +223,31 @@ importers:
         specifier: ^5.8.2
         version: 5.9.2
 
+  packages/mcps/c:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      starknet:
+        specifier: ^7.6.4
+        version: 7.6.4
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
   packages/mcps/contract:
     dependencies:
       '@modelcontextprotocol/sdk':
@@ -240,6 +265,56 @@ importers:
       winston:
         specifier: ^3.17.0
         version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  packages/mcps/d:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      starknet:
+        specifier: ^7.6.4
+        version: 7.6.4
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  packages/mcps/ekubo:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      starknet:
+        specifier: ^7.6.4
+        version: 7.6.4
       zod:
         specifier: ^3.24.2
         version: 3.25.76
@@ -302,6 +377,31 @@ importers:
       winston:
         specifier: ^3.17.0
         version: 3.17.0
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.15.17
+      typescript:
+        specifier: ^5.8.2
+        version: 5.9.2
+
+  packages/mcps/extended:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.11.2
+        version: 1.17.5
+      '@snaknet/core':
+        specifier: workspace:*
+        version: link:../../core
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.5.0
+      starknet:
+        specifier: ^7.6.4
+        version: 7.6.4
       zod:
         specifier: ^3.24.2
         version: 3.25.76
@@ -5489,7 +5589,7 @@ snapshots:
       isstream: 0.1.2
       jsonwebtoken: 9.0.2
       mime-types: 2.1.35
-      retry-axios: 2.6.0(axios@1.11.0)
+      retry-axios: 2.6.0(axios@1.11.0(debug@4.4.1))
       tough-cookie: 4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -6395,7 +6495,7 @@ snapshots:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
-  retry-axios@2.6.0(axios@1.11.0):
+  retry-axios@2.6.0(axios@1.11.0(debug@4.4.1)):
     dependencies:
       axios: 1.11.0(debug@4.4.1)
 
