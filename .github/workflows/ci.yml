@@ -42,7 +42,7 @@ jobs:
         run: pnpm install --force
 
       - name: Check formatting with Prettier
-        run: pnpm prettier --check "mcps/**/*.{ts,tsx}"
+        run: pnpm prettier --check "packages/**/*.{ts,tsx}"
 
       - name: Build packages in order
         run: pnpm build

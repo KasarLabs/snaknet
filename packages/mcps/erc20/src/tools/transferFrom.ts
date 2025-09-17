@@ -1,0 +1,83 @@
+import {
+  Account,
+  Contract,
+  validateAndParseAddress,
+  constants,
+} from 'starknet';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
+import {
+  validateAndFormatParams,
+  executeV3Transaction,
+  validateToken,
+  detectAbiType,
+  extractAssetInfo,
+} from '../lib/utils/utils.js';
+import { z } from 'zod';
+import {
+  transferFromSchema,
+  transferFromSignatureSchema,
+} from '../schemas/index.js';
+import { RpcProvider } from 'starknet';
+
+/**
+ * Transfers tokens from one address to another using an allowance.
+ * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {TransferFromParams} params - Transfer parameters
+ * @returns {Promise<string>} JSON string with transaction result
+ * @throws {Error} If transfer fails
+ */
+export const transferFrom = async (
+  agent: SnakAgentInterface,
+  params: z.infer<typeof transferFromSchema>
+): Promise<string> => {
+  try {
+    const credentials = agent.getAccountCredentials();
+    const provider = agent.getProvider();
+
+    const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
+
+    const token = await validateToken(provider, assetSymbol, assetAddress);
+    const abi = await detectAbiType(token.address, provider);
+    const { address, amount } = validateAndFormatParams(
+      params.fromAddress,
+      params.amount,
+      token.decimals
+    );
+
+    const fromAddress = address;
+    const toAddress = validateAndParseAddress(params.toAddress);
+
+    const account = new Account(
+      provider,
+      credentials.accountPublicKey,
+      credentials.accountPrivateKey,
+      undefined,
+      constants.TRANSACTION_VERSION.V3
+    );
+
+    const contract = new Contract(abi, token.address, provider);
+
+    contract.connect(account);
+
+    const calldata = contract.populate('transfer_from', [
+      fromAddress,
+      toAddress,
+      amount,
+    ]);
+
+    const txH = await executeV3Transaction({
+      call: calldata,
+      account: account,
+    });
+
+    return JSON.stringify({
+      status: 'success',
+      transactionHash: txH,
+    });
+  } catch (error) {
+    return JSON.stringify({
+      status: 'failure',
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+};

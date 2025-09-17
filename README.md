@@ -1,6 +1,11 @@
 <div align="center">
-  <h1>SNAKNET</h1>
-  <p><strong>Model Context Protocol Servers for Starknet</strong></p>
+    <picture>
+    <!-- For users in dark mode, load a white logo -->
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/KasarLabs/brand/blob/main/projects/snak/snak_logo_white_bg_alpha.png?raw=true">
+    <!-- Default image for light mode -->
+    <img src="https://github.com/KasarLabs/brand/blob/main/projects/snak/snak_logo_black_bg_alpha.png?raw=true" width="100" alt="Snak Logo">
+  </picture>
+  <p><strong>Starknet's Model Context Protocol Server</strong></p>
 
 <p>
 <a href="https://www.npmjs.com/package/snaknet">
@@ -18,11 +23,120 @@
 </p>
 </div>
 
-A comprehensive collection of Model Context Protocol (MCP) servers for Starknet blockchain applications. This repository provides ready-to-use MCP servers that enable AI applications to interact with Starknet protocols, wallets, and DeFi applications.
+A comprehensive collection of Model Context Protocol (MCP) servers for Starknet blockchain applications. This repository provides a unified Starknet MCP entrypoint that intelligently routes requests to specialized MCP servers, enabling AI applications to seamlessly interact with Starknet protocols, wallets, and DeFi applications.
+
+## Table of Contents
+
+- [What is MCP?](#what-is-mcp)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [Available MCP Servers](#available-mcp-servers)
+- [Development](#development)
+- [License](#license)
 
 ## What is MCP?
 
 Model Context Protocol (MCP) is an open standard that enables AI applications to securely connect to external data sources and tools. MCP servers act as connectors between AI models and external services, providing structured access to blockchain data and operations.
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 16+ and pnpm
+- Starknet wallet credentials
+- AI application that supports MCP (like Claude Desktop, etc.)
+
+### Installation
+
+```bash
+git clone https://github.com/kasarlabs/snaknet.git
+cd snaknet
+pnpm install
+pnpm build
+```
+
+## Usage
+
+### Using the Unified Starknet MCP Router (Recommended)
+
+The Starknet MCP router provides a single entrypoint that automatically routes your requests to the appropriate specialized MCP server:
+
+```bash
+# Run the unified Starknet MCP router
+cd packages/mcp
+node build/index.js
+```
+
+The router uses an AI-powered graph to analyze your requests and route them to the most suitable MCP server (ERC20, AVNU, Argent, etc.) automatically.
+
+### Running Individual MCP Servers
+
+You can also run individual MCP servers directly:
+
+```bash
+# Run ERC20 MCP server
+cd packages/mcps/erc20
+node build/index.js
+
+# Run Argent wallet MCP server
+cd packages/mcps/argent
+node build/index.js
+
+# Run AVNU DEX MCP server
+cd packages/mcps/avnu
+node build/index.js
+```
+
+### Integration with AI Applications
+
+#### Using the Unified Router (Recommended)
+
+Configure your AI application to use the Starknet MCP router for automatic routing:
+
+```json
+{
+  "mcpServers": {
+    "snaknet": {
+      "command": "node",
+      "args": ["/path/to/snaknet/packages/mcp/build/index.js"],
+      "env": {
+        "STARKNET_ACCOUNT_ADDRESS": "your_address",
+        "STARKNET_PRIVATE_KEY": "your_private_key",
+        "STARKNET_RPC_URL": "your_rpc_url",
+        "ANTHROPIC_API_KEY": "your_anthropic_api_key"
+      }
+    }
+  }
+}
+```
+
+#### Using Individual MCP Servers
+
+You can also configure individual MCP servers directly:
+
+```json
+{
+  "mcpServers": {
+    "starknet-erc20": {
+      "command": "node",
+      "args": ["/path/to/snaknet/packages/mcps/erc20/build/index.js"],
+      "env": {
+        "STARKNET_ACCOUNT_ADDRESS": "your_address",
+        "STARKNET_PRIVATE_KEY": "your_private_key",
+        "STARKNET_RPC_URL": "your_rpc_url"
+      }
+    }
+  }
+}
+```
+
+### Example Use Cases
+
+- **Token Management**: Transfer ERC20 tokens, check balances, approve spending
+- **DeFi Operations**: Swap tokens, provide liquidity, borrow/lend assets
+- **Wallet Management**: Create accounts, manage transactions, monitor balances
+- **NFT Operations**: Transfer NFTs, manage collections, interact with marketplaces
+- **Smart Contract Development**: Deploy contracts, interact with deployed contracts
 
 ## Available MCP Servers
 
@@ -52,115 +166,38 @@ Model Context Protocol (MCP) is an open standard that enables AI applications to
 ### Development Tools
 
 - **Scarb** - Cairo development and compilation tools
-- **ArtPeace** - NFT marketplace integration
-
-## Quick Start
-
-### Prerequisites
-
-- Node.js 16+ and pnpm
-- Starknet wallet credentials
-- AI application that supports MCP (like Claude Desktop, etc.)
-
-### Installation
-
-```bash
-git clone https://github.com/kasarlabs/snaknet.git
-cd snaknet
-pnpm install
-pnpm build
-```
-
-## Usage
-
-### Running Individual MCP Servers
-
-Each MCP server can be run independently:
-
-```bash
-# Run ERC20 MCP server
-cd mcps/erc20
-node build/index.js
-
-# Run Argent wallet MCP server
-cd mcps/argent
-node build/index.js
-
-# Run AVNU DEX MCP server
-cd mcps/avnu
-node build/index.js
-```
-
-### Integration with AI Applications
-
-Configure your AI application to connect to these MCP servers. Example configuration for Claude Desktop:
-
-```json
-{
-  "mcpServers": {
-    "starknet-erc20": {
-      "command": "node",
-      "args": ["/path/to/snaknet/mcps/erc20/build/index.js"],
-      "env": {
-        "STARKNET_PUBLIC_ADDRESS": "your_address",
-        "STARKNET_PRIVATE_KEY": "your_private_key",
-        "STARKNET_RPC_URL": "your_rpc_url"
-      }
-    },
-    "starknet-argent": {
-      "command": "node",
-      "args": ["/path/to/snaknet/mcps/argent/build/index.js"],
-      "env": {
-        "STARKNET_PUBLIC_ADDRESS": "your_address",
-        "STARKNET_PRIVATE_KEY": "your_private_key",
-        "STARKNET_RPC_URL": "your_rpc_url"
-      }
-    }
-  }
-}
-```
-
-### Example Use Cases
-
-- **Token Management**: Transfer ERC20 tokens, check balances, approve spending
-- **DeFi Operations**: Swap tokens, provide liquidity, borrow/lend assets
-- **Wallet Management**: Create accounts, manage transactions, monitor balances
-- **NFT Operations**: Transfer NFTs, manage collections, interact with marketplaces
-- **Smart Contract Development**: Deploy contracts, interact with deployed contracts
+- **ArtPeace**
 
 ## Development
 
 ### Project Structure
 
 ```
-mcps/
-├── argent/          # Argent wallet MCP server
-├── avnu/            # AVNU DEX MCP server
-├── braavos/         # Braavos wallet MCP server
-├── contract/        # Contract deployment MCP server
-├── erc20/           # ERC20 token MCP server
-├── erc721/          # ERC721 NFT MCP server
-├── fibrous/         # Fibrous DEX MCP server
-├── opus/            # Opus lending MCP server
-├── rpc/             # Starknet RPC MCP server
-├── scarb/           # Scarb development MCP server
-├── transaction/     # Transaction management MCP server
-└── ...
+packages/
+├── core/            # Core utilities and shared functionality
+├── mcp/             # Unified Starknet MCP router with AI-powered routing
+└── mcps/            # Individual specialized MCP servers
+    ├── argent/      # Argent wallet MCP server
+    ├── avnu/        # AVNU DEX MCP server
+    ├── braavos/     # Braavos wallet MCP server
+    ├── contract/    # Contract deployment MCP server
+    ├── erc20/       # ERC20 token MCP server
+    ├── erc721/      # ERC721 NFT MCP server
+    ├── fibrous/     # Fibrous DEX MCP server
+    ├── okx/         # OKX wallet MCP server
+    ├── openzeppelin/ # OpenZeppelin account MCP server
+    ├── opus/        # Opus lending MCP server
+    ├── scarb/       # Scarb development MCP server
+    ├── starknet-rpc/ # Starknet RPC MCP server
+    ├── transaction/ # Transaction management MCP server
+    ├── unruggable/  # Unruggable memecoin MCP server
+    ├── vesu/        # Vesu yield farming MCP server
+    └── artpeace/    # ArtPeace
 ```
 
 ### Adding New MCP Servers
 
-1. Create a new directory in `mcps/`
-2. Follow the existing MCP server structure
-3. Implement the MCP protocol interface
-4. Add tests and documentation
-
-## Security
-
-- All MCP servers implement proper authentication and authorization
-- Private keys are handled securely and never exposed
-- User consent is required for all operations
-- Follow MCP security best practices
+Interested in contributing a new MCP server? Please see our [CONTRIBUTING.md](CONTRIBUTING.md) guide for detailed instructions on how to add new MCP servers to the ecosystem.
 
 ## License
 
