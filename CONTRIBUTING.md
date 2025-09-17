@@ -13,7 +13,7 @@ packages/mcps/your-mcp/
 │   ├── lib/                # Utils, types, constants, abis
 │   └── index.ts            # MCP server + tool registration
 ├── bin/
-│   └── mcp_starknet-name.js
+│   └── yourname-mcp.js
 └── package.json
 ```
 
@@ -102,7 +102,11 @@ main().catch(console.error);
     "client": {
       "command": "node",
       "args": ["build/index.js"],
-      "transport": "stdio"
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": "",
+        "CUSTOM_VARIABLE": ""
+      }
     },
     "description": "What this MCP handles",
     "promptInfo": {
@@ -113,7 +117,7 @@ main().catch(console.error);
 }
 ```
 
-## Executable (bin/mcp_starknet-yourname.js)
+## Executable (bin/yourname-mcp.js)
 
 ```javascript
 #!/usr/bin/env node
