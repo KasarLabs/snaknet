@@ -1,10 +1,10 @@
 {
-  "name": "@snaknet/d-mcp",
+  "name": "@snaknet/endurfi-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "d-mcp": "./bin/d-mcp.js"
+    "endurfi-mcp": "./bin/endurfi-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",
@@ -29,9 +29,9 @@
   "keywords": [
     "mcp",
     "starknet",
-    "d"
+    "endurfi"
   ],
   "author": "kasarlabs",
   "license": "MIT",
-  "description": "MCP server for d functionality on Starknet"
+  "description": "MCP server for endurfi functionality on Starknet"
 }

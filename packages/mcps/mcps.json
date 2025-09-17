@@ -353,7 +353,7 @@
       "tools": []
     }
   },
-  "c": {
+  "endurfi": {
     "client": {
       "command": "node",
       "args": ["build/index.js"],
@@ -362,24 +362,9 @@
         "STARKNET_RPC_URL": ""
       }
     },
-    "description": "C functionality on Starknet",
+    "description": "Endurfi functionality on Starknet",
     "promptInfo": {
-      "expertise": "C functionality on Starknet",
-      "tools": []
-    }
-  },
-  "d": {
-    "client": {
-      "command": "node",
-      "args": ["build/index.js"],
-      "transport": "stdio",
-      "env": {
-        "STARKNET_RPC_URL": ""
-      }
-    },
-    "description": "D functionality on Starknet",
-    "promptInfo": {
-      "expertise": "D functionality on Starknet",
+      "expertise": "Endurfi functionality on Starknet",
       "tools": []
     }
   }

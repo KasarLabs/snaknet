@@ -10,7 +10,7 @@ import { mcpTool, registerToolsWithServer } from '@snaknet/core';
 dotenv.config();
 
 const server = new McpServer({
-  name: 'c-mcp',
+  name: 'endurfi-mcp',
   version: '0.1.0',
 });
 
@@ -29,7 +29,7 @@ async function main() {
 
   await RegisterToolInServer();
   await server.connect(transport);
-  console.error('Starknet C MCP Server running on stdio');
+  console.error('Starknet Endurfi MCP Server running on stdio');
 }
 
 main().catch((error) => {
