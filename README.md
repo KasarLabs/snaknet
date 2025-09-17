@@ -25,39 +25,18 @@
 
 A comprehensive collection of Model Context Protocol (MCP) servers for Starknet blockchain applications. This repository provides a unified Starknet MCP entrypoint that intelligently routes requests to specialized MCP servers, enabling AI applications to seamlessly interact with Starknet protocols, wallets, and DeFi applications.
 
+## Table of Contents
+
+- [What is MCP?](#what-is-mcp)
+- [Quick Start](#quick-start)
+- [Usage](#usage)
+- [Available MCP Servers](#available-mcp-servers)
+- [Development](#development)
+- [License](#license)
+
 ## What is MCP?
 
 Model Context Protocol (MCP) is an open standard that enables AI applications to securely connect to external data sources and tools. MCP servers act as connectors between AI models and external services, providing structured access to blockchain data and operations.
-
-## Available MCP Servers
-
-### Wallet Management
-
-- **Argent** - Argent X wallet integration
-- **Braavos** - Braavos wallet integration
-- **OpenZeppelin** - OpenZeppelin account integration
-- **OKX** - OKX wallet integration
-
-### DeFi Protocols
-
-- **AVNU** - DEX aggregator and swap functionality
-- **Fibrous** - Cross-chain DEX aggregator
-- **Opus** - Lending and borrowing protocol
-- **Vesu** - Yield farming and staking
-- **Unruggable** - Memecoin creation and launch platform
-
-### Core Blockchain Operations
-
-- **ERC20** - Token operations (transfer, approve, balance, etc.)
-- **ERC721** - NFT operations (transfer, approve, metadata, etc.)
-- **Contract** - Smart contract deployment and interaction
-- **Transaction** - Transaction management and monitoring
-- **RPC** - Starknet RPC operations and blockchain data
-
-### Development Tools
-
-- **Scarb** - Cairo development and compilation tools
-- **ArtPeace** - NFT marketplace integration
 
 ## Quick Start
 
@@ -158,6 +137,36 @@ You can also configure individual MCP servers directly:
 - **Wallet Management**: Create accounts, manage transactions, monitor balances
 - **NFT Operations**: Transfer NFTs, manage collections, interact with marketplaces
 - **Smart Contract Development**: Deploy contracts, interact with deployed contracts
+
+## Available MCP Servers
+
+### Wallet Management
+
+- **Argent** - Argent X wallet integration
+- **Braavos** - Braavos wallet integration
+- **OpenZeppelin** - OpenZeppelin account integration
+- **OKX** - OKX wallet integration
+
+### DeFi Protocols
+
+- **AVNU** - DEX aggregator and swap functionality
+- **Fibrous** - Cross-chain DEX aggregator
+- **Opus** - Lending and borrowing protocol
+- **Vesu** - Yield farming and staking
+- **Unruggable** - Memecoin creation and launch platform
+
+### Core Blockchain Operations
+
+- **ERC20** - Token operations (transfer, approve, balance, etc.)
+- **ERC721** - NFT operations (transfer, approve, metadata, etc.)
+- **Contract** - Smart contract deployment and interaction
+- **Transaction** - Transaction management and monitoring
+- **RPC** - Starknet RPC operations and blockchain data
+
+### Development Tools
+
+- **Scarb** - Cairo development and compilation tools
+- **ArtPeace** - NFT marketplace integration
 
 ## Development
 
