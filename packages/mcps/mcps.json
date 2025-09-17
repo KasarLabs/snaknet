@@ -322,5 +322,65 @@
       "expertise": "Vesu protocol yield farming",
       "tools": ["vesu_deposit_earn", "vesu_withdraw_earn"]
     }
+  },
+  "ekubo": {
+    "client": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
+    },
+    "description": "Ekubo protocol interactions on Starknet",
+    "promptInfo": {
+      "expertise": "Ekubo protocol on Starknet",
+      "tools": []
+    }
+  },
+  "extended": {
+    "client": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
+    },
+    "description": "Extended functionality on Starknet",
+    "promptInfo": {
+      "expertise": "Extended Starknet functionality",
+      "tools": []
+    }
+  },
+  "c": {
+    "client": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
+    },
+    "description": "C functionality on Starknet",
+    "promptInfo": {
+      "expertise": "C functionality on Starknet",
+      "tools": []
+    }
+  },
+  "d": {
+    "client": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
+    },
+    "description": "D functionality on Starknet",
+    "promptInfo": {
+      "expertise": "D functionality on Starknet",
+      "tools": []
+    }
   }
 }
