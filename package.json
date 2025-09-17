@@ -1,6 +1,6 @@
 {
   "name": "snaknet",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Comprehensive collection of Model Context Protocol (MCP) servers for Starknet blockchain applications",
   "author": "Kasar Labs",
   "license": "MIT",
