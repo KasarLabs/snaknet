@@ -3,7 +3,7 @@
 ## Project Structure
 
 ```
-mcps/your-mcp/
+packages/mcps/your-mcp/
 ├── src/
 │   ├── tools/
 │   │   ├── action1.ts      # Individual tool functions
@@ -11,8 +11,6 @@ mcps/your-mcp/
 │   ├── schemas/
 │   │   └── index.ts        # Zod schemas
 │   ├── lib/                # Utils, types, constants, abis
-│   ├── interfaces/
-│   │   └── index.ts        # mcpTool interface
 │   └── index.ts            # MCP server + tool registration
 ├── bin/
 │   └── mcp_starknet-name.js
@@ -56,19 +54,6 @@ export const yourSchema = z.object({
 });
 ```
 
-## Interface (src/interfaces/index.ts)
-
-```typescript
-import { z } from 'zod';
-
-export interface mcpTool {
-  name: string;
-  description: string;
-  schema?: z.ZodObject<any>;
-  execute: (params: any) => Promise<any>;
-}
-```
-
 ## MCP Server (src/index.ts)
 
 ```typescript
@@ -76,7 +61,7 @@ export interface mcpTool {
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 
-import { mcpTool } from '@snaknet/core';
+import { mcpTool, registerToolWithServer } from '@snaknet/core';
 import { yourAction } from './tools/action.js';
 import { yourSchema } from './schemas/index.js';
 
@@ -85,48 +70,23 @@ const server = new McpServer({
   version: '1.0.0',
 });
 
-const registerTools = (toolRegistry: mcpTool[]) => {
-  toolRegistry.push({
+const tools: mcpTool[] = [
+  {
     name: 'your_action_name',
     description: 'What this tool does',
     schema: yourSchema,
     execute: async (params: any) => {
       return await yourAction(params);
     },
-  });
-};
-
-export const RegisterToolInServer = async () => {
-  const tools: mcpTool[] = [];
-  registerTools(tools);
-
-  for (const tool of tools) {
-    if (!tool.schema) {
-      server.tool(tool.name, tool.description, async () => {
-        const result = await tool.execute({});
-        return {
-          content: [{ type: 'text', text: result }],
-        };
-      });
-    } else {
-      server.tool(
-        tool.name,
-        tool.description,
-        tool.schema.shape,
-        async (params: any) => {
-          const result = await tool.execute(params);
-          return {
-            content: [{ type: 'text', text: result }],
-          };
-        }
-      );
-    }
-  }
-};
+  },
+];
 
 async function main() {
   const transport = new StdioServerTransport();
-  await RegisterToolInServer();
+
+  // Register all tools using the core utility
+  await registerToolWithServer(server, tools);
+
   await server.connect(transport);
   console.error('Your MCP Server running on stdio');
 }

@@ -166,7 +166,7 @@ You can also configure individual MCP servers directly:
 ### Development Tools
 
 - **Scarb** - Cairo development and compilation tools
-- **ArtPeace** - NFT marketplace integration
+- **ArtPeace**
 
 ## Development
 
@@ -192,7 +192,7 @@ packages/
     ├── transaction/ # Transaction management MCP server
     ├── unruggable/  # Unruggable memecoin MCP server
     ├── vesu/        # Vesu yield farming MCP server
-    └── artpeace/    # ArtPeace NFT marketplace MCP server
+    └── artpeace/    # ArtPeace
 ```
 
 ### Adding New MCP Servers
