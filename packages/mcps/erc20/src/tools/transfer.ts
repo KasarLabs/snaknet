@@ -55,7 +55,7 @@ export const transfer = async (
     // Check if account exists, if not throw a clearer error
     try {
       const nonce = await account.getNonce();
-      console.log(`Account nonce: ${nonce}`);
+      console.error(`Account nonce: ${nonce}`);
     } catch (error) {
       throw new Error(
         `Account not found on this network. Please verify your account address and network. Account: ${credentials.accountPublicKey}. Error: ${error.message}`

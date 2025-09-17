@@ -83,7 +83,7 @@ export class BatchSwapService {
       }
 
       for (let i = 0; i < routes.length; i++) {
-        console.log(`${i}. Route information: `, {
+        console.error(`${i}. Route information: `, {
           sellToken: params.sellTokenSymbols[i],
           buyToken: params.buyTokenSymbols[i],
           sellAmount: params.sellAmounts[i],
@@ -147,7 +147,7 @@ export class BatchSwapService {
     const transactionMonitor = new TransactionMonitor(this.agent.getProvider());
     const receipt = await transactionMonitor.waitForTransaction(
       txHash,
-      (status) => console.log('Swap status:', status)
+      (status) => console.error('Swap status:', status)
     );
 
     const events = await transactionMonitor.getTransactionEvents(txHash);

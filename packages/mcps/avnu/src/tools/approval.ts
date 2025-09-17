@@ -85,7 +85,7 @@ export class ApprovalService {
           uint256.bnToUint256(amount)
         );
 
-        console.log(
+        console.error(
           'Approve transaction sent:',
           this.safeStringify(approveCall)
         );
@@ -96,7 +96,7 @@ export class ApprovalService {
 
         await transactionMonitor.waitForTransaction(
           approveCall.transaction_hash,
-          (status) => console.log('Approve status:', status)
+          (status) => console.error('Approve status:', status)
         );
       }
     } catch (error) {
