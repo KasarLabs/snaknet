@@ -188,18 +188,7 @@ packages/
 
 ### Adding New MCP Servers
 
-1. Create a new directory in `packages/mcps/`
-2. Follow the existing MCP server structure
-3. Implement the MCP protocol interface
-4. Register the new MCP server in the router's configuration
-5. Add tests and documentation
-
-## Security
-
-- All MCP servers implement proper authentication and authorization
-- Private keys are handled securely and never exposed
-- User consent is required for all operations
-- Follow MCP security best practices
+Interested in contributing a new MCP server? Please see our [CONTRIBUTING.md](CONTRIBUTING.md) guide for detailed instructions on how to add new MCP servers to the ecosystem.
 
 ## License
 
