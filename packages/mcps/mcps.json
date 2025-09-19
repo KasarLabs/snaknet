@@ -322,5 +322,50 @@
       "expertise": "Vesu protocol yield farming",
       "tools": ["vesu_deposit_earn", "vesu_withdraw_earn"]
     }
+  },
+  "ekubo": {
+    "client": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
+    },
+    "description": "Ekubo protocol interactions on Starknet",
+    "promptInfo": {
+      "expertise": "Ekubo protocol on Starknet",
+      "tools": []
+    }
+  },
+  "extended": {
+    "client": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
+    },
+    "description": "Extended functionality on Starknet",
+    "promptInfo": {
+      "expertise": "Extended Starknet functionality",
+      "tools": []
+    }
+  },
+  "endurfi": {
+    "client": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "transport": "stdio",
+      "env": {
+        "STARKNET_RPC_URL": ""
+      }
+    },
+    "description": "Endurfi functionality on Starknet",
+    "promptInfo": {
+      "expertise": "Endurfi functionality on Starknet",
+      "tools": []
+    }
   }
 }
