@@ -11,16 +11,16 @@ export async function getContractAddress(provider: RpcProvider) {
     return CORE_ADDRESS[chain];
 }
 
-export function calculateActualPrice(sqrtPriceX96: bigint): number {
-  const Q96 = BigInt(2) ** BigInt(96);
-  const sqrtPriceFloat = Number(sqrtPriceX96) / Number(Q96);
+export function calculateActualPrice(sqrtPrice: bigint): number {
+  const Q128 = BigInt(2) ** BigInt(128);
+  const sqrtPriceFloat = Number(sqrtPrice) / Number(Q128);
   return sqrtPriceFloat * sqrtPriceFloat;
 }
 
-export function calculateTickFromSqrtPrice(sqrtPriceX96: bigint): number {
-  const Q96 = BigInt(2) ** BigInt(96);
-  const sqrtPrice = Number(sqrtPriceX96) / Number(Q96);
-  const price = sqrtPrice * sqrtPrice;
+export function calculateTickFromSqrtPrice(sqrtPrice: bigint): number {
+  const Q128 = BigInt(2) ** BigInt(128);
+  const sqrtPriceFloat = Number(sqrtPrice) / Number(Q128);
+  const price = sqrtPriceFloat * sqrtPriceFloat;
   // tick = log_base(1.0001)(price)
   return Math.floor(Math.log(price) / Math.log(1.0001));
 }
