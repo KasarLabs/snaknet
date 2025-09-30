@@ -1,0 +1,4 @@
+export const CORE_ADDRESS = {
+    'sepolia' : '0x0444a09d96389aa7148f1aada508e30b71299ffe650d9c97fdaae38cb9a23384',
+    'mainnet' : '0x00000005dd3D2F4429AF886cD1a3b08289DBcEa99A294197E9eB43b0e0325b4b'
+}
