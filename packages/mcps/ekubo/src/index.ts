@@ -6,9 +6,17 @@ import { RpcProvider, Account } from 'starknet';
 import dotenv from 'dotenv';
 
 import { mcpTool, registerToolsWithServer } from '@snaknet/core';
-import { getPoolInfoSchema } from './schemas/index.js';
+import {
+  getPoolInfoSchema,
+  getTokenPriceSchema,
+  getPoolLiquiditySchema,
+  getPoolFeesPerLiquiditySchema
+} from './schemas/index.js';
 
-import { getPoolInfo } from './tools/getPoolInfo.js';
+import { getPoolInfo } from './tools/read/getPoolInfo.js';
+import { getTokenPrice } from './tools/read/getTokenPrice.js';
+import { getPoolLiquidity } from './tools/read/getPoolLiquidity.js';
+import { getPoolFeesPerLiquidity } from './tools/read/getPoolFeesPerLiquidity.js';
 
 dotenv.config();
 
@@ -55,6 +63,39 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
     execute: async (params: any) => {
       const envRead = getEnvRead();
       return await getPoolInfo(envRead, params);
+    },
+  });
+
+  EkuboToolRegistry.push({
+    name: 'ekubo_get_token_price',
+    description:
+      'Get the price of a token via Ekubo pools by querying the pool price directly from the Core contract.',
+    schema: getTokenPriceSchema,
+    execute: async (params: any) => {
+      const envRead = getEnvRead();
+      return await getTokenPrice(envRead, params);
+    },
+  });
+
+  EkuboToolRegistry.push({
+    name: 'ekubo_get_pool_liquidity',
+    description:
+      'Get the total liquidity available in an Ekubo pool at the current tick.',
+    schema: getPoolLiquiditySchema,
+    execute: async (params: any) => {
+      const envRead = getEnvRead();
+      return await getPoolLiquidity(envRead, params);
+    },
+  });
+
+  EkuboToolRegistry.push({
+    name: 'ekubo_get_pool_fees_per_liquidity',
+    description:
+      'Get the cumulative fees per unit of liquidity for an Ekubo pool (both token0 and token1).',
+    schema: getPoolFeesPerLiquiditySchema,
+    execute: async (params: any) => {
+      const envRead = getEnvRead();
+      return await getPoolFeesPerLiquidity(envRead, params);
     },
   });
 };

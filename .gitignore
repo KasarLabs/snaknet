@@ -48,5 +48,6 @@ tsconfig.tsbuildinfo
 
 CLAUDE.md
 
-mcps/*/build/
-mcp/build/
+packages/mcps/*/build/
+packages/mcp/build/
+packages/core/build/

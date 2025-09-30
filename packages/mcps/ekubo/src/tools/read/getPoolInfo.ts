@@ -1,8 +1,8 @@
-import { PoolKey } from '../schemas/index.js';
+import { PoolKey } from '../../schemas/index.js';
 import { RpcProvider } from 'starknet';
 import { Contract } from "starknet";
-import { CORE_ABI } from "../lib/contracts/abi.js";
-import { calculateTickFromSqrtPrice, getContractAddress } from "../lib/utils/index.js";
+import { CORE_ABI } from "../../lib/contracts/abi.js";
+import { calculateTickFromSqrtPrice, getContractAddress, convertFeePercentToU128 } from "../../lib/utils/index.js";
 
 export const getPoolInfo = async (
   provider: RpcProvider,
@@ -12,9 +12,15 @@ export const getPoolInfo = async (
     const contractAddress = await getContractAddress(provider);
     const contract = new Contract(CORE_ABI, contractAddress, provider);
 
-    const priceResult = await contract.get_pool_price(params);
-    const liquidityResult = await contract.get_pool_liquidity(params);
-    const feesResult = await contract.get_pool_fees_per_liquidity(params);
+    // Convert fee percentage to u128
+    const poolKey = {
+      ...params,
+      fee: convertFeePercentToU128(params.fee)
+    };
+
+    const priceResult = await contract.get_pool_price(poolKey);
+    const liquidityResult = await contract.get_pool_liquidity(poolKey);
+    const feesResult = await contract.get_pool_fees_per_liquidity(poolKey);
 
     const sqrtPrice = priceResult.sqrt_ratio;
     const currentTick = calculateTickFromSqrtPrice(sqrtPrice);
