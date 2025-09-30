@@ -1,31 +1,40 @@
 import { RpcProvider, Contract } from 'starknet';
 import { CORE_ABI } from '../../lib/contracts/abi.js';
 import { getContractAddress, calculateActualPrice, convertFeePercentToU128 } from '../../lib/utils/index.js';
-
-interface TokenPriceParams {
-  token_address: string;
-  quote_currency: string;
-  fee?: number;
-  tick_spacing?: number;
-  extension?: string;
-}
+import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
+import { GetTokenPriceSchema } from '../../schemas/index.js';
 
 export const getTokenPrice = async (
   provider: RpcProvider,
-  params: TokenPriceParams
+  params: GetTokenPriceSchema
 ) => {
   try {
     const contractAddress = await getContractAddress(provider);
     const contract = new Contract(CORE_ABI, contractAddress, provider);
 
+    const { assetSymbol: tokenSymbol, assetAddress: tokenAddress } = extractAssetInfo(params.token);
+    const { assetSymbol: currencySymbol, assetAddress: currencyAddress } = extractAssetInfo(params.quote_currency);
+
+    const token: validToken = await validateToken(
+      provider,
+      tokenSymbol,
+      tokenAddress
+    );
+
+    const quote_currency: validToken = await validateToken(
+      provider,
+      currencySymbol,
+      currencyAddress
+    );
+
     // Default pool parameters (0.05% fee tier, most common)
     const feePercent = params.fee !== undefined ? params.fee : 0.05;
     const poolKey = {
-      token0: params.token_address < params.quote_currency ? params.token_address : params.quote_currency,
-      token1: params.token_address < params.quote_currency ? params.quote_currency : params.token_address,
+      token0: token.address < quote_currency.address ? token.address : quote_currency.address,
+      token1: token.address < quote_currency.address ? quote_currency.address : token.address,
       fee: convertFeePercentToU128(feePercent),
-      tick_spacing: params.tick_spacing || 10,
-      extension: params.extension || '0x0'
+      tick_spacing: params.tick_spacing,
+      extension: params.extension
     };
 
     const priceResult = await contract.get_pool_price(poolKey);
@@ -33,13 +42,13 @@ export const getTokenPrice = async (
     const price = calculateActualPrice(sqrtPrice);
 
     // If token order was reversed, invert the price
-    const finalPrice = params.token_address < params.quote_currency ? price : 1 / price;
+    const finalPrice = token.address < quote_currency.address ? price : 1 / price;
 
     return JSON.stringify({
       status: 'success',
       data: {
-        base_token: params.token_address,
-        quote_token: params.quote_currency,
+        base_token: token.symbol,
+        quote_token: quote_currency.symbol,
         price: finalPrice,
         sqrt_price: sqrtPrice.toString(),
       }

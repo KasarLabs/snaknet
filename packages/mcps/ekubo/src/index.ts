@@ -7,10 +7,8 @@ import dotenv from 'dotenv';
 
 import { mcpTool, registerToolsWithServer } from '@snaknet/core';
 import {
-  getPoolInfoSchema,
+  poolKeySchema,
   getTokenPriceSchema,
-  getPoolLiquiditySchema,
-  getPoolFeesPerLiquiditySchema
 } from './schemas/index.js';
 
 import { getPoolInfo } from './tools/read/getPoolInfo.js';
@@ -59,7 +57,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
     name: 'ekubo_get_pool_info',
     description:
       'Get comprehensive information about an Ekubo pool including current price, liquidity, and fee data.',
-    schema: getPoolInfoSchema,
+    schema: poolKeySchema,
     execute: async (params: any) => {
       const envRead = getEnvRead();
       return await getPoolInfo(envRead, params);
@@ -81,7 +79,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
     name: 'ekubo_get_pool_liquidity',
     description:
       'Get the total liquidity available in an Ekubo pool at the current tick.',
-    schema: getPoolLiquiditySchema,
+    schema: poolKeySchema,
     execute: async (params: any) => {
       const envRead = getEnvRead();
       return await getPoolLiquidity(envRead, params);
@@ -92,7 +90,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
     name: 'ekubo_get_pool_fees_per_liquidity',
     description:
       'Get the cumulative fees per unit of liquidity for an Ekubo pool (both token0 and token1).',
-    schema: getPoolFeesPerLiquiditySchema,
+    schema: poolKeySchema,
     execute: async (params: any) => {
       const envRead = getEnvRead();
       return await getPoolFeesPerLiquidity(envRead, params);
