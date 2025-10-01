@@ -26,8 +26,8 @@ export const poolKeySchema = z.object({
   tick_spacing: z
     .number()
     .optional()
-    .default(1000)
-    .describe('The tick spacing for the pool (e.g., 10)'),
+    .default(0.1)
+    .describe('The tick spacing as a percentage (e.g., 0.01 for 0.01%, 0.1 for 0.1%, 1 for 1%, defaults to 0.1)'),
   extension: z
     .string()
     .optional()
@@ -50,8 +50,8 @@ export const getTokenPriceSchema = z.object({
   tick_spacing: z
     .number()
     .optional()
-    .default(1000)
-    .describe('The tick spacing for the pool (default: 1000)'),
+    .default(0.1)
+    .describe('The tick spacing as a percentage (e.g., 0.01 for 0.01%, 0.1 for 0.1%, 1 for 1%, defaults to 0.1)'),
   extension: z
     .string()
     .optional()

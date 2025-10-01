@@ -1,6 +1,6 @@
 import { RpcProvider, Contract } from 'starknet';
 import { CORE_ABI } from '../../lib/contracts/abi.js';
-import { getContractAddress, calculateActualPrice, convertFeePercentToU128 } from '../../lib/utils/index.js';
+import { getContractAddress, calculateActualPrice, convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/index.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { GetTokenPriceSchema } from '../../schemas/index.js';
 
@@ -27,13 +27,11 @@ export const getTokenPrice = async (
       currencyAddress
     );
 
-    // Default pool parameters (0.05% fee tier, most common)
-    const feePercent = params.fee !== undefined ? params.fee : 0.05;
     const poolKey = {
       token0: token.address < quote_currency.address ? token.address : quote_currency.address,
       token1: token.address < quote_currency.address ? quote_currency.address : token.address,
-      fee: convertFeePercentToU128(feePercent),
-      tick_spacing: params.tick_spacing,
+      fee: convertFeePercentToU128(params.fee),
+      tick_spacing: convertTickSpacingPercentToExponent(params.tick_spacing),
       extension: params.extension
     };
 
@@ -65,7 +63,7 @@ export const getTokenPrice = async (
     // Si le pool n'existe pas avec les paramètres par défaut, suggérer d'essayer d'autres valeurs
     const errorMessage = error.message;
     const suggestion = errorMessage.includes('Pool not found') || errorMessage.includes('does not exist')
-      ? `${errorMessage}. Try specifying different fee/tick_spacing values. Common pairs: fee=0.05 tick_spacing=10 (0.05%), fee=0.3 tick_spacing=60 (0.3%), or fee=1 tick_spacing=200 (1%).`
+      ? `${errorMessage}. Try specifying different fee/tick_spacing values. Common pairs: fee=0.05 tick_spacing=0.1, fee=0.3 tick_spacing=0.6, or fee=1 tick_spacing=2.`
       : errorMessage;
 
     return JSON.stringify({

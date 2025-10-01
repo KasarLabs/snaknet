@@ -2,7 +2,7 @@ import { PoolKey } from '../../schemas/index.js';
 import { RpcProvider } from 'starknet';
 import { Contract } from "starknet";
 import { CORE_ABI } from "../../lib/contracts/abi.js";
-import { getContractAddress, convertFeePercentToU128 } from "../../lib/utils/index.js";
+import { getContractAddress, convertFeePercentToU128, convertTickSpacingPercentToExponent } from "../../lib/utils/index.js";
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 
 export const getPoolLiquidity = async (
@@ -28,12 +28,13 @@ export const getPoolLiquidity = async (
       addressToken1
     );
     
-    // Convert fee percentage to u128
+    // Convert fee percentage to u128 and tick_spacing to exponent
     const poolKey = {
       ...params,
       token0: token0.address < token1.address ? token0.address : token1.address,
       token1: token0.address < token1.address ? token1.address : token0.address,
-      fee: convertFeePercentToU128(params.fee)
+      fee: convertFeePercentToU128(params.fee),
+      tick_spacing: convertTickSpacingPercentToExponent(params.tick_spacing)
     };
 
     const liquidityResult = await contract.get_pool_liquidity(poolKey);

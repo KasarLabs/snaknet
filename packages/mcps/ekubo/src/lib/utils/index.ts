@@ -57,3 +57,30 @@ export function convertFeePercentToU128(feePercent: number): string {
 
   return feeU128.toString();
 }
+
+/**
+ * Convert tick spacing percentage to tick exponent
+ * @param tickSpacingPercent Tick spacing as a percentage (e.g., 0.01 for 0.01%, 0.1 for 0.1%, 1 for 1%)
+ * @returns Tick spacing as an integer exponent
+ *
+ * Formula: tick_spacing = log_base(1.000001)(1 + tick_spacing_percent / 100)
+ *
+ * Per Ekubo docs: "The tick spacing of 0.01% is represented as an exponent of 1.000001,
+ * so it can be computed as log base 1.000001 of 1.001, which is roughly equal to 1000"
+ *
+ * Examples:
+ * - 0.01% -> ~1000
+ * - 0.05% -> ~5000
+ * - 0.1% -> ~10000
+ * - 1% -> ~100000
+ */
+export function convertTickSpacingPercentToExponent(tickSpacingPercent: number): number {
+  // Convert percentage to decimal (0.01% -> 0.0001)
+  const spacingDecimal = tickSpacingPercent / 100;
+
+  // Calculate log_base(1.000001)(1 + spacing_decimal)
+  // log_base(a)(b) = ln(b) / ln(a)
+  const tickSpacing = Math.log(1 + spacingDecimal) / Math.log(1.000001);
+  console.error(Math.round(tickSpacing));
+  return Math.round(tickSpacing);
+}
