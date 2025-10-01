@@ -11,10 +11,19 @@ export async function getContractAddress(provider: RpcProvider) {
     return CORE_ADDRESS[chain];
 }
 
-export function calculateActualPrice(sqrtPrice: bigint): number {
+export function calculateActualPrice(
+  sqrtPrice: bigint,
+  token0Decimals: number,
+  token1Decimals: number
+): number {
   const Q128 = BigInt(2) ** BigInt(128);
   const sqrtPriceFloat = Number(sqrtPrice) / Number(Q128);
-  return sqrtPriceFloat * sqrtPriceFloat;
+  const rawPrice = sqrtPriceFloat * sqrtPriceFloat;
+
+  // Adjust for decimal difference (token1/token0 format)
+  // Per Ekubo docs: multiply by 10^(token0_decimals - token1_decimals)
+  const decimalAdjustment = 10 ** (token0Decimals - token1Decimals);
+  return rawPrice * decimalAdjustment;
 }
 
 export function calculateTickFromSqrtPrice(sqrtPrice: bigint): number {

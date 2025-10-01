@@ -39,7 +39,13 @@ export const getTokenPrice = async (
 
     const priceResult = await contract.get_pool_price(poolKey);
     const sqrtPrice = priceResult.sqrt_ratio;
-    const price = calculateActualPrice(sqrtPrice);
+
+    // poolKey.token0 is the lower address, poolKey.token1 is the higher address
+    const token0 = token.address < quote_currency.address ? token : quote_currency;
+    const token1 = token.address < quote_currency.address ? quote_currency : token;
+
+    // Price from Ekubo is always token1/token0
+    const price = calculateActualPrice(sqrtPrice, token0.decimals, token1.decimals);
 
     // If token order was reversed, invert the price
     const finalPrice = token.address < quote_currency.address ? price : 1 / price;

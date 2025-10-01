@@ -2,7 +2,7 @@ import { PoolKey } from '../../schemas/index.js';
 import { RpcProvider } from 'starknet';
 import { Contract } from "starknet";
 import { CORE_ABI } from "../../lib/contracts/abi.js";
-import { calculateTickFromSqrtPrice, getContractAddress, convertFeePercentToU128 } from "../../lib/utils/index.js";
+import { calculateTickFromSqrtPrice, calculateActualPrice, getContractAddress, convertFeePercentToU128 } from "../../lib/utils/index.js";
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 
 export const getPoolInfo = async (
@@ -43,10 +43,20 @@ export const getPoolInfo = async (
     const sqrtPrice = priceResult.sqrt_ratio;
     const currentTick = calculateTickFromSqrtPrice(sqrtPrice);
 
+    // Determine which token was sorted as token0/token1 in poolKey
+    const sortedToken0 = token0.address < token1.address ? token0 : token1;
+    const sortedToken1 = token0.address < token1.address ? token1 : token0;
+
+    // Calculate human-readable price (token1/token0)
+    const readablePrice = calculateActualPrice(sqrtPrice, sortedToken0.decimals, sortedToken1.decimals);
+
     return {
       status: 'success',
       data: {
-        price: sqrtPrice.toString(),
+        token0: sortedToken0.symbol,
+        token1: sortedToken1.symbol,
+        sqrt_price: sqrtPrice.toString(),
+        price: readablePrice,
         liquidity: liquidityResult.toString(),
         fees_per_liquidity: {
           fee_growth_global_0: feesResult.value0.toString(),
