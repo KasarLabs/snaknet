@@ -2,7 +2,7 @@ import { RpcProvider, Contract, Account, CallData, cairo, constants } from 'star
 import { CORE_ABI, ROUTER_ABI, ROUTER_ADDRESS } from '../../lib/contracts/abi.js';
 import { NEW_ERC20_ABI } from '../../lib/contracts/erc20.js';
 import { getContractAddress, convertFeePercentToU128, convertTickSpacingPercentToExponent, getChain } from '../../lib/utils/index.js';
-import { executeV3Transaction, extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
+import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { SwapTokensSchema } from '../../schemas/index.js';
 
 export const swapTokens = async (
@@ -91,6 +91,20 @@ export const swapTokens = async (
       }
     };
 
+    // 1. D'abord, appeler quote_swap (read-only, pas dans la transaction)
+    const quote = await routerContract.quote_swap(routeNode, tokenAmount);
+
+    // 2. Le quote retourne un Delta avec amount0 et amount1
+    // Selon la direction du swap, prendre le bon montant
+    const expectedOutput = isSellingToken0 
+      ? quote.amount1.mag  // Si on vend token0, on reçoit token1
+      : quote.amount0.mag; // Si on vend token1, on reçoit token0
+
+      // 3. Calculer le minimum avec slippage
+    const slippageMultiplier = 1 - (params.slippage_tolerance / 100);
+    const minimumAmount = BigInt(Math.floor(Number(expectedOutput) * slippageMultiplier));
+    const minimumOutput = cairo.uint256(minimumAmount.toString());
+
     console.error(`Swap direction: selling ${tokenIn.symbol} (isSellingToken0=${isSellingToken0})`);
     console.error(`Current sqrt_price: ${currentSqrtPrice.toString()}`);
     console.error(`Sqrt_ratio_limit: ${sqrtRatioLimit} (u256: low=${limitU256.low}, high=${limitU256.high})`);
@@ -117,18 +131,20 @@ export const swapTokens = async (
     const swapCalldata = routerContract.populate('swap', [routeNode, tokenAmount]);
     console.error("Swap populated");
 
-
-    // const minimumOutput = cairo.uint256(0);
-    // const clearMinimumCalldata = routerContract.populate('clear_minimum', [tokenOut.address, minimumOutput]);
-    // console.error("Clear minimum populated");
+    const clearMinimumCalldata = routerContract.populate('clear_minimum', [
+      { contract_address: tokenOut.address }, 
+      minimumOutput
+    ]);
+    console.error("Clear minimum populated");
 
     const clearCalldata = routerContract.populate('clear', [{ contract_address: tokenOut.address }]);
     console.error("Clear populated");
+
     // Execute all in a single V3 transaction: transfer, swap, clear_minimum, clear
     const { transaction_hash } = await account.execute([
       transferCalldata,
       swapCalldata,
-      // clearMinimumCalldata,
+      clearMinimumCalldata,
       clearCalldata
     ]);
 
