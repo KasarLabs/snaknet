@@ -9,12 +9,19 @@ import { mcpTool, registerToolsWithServer } from '@snaknet/core';
 import {
   poolKeySchema,
   getTokenPriceSchema,
+  swapTokensSchema,
+  addLiquiditySchema,
+  removeLiquiditySchema,
 } from './schemas/index.js';
 
 import { getPoolInfo } from './tools/read/getPoolInfo.js';
 import { getTokenPrice } from './tools/read/getTokenPrice.js';
 import { getPoolLiquidity } from './tools/read/getPoolLiquidity.js';
 import { getPoolFeesPerLiquidity } from './tools/read/getPoolFeesPerLiquidity.js';
+
+import { swapTokens } from './tools/write/swapTokens.js';
+import { addLiquidity } from './tools/write/addLiquidity.js';
+import { removeLiquidity } from './tools/write/removeLiquidity.js';
 
 dotenv.config();
 
@@ -48,7 +55,8 @@ const getEnvWrite = () => {
 
   return {
     provider,
-    account
+    privateKey,
+    accountAddress
   };
 };
 
@@ -96,6 +104,40 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       return await getPoolFeesPerLiquidity(envRead, params);
     },
   });
+
+  // Write operations
+  EkuboToolRegistry.push({
+    name: 'ekubo_swap_tokens',
+    description:
+      'Swap tokens on Ekubo DEX. Supports both exact input (specify input amount) and exact output (specify desired output amount) swaps with configurable slippage tolerance.',
+    schema: swapTokensSchema,
+    execute: async (params: any) => {
+      const envWrite = getEnvWrite();
+      return await swapTokens(envWrite, params);
+    },
+  });
+
+  // EkuboToolRegistry.push({
+  //   name: 'ekubo_add_liquidity',
+  //   description:
+  //     'Add liquidity to an Ekubo pool within a specified price range (concentrated liquidity). Provide amounts for both tokens and specify the tick range.',
+  //   schema: addLiquiditySchema,
+  //   execute: async (params: any) => {
+  //     const { provider, account } = getEnvWrite();
+  //     return await addLiquidity(provider, account, params);
+  //   },
+  // });
+
+  // EkuboToolRegistry.push({
+  //   name: 'ekubo_remove_liquidity',
+  //   description:
+  //     'Remove liquidity from an Ekubo pool position. Optionally collect accumulated fees in the same transaction.',
+  //   schema: removeLiquiditySchema,
+  //   execute: async (params: any) => {
+  //     const { provider, account } = getEnvWrite();
+  //     return await removeLiquidity(provider, account, params);
+  //   },
+  // });
 };
 
 export const RegisterToolInServer = async () => {
@@ -109,7 +151,7 @@ async function main() {
 
   await RegisterToolInServer();
   await server.connect(transport);
-  console.error('Starknet Ekubo MCP Server running on stdio');
+  // console.error('Starknet Ekubo MCP Server running on stdio');
 }
 
 main().catch((error) => {

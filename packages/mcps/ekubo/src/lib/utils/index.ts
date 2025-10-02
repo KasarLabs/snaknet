@@ -81,6 +81,5 @@ export function convertTickSpacingPercentToExponent(tickSpacingPercent: number):
   // Calculate log_base(1.000001)(1 + spacing_decimal)
   // log_base(a)(b) = ln(b) / ln(a)
   const tickSpacing = Math.log(1 + spacingDecimal) / Math.log(1.000001);
-  console.error(Math.round(tickSpacing));
   return Math.round(tickSpacing);
 }
