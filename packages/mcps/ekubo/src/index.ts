@@ -20,7 +20,7 @@ import { getPoolLiquidity } from './tools/read/getPoolLiquidity.js';
 import { getPoolFeesPerLiquidity } from './tools/read/getPoolFeesPerLiquidity.js';
 
 import { swapTokens } from './tools/write/swapTokens.js';
-import { addLiquidity } from './tools/write/addLiquidity.js';
+import { createPosition } from './tools/write/createPosition.js';
 import { removeLiquidity } from './tools/write/removeLiquidity.js';
 
 dotenv.config();
@@ -117,16 +117,16 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
     },
   });
 
-  // EkuboToolRegistry.push({
-  //   name: 'ekubo_add_liquidity',
-  //   description:
-  //     'Add liquidity to an Ekubo pool within a specified price range (concentrated liquidity). Provide amounts for both tokens and specify the tick range.',
-  //   schema: addLiquiditySchema,
-  //   execute: async (params: any) => {
-  //     const { provider, account } = getEnvWrite();
-  //     return await addLiquidity(provider, account, params);
-  //   },
-  // });
+  EkuboToolRegistry.push({
+    name: 'ekubo_create_position',
+    description:
+      'Create a new liquidity position in an Ekubo pool within a specified price range (concentrated liquidity). Provide amounts for both tokens and specify the tick range.',
+    schema: addLiquiditySchema,
+    execute: async (params: any) => {
+      const envWrite = getEnvWrite();
+      return await createPosition(envWrite, params);
+    },
+  });
 
   // EkuboToolRegistry.push({
   //   name: 'ekubo_remove_liquidity',

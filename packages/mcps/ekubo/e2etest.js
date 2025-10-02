@@ -26,7 +26,7 @@ try {
         "assetType": "SYMBOL",
         "assetValue": "USDC"
       },
-      amount: "1000000000",
+      amount: "100000000000",
       is_amount_in: true,
       slippage_tolerance: 0.5,
       fee: 0.05,
