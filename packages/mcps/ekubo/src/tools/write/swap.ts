@@ -5,7 +5,7 @@ import { getContractAddress, convertFeePercentToU128, convertTickSpacingPercentT
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { SwapTokensSchema } from '../../schemas/index.js';
 
-export const swapTokens = async (
+export const swap = async (
   env: any,
   params: SwapTokensSchema
 ) => {

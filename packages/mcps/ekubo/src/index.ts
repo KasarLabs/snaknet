@@ -19,9 +19,12 @@ import { getTokenPrice } from './tools/read/getTokenPrice.js';
 import { getPoolLiquidity } from './tools/read/getPoolLiquidity.js';
 import { getPoolFeesPerLiquidity } from './tools/read/getPoolFeesPerLiquidity.js';
 
-import { swapTokens } from './tools/write/swapTokens.js';
+import { swap } from './tools/write/swap.js';
 import { createPosition } from './tools/write/createPosition.js';
-import { removeLiquidity } from './tools/write/removeLiquidity.js';
+import { addLiquidity } from './tools/write/addLiquidity.js';
+import { withdrawLiquidity } from './tools/write/withdrawLiquidity.js';
+import { swapLimitOrder, swapLimitOrderSchema } from './tools/write/swapLimitOrder.js';
+import { transferPosition, transferPositionSchema } from './tools/write/transferPosition.js';
 
 dotenv.config();
 
@@ -107,20 +110,20 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
 
   // Write operations
   EkuboToolRegistry.push({
-    name: 'ekubo_swap_tokens',
+    name: 'ekubo_swap',
     description:
       'Swap tokens on Ekubo DEX. Supports both exact input (specify input amount) and exact output (specify desired output amount) swaps with configurable slippage tolerance.',
     schema: swapTokensSchema,
     execute: async (params: any) => {
       const envWrite = getEnvWrite();
-      return await swapTokens(envWrite, params);
+      return await swap(envWrite, params);
     },
   });
 
   EkuboToolRegistry.push({
     name: 'ekubo_create_position',
     description:
-      'Create a new liquidity position in an Ekubo pool within a specified price range (concentrated liquidity). Provide amounts for both tokens and specify the tick range.',
+      'Create a new liquidity position (NFT) in an Ekubo pool within a specified price range (concentrated liquidity). Mints a new NFT position.',
     schema: addLiquiditySchema,
     execute: async (params: any) => {
       const envWrite = getEnvWrite();
@@ -128,16 +131,49 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
     },
   });
 
-  // EkuboToolRegistry.push({
-  //   name: 'ekubo_remove_liquidity',
-  //   description:
-  //     'Remove liquidity from an Ekubo pool position. Optionally collect accumulated fees in the same transaction.',
-  //   schema: removeLiquiditySchema,
-  //   execute: async (params: any) => {
-  //     const { provider, account } = getEnvWrite();
-  //     return await removeLiquidity(provider, account, params);
-  //   },
-  // });
+  EkuboToolRegistry.push({
+    name: 'ekubo_add_liquidity',
+    description:
+      'Add liquidity to an existing Ekubo pool position without minting a new NFT. Deposits tokens into the last position.',
+    schema: addLiquiditySchema,
+    execute: async (params: any) => {
+      const envWrite = getEnvWrite();
+      return await addLiquidity(envWrite, params);
+    },
+  });
+
+  EkuboToolRegistry.push({
+    name: 'ekubo_withdraw_liquidity',
+    description:
+      'Withdraw liquidity from an Ekubo pool position. Can withdraw full position, partial position, or only collect fees.',
+    schema: removeLiquiditySchema,
+    execute: async (params: any) => {
+      const envWrite = getEnvWrite();
+      return await withdrawLiquidity(envWrite, params);
+    },
+  });
+
+  EkuboToolRegistry.push({
+    name: 'ekubo_swap_limit_order',
+    description:
+      'Swap tokens to a limit order price and optionally place a limit order at that price. Useful for executing swaps with limit order placement.',
+    schema: swapLimitOrderSchema,
+    execute: async (params: any) => {
+      const envWrite = getEnvWrite();
+      return await swapLimitOrder(envWrite, params);
+    },
+  });
+
+  EkuboToolRegistry.push({
+    name: 'ekubo_transfer_position',
+    description:
+      'Transfer an Ekubo NFT position to another address. The position NFT represents ownership of the liquidity position.',
+    schema: transferPositionSchema,
+    execute: async (params: any) => {
+      const envWrite = getEnvWrite();
+      return await transferPosition(envWrite, params);
+    },
+  });
 };
 
 export const RegisterToolInServer = async () => {

@@ -135,19 +135,27 @@ export const addLiquiditySchema = z.object({
 export type AddLiquiditySchema = z.infer<typeof addLiquiditySchema>
 
 export const removeLiquiditySchema = z.object({
+  position_id: z
+    .number()
+    .describe('The NFT position ID (u64)'),
   token0: assetSchema
     .describe('The asset information (symbol or contract address) of the first token'),
   token1: assetSchema
     .describe('The asset information (symbol or contract address) of the second token'),
   liquidity_amount: z
     .string()
-    .describe('The amount of liquidity to remove (as a string to handle large numbers)'),
+    .describe('The amount of liquidity to remove (as a string to handle large numbers, set to "0" for fees only)'),
   lower_tick: z
     .number()
     .describe('The lower tick of the position range'),
   upper_tick: z
     .number()
     .describe('The upper tick of the position range'),
+  fees_only: z
+    .boolean()
+    .optional()
+    .default(false)
+    .describe('Set to true to only collect fees without withdrawing liquidity (defaults to false)'),
   collect_fees: z
     .boolean()
     .optional()
