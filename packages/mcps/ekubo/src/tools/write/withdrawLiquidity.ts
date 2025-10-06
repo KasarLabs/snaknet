@@ -1,5 +1,6 @@
 import { getContract } from '../../lib/contracts/index.js';
 import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
+import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { WithdrawLiquiditySchema } from '../../schemas/index.js';
 
@@ -11,25 +12,16 @@ export const withdrawLiquidity = async (
     const account = env.account;
     const positionsContract = await getContract(env.provider, 'positions');
 
-    // Validate tokens
-    const { assetSymbol: symbol0, assetAddress: address0 } = extractAssetInfo(params.token0);
-    const { assetSymbol: symbol1, assetAddress: address1 } = extractAssetInfo(params.token1);
-
-    const token0: validToken = await validateToken(env.provider, symbol0, address0);
-    const token1: validToken = await validateToken(env.provider, symbol1, address1);
-
-    // Sort tokens by address (Ekubo requirement)
-    const sortedToken0 = token0.address < token1.address ? token0 : token1;
-    const sortedToken1 = token0.address < token1.address ? token1 : token0;
-
-    // Build pool key
-    const poolKey = {
-      token0: sortedToken0.address,
-      token1: sortedToken1.address,
-      fee: convertFeePercentToU128(params.fee),
-      tick_spacing: convertTickSpacingPercentToExponent(params.tick_spacing),
-      extension: params.extension
-    };
+    const { poolKey, token0, token1 } = await preparePoolKeyFromParams(
+      env.provider,
+      {
+        token0: params.token0,
+        token1: params.token1,
+        fee: params.fee,
+        tick_spacing: params.tick_spacing,
+        extension: params.extension
+      }
+    );
 
     // Build bounds (price range)
     const bounds = {
@@ -63,12 +55,12 @@ export const withdrawLiquidity = async (
 
     // Clear token0 to receive withdrawn tokens
     const clearToken0Calldata = positionsContract.populate('clear', [
-      { contract_address: sortedToken0.address }
+      { contract_address: token0.address }
     ]);
 
     // Clear token1 to receive withdrawn tokens
     const clearToken1Calldata = positionsContract.populate('clear', [
-      { contract_address: sortedToken1.address }
+      { contract_address: token1.address }
     ]);
 
     // Execute withdraw + clear transactions
@@ -87,8 +79,8 @@ export const withdrawLiquidity = async (
       status: 'success',
       data: {
         transaction_hash,
-        token0: sortedToken0.symbol,
-        token1: sortedToken1.symbol,
+        token0: token0.symbol,
+        token1: token1.symbol,
         position_id: params.position_id,
         liquidity_withdrawn: liquidity.toString(),
         fees_only: params.fees_only,

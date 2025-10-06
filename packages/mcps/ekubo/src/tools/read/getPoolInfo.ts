@@ -1,7 +1,7 @@
 import { PoolKey, envRead } from '../../schemas/index.js';
-import { calculateTickFromSqrtPrice, calculateActualPrice, convertFeePercentToU128, convertTickSpacingPercentToExponent } from "../../lib/utils/math.js";
-import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
+import { calculateTickFromSqrtPrice, calculateActualPrice } from "../../lib/utils/math.js";
 import { getContract } from '../../lib/contracts/index.js';
+import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 
 export const getPoolInfo = async (
   env: envRead,
@@ -11,29 +11,16 @@ export const getPoolInfo = async (
   try {
     const contract = await getContract(provider, 'core');
 
-    const { assetSymbol: symbolToken0, assetAddress: addressToken0 } = extractAssetInfo(params.token0);
-    const { assetSymbol: symbolToken1, assetAddress: addressToken1 } = extractAssetInfo(params.token1);
-
-    const token0: validToken = await validateToken(
-      provider,
-      symbolToken0,
-      addressToken0
+    const { poolKey, token0, token1 } = await preparePoolKeyFromParams(
+      env.provider,
+      {
+        token0: params.token0,
+        token1: params.token1,
+        fee: params.fee,
+        tick_spacing: params.tick_spacing,
+        extension: params.extension
+      }
     );
-
-    const token1: validToken = await validateToken(
-      provider,
-      symbolToken1,
-      addressToken1
-    );
-    
-    // Convert fee percentage to u128 and tick_spacing to exponent
-    const poolKey = {
-      ...params,
-      token0: token0.address < token1.address ? token0.address : token1.address,
-      token1: token0.address < token1.address ? token1.address : token0.address,
-      fee: convertFeePercentToU128(params.fee),
-      tick_spacing: convertTickSpacingPercentToExponent(params.tick_spacing)
-    };
 
     const priceResult = await contract.get_pool_price(poolKey);
     const liquidityResult = await contract.get_pool_liquidity(poolKey);
@@ -42,18 +29,14 @@ export const getPoolInfo = async (
     const sqrtPrice = priceResult.sqrt_ratio;
     const currentTick = calculateTickFromSqrtPrice(sqrtPrice);
 
-    // Determine which token was sorted as token0/token1 in poolKey
-    const sortedToken0 = token0.address < token1.address ? token0 : token1;
-    const sortedToken1 = token0.address < token1.address ? token1 : token0;
-
     // Calculate human-readable price (token1/token0)
-    const readablePrice = calculateActualPrice(sqrtPrice, sortedToken0.decimals, sortedToken1.decimals);
+    const readablePrice = calculateActualPrice(sqrtPrice, token0.decimals, token1.decimals);
 
     return {
       status: 'success',
       data: {
-        token0: sortedToken0.symbol,
-        token1: sortedToken1.symbol,
+        token0: token0.symbol,
+        token1: token1.symbol,
         sqrt_price: sqrtPrice.toString(),
         price: readablePrice,
         liquidity: liquidityResult.toString(),

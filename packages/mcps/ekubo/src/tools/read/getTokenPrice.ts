@@ -2,6 +2,7 @@ import { calculateActualPrice, convertFeePercentToU128, convertTickSpacingPercen
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { GetTokenPriceSchema, envRead } from '../../schemas/index.js';
 import { getContract } from '../../lib/contracts/index.js';
+import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 
 export const getTokenPrice = async (
   env: envRead,
@@ -11,48 +12,31 @@ export const getTokenPrice = async (
   try {
     const contract = await getContract(provider, 'core');
 
-    const { assetSymbol: tokenSymbol, assetAddress: tokenAddress } = extractAssetInfo(params.token);
-    const { assetSymbol: currencySymbol, assetAddress: currencyAddress } = extractAssetInfo(params.quote_currency);
-
-    const token: validToken = await validateToken(
-      provider,
-      tokenSymbol,
-      tokenAddress
+    const { poolKey, token0, token1 } = await preparePoolKeyFromParams(
+      env.provider,
+      {
+        token0: params.token,
+        token1: params.quote_currency,
+        fee: params.fee,
+        tick_spacing: params.tick_spacing,
+        extension: params.extension
+      }
     );
-
-    const quote_currency: validToken = await validateToken(
-      provider,
-      currencySymbol,
-      currencyAddress
-    );
-
-    const poolKey = {
-      token0: token.address < quote_currency.address ? token.address : quote_currency.address,
-      token1: token.address < quote_currency.address ? quote_currency.address : token.address,
-      fee: convertFeePercentToU128(params.fee),
-      tick_spacing: convertTickSpacingPercentToExponent(params.tick_spacing),
-      extension: params.extension
-    };
 
     const priceResult = await contract.get_pool_price(poolKey);
     const sqrtPrice = priceResult.sqrt_ratio;
 
-    // poolKey.token0 is the lower address, poolKey.token1 is the higher address
-    const token0 = token.address < quote_currency.address ? token : quote_currency;
-    const token1 = token.address < quote_currency.address ? quote_currency : token;
-
     // Price from Ekubo is always token1/token0
     const price = calculateActualPrice(sqrtPrice, token0.decimals, token1.decimals);
-
-    // If token order was reversed, invert the price
-    const finalPrice = token.address < quote_currency.address ? price : 1 / price;
+    // // If token order was reversed, invert the price // TO CHECK AGAIN
+    // const finalPrice = token0.symbol === params.token.assetValue ? price : 1 / price;
 
     return JSON.stringify({
       status: 'success',
       data: {
-        base_token: token.symbol,
-        quote_token: quote_currency.symbol,
-        price: finalPrice,
+        base_token: params.token.assetValue,
+        quote_token: params.quote_currency.assetValue,
+        price: price,
         sqrt_price: sqrtPrice.toString(),
       }
     });

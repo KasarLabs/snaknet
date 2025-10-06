@@ -101,14 +101,7 @@ export const swap = async (
     const slippageMultiplier = 1 - (params.slippage_tolerance / 100);
     const minimumAmount = BigInt(Math.floor(Number(expectedOutput) * slippageMultiplier));
     const minimumOutput = cairo.uint256(minimumAmount.toString());
-
-    console.error(`Swap direction: selling ${tokenIn.symbol} (isSellingToken0=${isSellingToken0})`);
-    console.error(`Current sqrt_price: ${currentSqrtPrice.toString()}`);
-    console.error(`Sqrt_ratio_limit: ${sqrtRatioLimit} (u256: low=${limitU256.low}, high=${limitU256.high})`);
-    console.error(`TokenAmount: token=${tokenIn.symbol}, amount=${params.amount}, is_input=${params.is_amount_in}`);
-    console.error(`RouteNode:`, JSON.stringify(routeNode, null, 2));
-    // console.error(`TokenAmount struct:`, JSON.stringify(tokenAmount, null, 2));
-
+    
     // Transfer tokens to Router before swap
     // The Router expects tokens to be already transferred
     const tokenInContract = getERC20Contract(tokenIn.address, env.provider);

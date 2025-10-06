@@ -3,6 +3,7 @@ import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '..
 import {  getContract } from '../../lib/utils/contracts.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { AddLiquiditySchema } from '../../schemas/index.js';
+import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 
 export const createPosition = async (
   env: any,
@@ -12,27 +13,19 @@ export const createPosition = async (
     const account = env.account;
     const positionsContract = await getContract(env.provider, 'positions');
 
-    // Validate tokens
-    const { assetSymbol: symbol0, assetAddress: address0 } = extractAssetInfo(params.token0);
-    const { assetSymbol: symbol1, assetAddress: address1 } = extractAssetInfo(params.token1);
+    const { poolKey, token0, token1 } = await preparePoolKeyFromParams(
+      env.provider,
+      {
+        token0: params.token0,
+        token1: params.token1,
+        fee: params.fee,
+        tick_spacing: params.tick_spacing,
+        extension: params.extension
+      }
+    );
 
-    const token0: validToken = await validateToken(env.provider, symbol0, address0);
-    const token1: validToken = await validateToken(env.provider, symbol1, address1);
-
-    // Sort tokens by address (Ekubo requirement)
-    const sortedToken0 = token0.address < token1.address ? token0 : token1;
-    const sortedToken1 = token0.address < token1.address ? token1 : token0;
-    const sortedAmount0 = token0.address < token1.address ? params.amount0 : params.amount1;
-    const sortedAmount1 = token0.address < token1.address ? params.amount1 : params.amount0;
-
-    // Build pool key
-    const poolKey = {
-      token0: sortedToken0.address,
-      token1: sortedToken1.address,
-      fee: convertFeePercentToU128(params.fee),
-      tick_spacing: convertTickSpacingPercentToExponent(params.tick_spacing),
-      extension: params.extension
-    };
+    const amount0 = token0.address < token1.address ? params.amount0 : params.amount1;
+    const amount1 = token0.address < token1.address ? params.amount1 : params.amount0;
 
     // Build bounds (price range)
     const bounds = {
@@ -50,14 +43,14 @@ export const createPosition = async (
     const minLiquidity = 0;
 
     // Transfer token0 to Positions contract
-    const token0Contract = getERC20Contract(sortedToken0.address, env.provider);
+    const token0Contract = getERC20Contract(token0.address, env.provider);
     token0Contract.connect(account);
-    const transfer0Calldata = token0Contract.populate('transfer', [positionsContract.address, sortedAmount0]);
+    const transfer0Calldata = token0Contract.populate('transfer', [positionsContract.address, amount0]);
 
     // Transfer token1 to Positions contract
-    const token1Contract = getERC20Contract(sortedToken1.address, env.provider);
+    const token1Contract = getERC20Contract(token1.address, env.provider);
     token1Contract.connect(account);
-    const transfer1Calldata = token1Contract.populate('transfer', [positionsContract.address, sortedAmount1]);
+    const transfer1Calldata = token1Contract.populate('transfer', [positionsContract.address, amount1]);
 
     // Call mint_and_deposit_and_clear_both
     positionsContract.connect(account);
@@ -102,16 +95,16 @@ export const createPosition = async (
         }
       }
     }
-    console.error("YO");
+
     return JSON.stringify({
       status: 'success',
       data: {
         transaction_hash: executeResult.transaction_hash,
         position_id: positionId ? BigInt(positionId).toString() : undefined,
-        token0: sortedToken0.symbol,
-        token1: sortedToken1.symbol,
-        amount0: sortedAmount0,
-        amount1: sortedAmount1,
+        token0: token0.symbol,
+        token1: token1.symbol,
+        amount0: amount0,
+        amount1: amount1,
         lower_tick: params.lower_tick,
         upper_tick: params.upper_tick,
         pool_fee: params.fee
