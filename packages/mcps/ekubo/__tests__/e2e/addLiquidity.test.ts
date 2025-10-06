@@ -38,8 +38,6 @@ try {
   });
 
   console.log('Raw result:', JSON.stringify(result, null, 2));
-  const response = JSON.parse(result.content[0].text);
-  console.log('Parsed response:', JSON.stringify(response, null, 2));
 } catch (error) {
   console.error('Error:', error.message);
   console.error('Full error:', error);
