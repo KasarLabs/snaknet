@@ -3,11 +3,11 @@ import { POSITIONS_ABI } from '../../lib/contracts/abi.js';
 import { POSITIONS_ADDRESS, POSITIONS_NFT_ADDRESS } from '../../lib/contracts/addresses.js';
 import { convertFeePercentToU128, convertTickSpacingPercentToExponent, getChain } from '../../lib/utils/index.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
-import { RemoveLiquiditySchema } from '../../schemas/index.js';
+import { WithdrawLiquiditySchema } from '../../schemas/index.js';
 
 export const withdrawLiquidity = async (
   env: any,
-  params: RemoveLiquiditySchema
+  params: WithdrawLiquiditySchema
 ) => {
   try {
     const chain = await getChain(env.provider);

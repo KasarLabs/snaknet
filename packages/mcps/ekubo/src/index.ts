@@ -11,7 +11,7 @@ import {
   getTokenPriceSchema,
   swapTokensSchema,
   addLiquiditySchema,
-  removeLiquiditySchema,
+  withdrawLiquiditySchema,
 } from './schemas/index.js';
 
 import { getPoolInfo } from './tools/read/getPoolInfo.js';
@@ -23,7 +23,6 @@ import { swap } from './tools/write/swap.js';
 import { createPosition } from './tools/write/createPosition.js';
 import { addLiquidity } from './tools/write/addLiquidity.js';
 import { withdrawLiquidity } from './tools/write/withdrawLiquidity.js';
-import { swapLimitOrder, swapLimitOrderSchema } from './tools/write/swapLimitOrder.js';
 import { transferPosition, transferPositionSchema } from './tools/write/transferPosition.js';
 
 dotenv.config();
@@ -146,21 +145,10 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
     name: 'ekubo_withdraw_liquidity',
     description:
       'Withdraw liquidity from an Ekubo pool position. Can withdraw full position, partial position, or only collect fees.',
-    schema: removeLiquiditySchema,
+    schema: withdrawLiquiditySchema,
     execute: async (params: any) => {
       const envWrite = getEnvWrite();
       return await withdrawLiquidity(envWrite, params);
-    },
-  });
-
-  EkuboToolRegistry.push({
-    name: 'ekubo_swap_limit_order',
-    description:
-      'Swap tokens to a limit order price and optionally place a limit order at that price. Useful for executing swaps with limit order placement.',
-    schema: swapLimitOrderSchema,
-    execute: async (params: any) => {
-      const envWrite = getEnvWrite();
-      return await swapLimitOrder(envWrite, params);
     },
   });
 

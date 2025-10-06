@@ -137,7 +137,7 @@ export const addLiquiditySchema = z.object({
 
 export type AddLiquiditySchema = z.infer<typeof addLiquiditySchema>
 
-export const removeLiquiditySchema = z.object({
+export const withdrawLiquiditySchema = z.object({
   position_id: z
     .number()
     .describe('The NFT position ID (u64)'),
@@ -181,4 +181,4 @@ export const removeLiquiditySchema = z.object({
     .describe('The extension contract address (default: "0x0")')
 });
 
-export type RemoveLiquiditySchema = z.infer<typeof removeLiquiditySchema>
+export type WithdrawLiquiditySchema = z.infer<typeof withdrawLiquiditySchema>
