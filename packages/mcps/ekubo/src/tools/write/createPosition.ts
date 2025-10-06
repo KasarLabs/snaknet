@@ -1,8 +1,6 @@
-import { RpcProvider, Contract, Account, constants, cairo } from 'starknet';
-import { POSITIONS_ABI } from '../../lib/contracts/abi.js';
-import { POSITIONS_ADDRESS, POSITIONS_NFT_ADDRESS } from '../../lib/contracts/addresses.js';
-import { NEW_ERC20_ABI } from '../../lib/contracts/erc20.js';
-import { convertFeePercentToU128, convertTickSpacingPercentToExponent, getChain } from '../../lib/utils/index.js';
+import { getERC20Contract } from '../../lib/contracts/index.js';
+import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
+import {  getContract } from '../../lib/utils/contracts.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { AddLiquiditySchema } from '../../schemas/index.js';
 
@@ -12,9 +10,7 @@ export const createPosition = async (
 ) => {
   try {
     const account = env.account;
-    const chain = await getChain(env.provider);
-    const positionsAddress = POSITIONS_ADDRESS[chain];
-    const positionsContract = new Contract(POSITIONS_ABI, positionsAddress, env.provider);
+    const positionsContract = await getContract(env.provider, 'positions');
 
     // Validate tokens
     const { assetSymbol: symbol0, assetAddress: address0 } = extractAssetInfo(params.token0);
@@ -54,14 +50,14 @@ export const createPosition = async (
     const minLiquidity = 0;
 
     // Transfer token0 to Positions contract
-    const token0Contract = new Contract(NEW_ERC20_ABI, sortedToken0.address, env.provider);
+    const token0Contract = getERC20Contract(sortedToken0.address, env.provider);
     token0Contract.connect(account);
-    const transfer0Calldata = token0Contract.populate('transfer', [positionsAddress, sortedAmount0]);
+    const transfer0Calldata = token0Contract.populate('transfer', [positionsContract.address, sortedAmount0]);
 
     // Transfer token1 to Positions contract
-    const token1Contract = new Contract(NEW_ERC20_ABI, sortedToken1.address, env.provider);
+    const token1Contract = getERC20Contract(sortedToken1.address, env.provider);
     token1Contract.connect(account);
-    const transfer1Calldata = token1Contract.populate('transfer', [positionsAddress, sortedAmount1]);
+    const transfer1Calldata = token1Contract.populate('transfer', [positionsContract.address, sortedAmount1]);
 
     // Call mint_and_deposit_and_clear_both
     positionsContract.connect(account);

@@ -1,16 +1,3 @@
-import { RpcProvider, shortString } from 'starknet';
-import { CORE_ADDRESS } from '../contracts/addresses.js';
-
-export async function getChain(provider: RpcProvider) {
-    const chainId =  shortString.decodeShortString(await provider.getChainId());
-    return (chainId === 'SN_MAIN' ? 'mainnet' : 'sepolia');
-}
-
-export async function getContractAddress(provider: RpcProvider) {
-    const chain = await getChain(provider);
-    return CORE_ADDRESS[chain];
-}
-
 export function calculateActualPrice(
   sqrtPrice: bigint,
   token0Decimals: number,

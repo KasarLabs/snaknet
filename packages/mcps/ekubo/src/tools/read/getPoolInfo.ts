@@ -1,8 +1,7 @@
 import { PoolKey, envRead } from '../../schemas/index.js';
-import { Contract } from "starknet";
-import { CORE_ABI } from "../../lib/contracts/abi.js";
-import { calculateTickFromSqrtPrice, calculateActualPrice, getContractAddress, convertFeePercentToU128, convertTickSpacingPercentToExponent } from "../../lib/utils/index.js";
+import { calculateTickFromSqrtPrice, calculateActualPrice, convertFeePercentToU128, convertTickSpacingPercentToExponent } from "../../lib/utils/math.js";
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
+import { getContract } from '../../lib/contracts/index.js';
 
 export const getPoolInfo = async (
   env: envRead,
@@ -10,8 +9,7 @@ export const getPoolInfo = async (
 ) => {
   const provider = env.provider;
   try {
-    const contractAddress = await getContractAddress(provider);
-    const contract = new Contract(CORE_ABI, contractAddress, provider);
+    const contract = await getContract(provider, 'core');
 
     const { assetSymbol: symbolToken0, assetAddress: addressToken0 } = extractAssetInfo(params.token0);
     const { assetSymbol: symbolToken1, assetAddress: addressToken1 } = extractAssetInfo(params.token1);

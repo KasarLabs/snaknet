@@ -1,7 +1,5 @@
-import { Contract, Account, constants } from 'starknet';
-import { POSITIONS_ABI } from '../../lib/contracts/abi.js';
-import { POSITIONS_ADDRESS, POSITIONS_NFT_ADDRESS } from '../../lib/contracts/addresses.js';
-import { convertFeePercentToU128, convertTickSpacingPercentToExponent, getChain } from '../../lib/utils/index.js';
+import { getContract } from '../../lib/contracts/index.js';
+import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { WithdrawLiquiditySchema } from '../../schemas/index.js';
 
@@ -11,9 +9,7 @@ export const withdrawLiquidity = async (
 ) => {
   try {
     const account = env.account;
-    const chain = await getChain(env.provider);
-    const positionsAddress = POSITIONS_ADDRESS[chain];
-    const positionsContract = new Contract(POSITIONS_ABI, positionsAddress, env.provider);
+    const positionsContract = await getContract(env.provider, 'positions');
 
     // Validate tokens
     const { assetSymbol: symbol0, assetAddress: address0 } = extractAssetInfo(params.token0);

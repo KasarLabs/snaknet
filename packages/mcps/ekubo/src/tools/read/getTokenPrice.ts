@@ -1,8 +1,7 @@
-import { Contract } from 'starknet';
-import { CORE_ABI } from '../../lib/contracts/abi.js';
-import { getContractAddress, calculateActualPrice, convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/index.js';
+import { calculateActualPrice, convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { GetTokenPriceSchema, envRead } from '../../schemas/index.js';
+import { getContract } from '../../lib/contracts/index.js';
 
 export const getTokenPrice = async (
   env: envRead,
@@ -10,8 +9,7 @@ export const getTokenPrice = async (
 ) => {
   const provider = env.provider;
   try {
-    const contractAddress = await getContractAddress(provider);
-    const contract = new Contract(CORE_ABI, contractAddress, provider);
+    const contract = await getContract(provider, 'core');
 
     const { assetSymbol: tokenSymbol, assetAddress: tokenAddress } = extractAssetInfo(params.token);
     const { assetSymbol: currencySymbol, assetAddress: currencyAddress } = extractAssetInfo(params.quote_currency);

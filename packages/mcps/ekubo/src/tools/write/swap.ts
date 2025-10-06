@@ -1,7 +1,8 @@
 import { RpcProvider, Contract, Account, CallData, cairo, constants } from 'starknet';
-import { CORE_ABI, ROUTER_ABI, ROUTER_ADDRESS } from '../../lib/contracts/abi.js';
-import { NEW_ERC20_ABI } from '../../lib/contracts/erc20.js';
-import { getContractAddress, convertFeePercentToU128, convertTickSpacingPercentToExponent, getChain } from '../../lib/utils/index.js';
+import { ROUTER_ABI } from '../../lib/abis/index.js';
+import { getERC20Contract } from '../../lib/contracts/index.js';
+import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
+import { getChain, getContract } from '../../lib/utils/contracts.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { SwapTokensSchema } from '../../schemas/index.js';
 
@@ -11,13 +12,8 @@ export const swap = async (
 ) => {
   try {
     const account = env.account;
-    const chain = await getChain(env.provider);
-    const routerAddress = ROUTER_ADDRESS[chain];
-    const routerContract = new Contract(ROUTER_ABI, routerAddress, env.provider);
-
-    // Get Core contract for price query
-    const coreAddress = await getContractAddress(env.provider);
-    const coreContract = new Contract(CORE_ABI, coreAddress, env.provider);
+    const routerContract = await getContract(env.provider, 'routerV3');
+    const coreContract = await getContract(env.provider, 'core');
 
     // Validate tokens
     const { assetSymbol: tokenInSymbol, assetAddress: tokenInAddress } = extractAssetInfo(params.token_in);
@@ -115,9 +111,9 @@ export const swap = async (
 
     // Transfer tokens to Router before swap
     // The Router expects tokens to be already transferred
-    const tokenInContract = new Contract(NEW_ERC20_ABI, tokenIn.address, env.provider);
+    const tokenInContract = getERC20Contract(tokenIn.address, env.provider);
     tokenInContract.connect(account);
-    const transferCalldata = tokenInContract.populate('transfer', [routerAddress, params.amount]);
+    const transferCalldata = tokenInContract.populate('transfer', [routerContract.address, params.amount]);
     console.error("Transfer populated");
 
     routerContract.connect(account);

@@ -193,3 +193,14 @@ export const withdrawLiquiditySchema = z.object({
 });
 
 export type WithdrawLiquiditySchema = z.infer<typeof withdrawLiquiditySchema>
+
+export const transferPositionSchema = z.object({
+  position_id: z
+    .number()
+    .describe('The NFT position ID to transfer (u64)'),
+  to_address: z
+    .string()
+    .describe('The recipient address to transfer the position to')
+});
+
+export type TransferPositionSchema = z.infer<typeof transferPositionSchema>;
