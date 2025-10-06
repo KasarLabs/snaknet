@@ -1,8 +1,7 @@
-import { RpcProvider, Contract, Account, CallData, cairo, constants } from 'starknet';
-import { ROUTER_ABI } from '../../lib/abis/index.js';
+import { cairo } from 'starknet';
 import { getERC20Contract } from '../../lib/contracts/index.js';
 import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
-import { getChain, getContract } from '../../lib/utils/contracts.js';
+import { getContract } from '../../lib/utils/contracts.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { SwapTokensSchema } from '../../schemas/index.js';
 
@@ -101,7 +100,7 @@ export const swap = async (
     const slippageMultiplier = 1 - (params.slippage_tolerance / 100);
     const minimumAmount = BigInt(Math.floor(Number(expectedOutput) * slippageMultiplier));
     const minimumOutput = cairo.uint256(minimumAmount.toString());
-    
+
     // Transfer tokens to Router before swap
     // The Router expects tokens to be already transferred
     const tokenInContract = getERC20Contract(tokenIn.address, env.provider);

@@ -1,7 +1,5 @@
 import { getERC20Contract } from '../../lib/contracts/index.js';
-import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
-import {  getContract } from '../../lib/utils/contracts.js';
-import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
+import { getContract } from '../../lib/utils/contracts.js';
 import { AddLiquiditySchema } from '../../schemas/index.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 

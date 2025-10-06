@@ -1,7 +1,5 @@
 import { getContract } from '../../lib/contracts/index.js';
-import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
-import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { WithdrawLiquiditySchema } from '../../schemas/index.js';
 
 export const withdrawLiquidity = async (
