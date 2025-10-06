@@ -10,6 +10,7 @@ export const withdrawLiquidity = async (
   params: WithdrawLiquiditySchema
 ) => {
   try {
+    const account = env.account;
     const chain = await getChain(env.provider);
     const positionsAddress = POSITIONS_ADDRESS[chain];
     const positionsContract = new Contract(POSITIONS_ABI, positionsAddress, env.provider);
@@ -45,15 +46,6 @@ export const withdrawLiquidity = async (
         sign: params.upper_tick < 0
       }
     };
-
-    // Create account
-    const account = new Account(
-      env.provider,
-      env.accountAddress,
-      env.privateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
 
     // Determine liquidity and min amounts based on fees_only option
     const liquidity = params.fees_only ? 0 : BigInt(params.liquidity_amount);

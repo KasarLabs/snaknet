@@ -11,6 +11,7 @@ export const addLiquidity = async (
   params: AddLiquiditySchema
 ) => {
   try {
+    const account = env.account;
     const chain = await getChain(env.provider);
     const positionsAddress = POSITIONS_ADDRESS[chain];
     const positionsContract = new Contract(POSITIONS_ABI, positionsAddress, env.provider);
@@ -51,15 +52,6 @@ export const addLiquidity = async (
 
     // Min liquidity (set to 0 for now)
     const minLiquidity = 0;
-
-    // Create account
-    const account = new Account(
-      env.provider,
-      env.accountAddress,
-      env.privateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
 
     // Transfer token0 to Positions contract
     const token0Contract = new Contract(NEW_ERC20_ABI, sortedToken0.address, env.provider);

@@ -20,18 +20,10 @@ export const transferPosition = async (
   params: TransferPositionSchema
 ) => {
   try {
+    const account = env.account;
     const chain = await getChain(env.provider);
     const positionsAddress = POSITIONS_NFT_ADDRESS[chain];
     const positionsContract = new Contract(NFT_POSITIONS_CONTRACT_ABI, positionsAddress, env.provider);
-
-    // Create account
-    const account = new Account(
-      env.provider,
-      env.accountAddress,
-      env.privateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
 
     // Convert position_id to u256
     const tokenId = cairo.uint256(params.position_id);

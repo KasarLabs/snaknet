@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
+import { RpcProvider, Account, constants } from 'starknet';
 
 import dotenv from 'dotenv';
 
@@ -12,6 +12,8 @@ import {
   swapTokensSchema,
   addLiquiditySchema,
   withdrawLiquiditySchema,
+  envRead,
+  envWrite,
 } from './schemas/index.js';
 
 import { getPoolInfo } from './tools/read/getPoolInfo.js';
@@ -32,16 +34,18 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-const getEnvRead = () => {
+const getEnvRead = (): envRead => {
   if (!process.env.STARKNET_RPC_URL) {
     throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
+      'Missing required environment variables: STARKNET_RPC_URL'
     );
   }
-  return new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
+  return {
+    provider: new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL })
+  };
 };
 
-const getEnvWrite = () => {
+const getEnvWrite = (): envWrite => {
   const rpcUrl = process.env.STARKNET_RPC_URL;
   const privateKey = process.env.STARKNET_PRIVATE_KEY;
   const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
@@ -53,12 +57,17 @@ const getEnvWrite = () => {
   }
 
   const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(provider, accountAddress, privateKey);
-
+  const account = new Account(
+    provider,
+    accountAddress,
+    privateKey,
+    undefined,
+    constants.TRANSACTION_VERSION.V3
+  );
+  
   return {
     provider,
-    privateKey,
-    accountAddress
+    account,
   };
 };
 

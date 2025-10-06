@@ -10,6 +10,7 @@ export const swap = async (
   params: SwapTokensSchema
 ) => {
   try {
+    const account = env.account;
     const chain = await getChain(env.provider);
     const routerAddress = ROUTER_ADDRESS[chain];
     const routerContract = new Contract(ROUTER_ABI, routerAddress, env.provider);
@@ -111,14 +112,6 @@ export const swap = async (
     console.error(`TokenAmount: token=${tokenIn.symbol}, amount=${params.amount}, is_input=${params.is_amount_in}`);
     console.error(`RouteNode:`, JSON.stringify(routeNode, null, 2));
     // console.error(`TokenAmount struct:`, JSON.stringify(tokenAmount, null, 2));
-
-    const account = new Account(
-      env.provider,
-      env.accountAddress,
-      env.privateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
 
     // Transfer tokens to Router before swap
     // The Router expects tokens to be already transferred

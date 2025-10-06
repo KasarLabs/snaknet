@@ -1,4 +1,15 @@
 import { z } from 'zod';
+import { RpcProvider, Account } from 'starknet';
+
+// Environment types for read and write operations
+export interface envRead {
+  provider: RpcProvider;
+}
+
+export interface envWrite {
+  provider: RpcProvider;
+  account: Account;
+}
 
 export const assetSchema = z.object({
   assetType: z
