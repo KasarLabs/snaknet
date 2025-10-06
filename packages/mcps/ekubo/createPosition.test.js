@@ -24,12 +24,12 @@ try {
       },
       token1: {
         "assetType": "SYMBOL",
-        "assetValue": "USDC"
+        "assetValue": "STRK"
       },
-      amount0: "100000000000000",
-      amount1: "200000000",
-      lower_tick: -100,
-      upper_tick: 100,
+      amount0: "1000000", // 0.0001 ETH (0.1 wei = 10^14 wei)
+      amount1: "1000000000", // 0.1 STRK (10^17 wei)
+      lower_tick: -1000,
+      upper_tick: 1000,
       fee: 0.05,
       tick_spacing: 0.1,
       extension: "0x0"

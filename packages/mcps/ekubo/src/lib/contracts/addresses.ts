@@ -13,6 +13,11 @@ export const ROUTERV3 = {
   'mainnet' : '0x0199741822c2dc722f6f605204f35e56dbc23bceed54818168c4c49e4fb8737e'
 }
 
+export const POSITIONS_ADDRESS = {
+  'sepolia' : '0x06a2aee84bb0ed5dded4384ddd0e40e9c1372b818668375ab8e3ec08807417e5',
+  'mainnet' : '0x02e0af29598b407c8716b17f6d2795eca1b471413fa03fb145a5e33722184067'
+}
+
 export const tokenAddresses: { [key: string]: string } = {
   AKU: '0x137dfca7d96cdd526d13a63176454f35c691f55837497448fad352643cfe4d4',
   ALF: '0x78d7dfcddb44667153513bd837ff534ef395484f4b6cf28faa25b2c46e063d9',

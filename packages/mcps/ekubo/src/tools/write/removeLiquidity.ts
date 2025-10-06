@@ -5,20 +5,19 @@ import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/tok
 import { RemoveLiquiditySchema } from '../../schemas/index.js';
 
 export const removeLiquidity = async (
-  provider: RpcProvider,
-  account: Account,
+  env: any,
   params: RemoveLiquiditySchema
 ) => {
   try {
-    const contractAddress = await getContractAddress(provider);
-    const contract = new Contract(CORE_ABI, contractAddress, provider);
+    const contractAddress = await getContractAddress(env.provider);
+    const contract = new Contract(CORE_ABI, contractAddress, env.provider);
 
     // Validate tokens
     const { assetSymbol: symbol0, assetAddress: address0 } = extractAssetInfo(params.token0);
     const { assetSymbol: symbol1, assetAddress: address1 } = extractAssetInfo(params.token1);
 
-    const token0: validToken = await validateToken(provider, symbol0, address0);
-    const token1: validToken = await validateToken(provider, symbol1, address1);
+    const token0: validToken = await validateToken(env.provider, symbol0, address0);
+    const token1: validToken = await validateToken(env.provider, symbol1, address1);
 
     // Sort tokens by address (Ekubo requirement)
     const sortedToken0 = token0.address < token1.address ? token0 : token1;
@@ -56,7 +55,7 @@ export const removeLiquidity = async (
     };
 
     // Connect contract to account
-    contract.connect(account);
+    contract.connect(env.account);
 
     const calls = [];
 
@@ -88,7 +87,7 @@ export const removeLiquidity = async (
     }
 
     // Execute all calls in a single transaction
-    const result = await account.execute(calls);
+    const result = await env.account.execute(calls);
 
     return JSON.stringify({
       status: 'success',
