@@ -1,6 +1,6 @@
 import { Contract, Account, constants } from 'starknet';
 import { POSITIONS_ABI } from '../../lib/contracts/abi.js';
-import { POSITIONS_NFT_ADDRESS } from '../../lib/contracts/addresses.js';
+import { POSITIONS_ADDRESS, POSITIONS_NFT_ADDRESS } from '../../lib/contracts/addresses.js';
 import { convertFeePercentToU128, convertTickSpacingPercentToExponent, getChain } from '../../lib/utils/index.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { RemoveLiquiditySchema } from '../../schemas/index.js';
@@ -11,7 +11,7 @@ export const withdrawLiquidity = async (
 ) => {
   try {
     const chain = await getChain(env.provider);
-    const positionsAddress = POSITIONS_NFT_ADDRESS[chain];
+    const positionsAddress = POSITIONS_ADDRESS[chain];
     const positionsContract = new Contract(POSITIONS_ABI, positionsAddress, env.provider);
 
     // Validate tokens
@@ -73,8 +73,22 @@ export const withdrawLiquidity = async (
       collectFees
     ]);
 
-    // Execute withdraw transaction
-    const { transaction_hash } = await account.execute([withdrawCalldata]);
+    // Clear token0 to receive withdrawn tokens
+    const clearToken0Calldata = positionsContract.populate('clear', [
+      { contract_address: sortedToken0.address }
+    ]);
+
+    // Clear token1 to receive withdrawn tokens
+    const clearToken1Calldata = positionsContract.populate('clear', [
+      { contract_address: sortedToken1.address }
+    ]);
+
+    // Execute withdraw + clear transactions
+    const { transaction_hash } = await account.execute([
+      withdrawCalldata,
+      clearToken0Calldata,
+      clearToken1Calldata
+    ]);
 
     const receipt = await account.waitForTransaction(transaction_hash);
     if (!receipt.isSuccess()) {

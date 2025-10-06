@@ -99,6 +99,9 @@ export const swapTokensSchema = z.object({
 export type SwapTokensSchema = z.infer<typeof swapTokensSchema>
 
 export const addLiquiditySchema = z.object({
+  position_id: z
+    .number()
+    .describe('The NFT position ID (u64) to add liquidity to'),
   token0: assetSchema
     .describe('The asset information (symbol or contract address) of the first token'),
   token1: assetSchema

@@ -18,18 +18,19 @@ try {
   const result = await client.callTool({
     name: "ekubo_add_liquidity",
     arguments: {
+      position_id: 2165129,
       token0: {
         "assetType": "SYMBOL",
-        "assetValue": "ETH"
+        "assetValue": "STRK"
       },
       token1: {
         "assetType": "SYMBOL",
-        "assetValue": "USDC"
+        "assetValue": "ETH"
       },
-      amount0: "50000000000000",
-      amount1: "100000000",
-      lower_tick: -50,
-      upper_tick: 50,
+      amount0: "5000000",
+      amount1: "5000",
+      lower_tick: -1000,
+      upper_tick: 1000,
       fee: 0.05,
       tick_spacing: 0.1,
       extension: "0x0"

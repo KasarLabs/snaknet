@@ -1,6 +1,6 @@
 import { Contract, Account, constants, cairo } from 'starknet';
 import { POSITIONS_ABI } from '../../lib/contracts/abi.js';
-import { POSITIONS_NFT_ADDRESS } from '../../lib/contracts/addresses.js';
+import { POSITIONS_ADDRESS, POSITIONS_NFT_ADDRESS } from '../../lib/contracts/addresses.js';
 import { NEW_ERC20_ABI } from '../../lib/contracts/erc20.js';
 import { convertFeePercentToU128, convertTickSpacingPercentToExponent, getChain } from '../../lib/utils/index.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
@@ -12,7 +12,7 @@ export const addLiquidity = async (
 ) => {
   try {
     const chain = await getChain(env.provider);
-    const positionsAddress = POSITIONS_NFT_ADDRESS[chain];
+    const positionsAddress = POSITIONS_ADDRESS[chain];
     const positionsContract = new Contract(POSITIONS_ABI, positionsAddress, env.provider);
 
     // Validate tokens
@@ -71,9 +71,10 @@ export const addLiquidity = async (
     token1Contract.connect(account);
     const transfer1Calldata = token1Contract.populate('transfer', [positionsAddress, sortedAmount1]);
 
-    // Call deposit_last
+    // Call deposit with position_id
     positionsContract.connect(account);
-    const depositCalldata = positionsContract.populate('deposit_last', [
+    const depositCalldata = positionsContract.populate('deposit', [
+      params.position_id, // u64 position ID
       poolKey,
       bounds,
       minLiquidity
@@ -107,6 +108,7 @@ export const addLiquidity = async (
       status: 'success',
       data: {
         transaction_hash,
+        position_id: params.position_id,
         token0: sortedToken0.symbol,
         token1: sortedToken1.symbol,
         amount0: sortedAmount0,

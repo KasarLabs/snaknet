@@ -6,8 +6,8 @@ import { z } from 'zod';
 
 const transferPositionSchema = z.object({
   position_id: z
-    .string()
-    .describe('The NFT position ID to transfer (as string to handle u256)'),
+    .number()
+    .describe('The NFT position ID to transfer (u64)'),
   to_address: z
     .string()
     .describe('The recipient address to transfer the position to')
