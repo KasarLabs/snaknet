@@ -64,7 +64,7 @@ const getEnvWrite = () => {
 
 const registerTools = (EkuboToolRegistry: mcpTool[]) => {
   EkuboToolRegistry.push({
-    name: 'ekubo_get_pool_info',
+    name: 'get_pool_info',
     description:
       'Get comprehensive information about an Ekubo pool including current price, liquidity, and fee data.',
     schema: poolKeySchema,
@@ -75,7 +75,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
   });
 
   EkuboToolRegistry.push({
-    name: 'ekubo_get_token_price',
+    name: 'get_token_price',
     description:
       'Get the price of a token via Ekubo pools by querying the pool price directly from the Core contract.',
     schema: getTokenPriceSchema,
@@ -86,7 +86,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
   });
 
   EkuboToolRegistry.push({
-    name: 'ekubo_get_pool_liquidity',
+    name: 'get_pool_liquidity',
     description:
       'Get the total liquidity available in an Ekubo pool at the current tick.',
     schema: poolKeySchema,
@@ -97,7 +97,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
   });
 
   EkuboToolRegistry.push({
-    name: 'ekubo_get_pool_fees_per_liquidity',
+    name: 'get_pool_fees_per_liquidity',
     description:
       'Get the cumulative fees per unit of liquidity for an Ekubo pool (both token0 and token1).',
     schema: poolKeySchema,
@@ -109,7 +109,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
 
   // Write operations
   EkuboToolRegistry.push({
-    name: 'ekubo_swap',
+    name: 'swap',
     description:
       'Swap tokens on Ekubo DEX. Supports both exact input (specify input amount) and exact output (specify desired output amount) swaps with configurable slippage tolerance.',
     schema: swapTokensSchema,
@@ -120,7 +120,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
   });
 
   EkuboToolRegistry.push({
-    name: 'ekubo_create_position',
+    name: 'create_position',
     description:
       'Create a new liquidity position (NFT) in an Ekubo pool within a specified price range (concentrated liquidity). Mints a new NFT position.',
     schema: addLiquiditySchema,
@@ -131,7 +131,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
   });
 
   EkuboToolRegistry.push({
-    name: 'ekubo_add_liquidity',
+    name: 'add_liquidity',
     description:
       'Add liquidity to an existing Ekubo pool position without minting a new NFT. Deposits tokens into the last position.',
     schema: addLiquiditySchema,
@@ -142,7 +142,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
   });
 
   EkuboToolRegistry.push({
-    name: 'ekubo_withdraw_liquidity',
+    name: 'withdraw_liquidity',
     description:
       'Withdraw liquidity from an Ekubo pool position. Can withdraw full position, partial position, or only collect fees.',
     schema: withdrawLiquiditySchema,
@@ -153,7 +153,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
   });
 
   EkuboToolRegistry.push({
-    name: 'ekubo_transfer_position',
+    name: 'transfer_position',
     description:
       'Transfer an Ekubo NFT position to another address. The position NFT represents ownership of the liquidity position.',
     schema: transferPositionSchema,

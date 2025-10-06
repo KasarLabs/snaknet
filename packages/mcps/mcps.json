@@ -329,13 +329,25 @@
       "args": ["build/index.js"],
       "transport": "stdio",
       "env": {
-        "STARKNET_RPC_URL": ""
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
       }
     },
-    "description": "Ekubo protocol interactions on Starknet",
+    "description": "Ekubo decentralized exchange for liquidity management and token swaps",
     "promptInfo": {
-      "expertise": "Ekubo protocol on Starknet",
-      "tools": []
+      "expertise": "Ekubo DEX liquidity and trading on Starknet",
+      "tools": [
+        "get_pool_info",
+        "get_pool_liquidity",
+        "get_pool_fees_per_liquidity",
+        "get_token_price",
+        "swap",
+        "create_position",
+        "add_liquidity",
+        "withdraw_liquidity",
+        "transfer_position"
+      ]
     }
   },
   "extended": {
