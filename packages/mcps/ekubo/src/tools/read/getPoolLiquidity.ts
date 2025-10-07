@@ -18,17 +18,17 @@ export const getPoolLiquidity = async (env: envRead, params: PoolKey) => {
 
     const liquidityResult = await contract.get_pool_liquidity(poolKey);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       data: {
         liquidity: liquidityResult.toString(),
       },
-    });
+    };
   } catch (error: any) {
     console.error('Error getting pool liquidity:', error);
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error.message,
-    });
+    };
   }
 };

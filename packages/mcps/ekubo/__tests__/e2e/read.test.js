@@ -28,10 +28,8 @@ async function callTool(client, name, args) {
   console.log(`\n--- ${name} ---`);
   console.log('Raw result:', JSON.stringify(result, null, 2));
 
-  // The MCP response is double-encoded JSON, so we need to parse twice
-  const firstParse = JSON.parse(result.content[0].text);
-  const response =
-    typeof firstParse === 'string' ? JSON.parse(firstParse) : firstParse;
+  // Parse the MCP response
+  const response = JSON.parse(result.content[0].text);
   console.log('Parsed response:', JSON.stringify(response, null, 2));
 
   return response;

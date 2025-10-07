@@ -91,7 +91,7 @@ export const swap = async (env: envWrite, params: SwapTokensSchema) => {
       throw new Error('Transaction confirmed but failed');
     }
 
-    return JSON.stringify({
+    return {
       status: 'success',
       data: {
         transaction_hash: transaction_hash,
@@ -102,12 +102,12 @@ export const swap = async (env: envWrite, params: SwapTokensSchema) => {
         pool_fee: params.fee,
         slippage_tolerance: params.slippage_tolerance,
       },
-    });
+    };
   } catch (error: any) {
     // console.error('Error swapping tokens:', error);
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error.message || 'Unknown error during swap',
-    });
+    };
   }
 };

@@ -21,18 +21,18 @@ export const getPoolFeesPerLiquidity = async (
 
     const feesResult = await contract.get_pool_fees_per_liquidity(poolKey);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       data: {
         fee_growth_global_0: feesResult.value0.toString(),
         fee_growth_global_1: feesResult.value1.toString(),
       },
-    });
+    };
   } catch (error: any) {
     console.error('Error getting pool fees per liquidity:', error);
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error.message,
-    });
+    };
   }
 };

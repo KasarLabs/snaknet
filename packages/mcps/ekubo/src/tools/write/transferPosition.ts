@@ -25,7 +25,7 @@ export const transferPosition = async (
       throw new Error('Transaction confirmed but failed');
     }
 
-    return JSON.stringify({
+    return {
       status: 'success',
       data: {
         transaction_hash,
@@ -33,11 +33,11 @@ export const transferPosition = async (
         from: account.address,
         to: params.to_address,
       },
-    });
+    };
   } catch (error: any) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error.message || 'Unknown error while transferring position',
-    });
+    };
   }
 };

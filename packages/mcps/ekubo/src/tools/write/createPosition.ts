@@ -74,7 +74,7 @@ export const createPosition = async (
       getEkuboAddress('positionsNFT', chain)
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       data: {
         transaction_hash: executeResult.transaction_hash,
@@ -87,11 +87,11 @@ export const createPosition = async (
         upper_tick: params.upper_tick,
         pool_fee: params.fee,
       },
-    });
+    };
   } catch (error: any) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error.message || 'Unknown error while adding liquidity',
-    });
+    };
   }
 };

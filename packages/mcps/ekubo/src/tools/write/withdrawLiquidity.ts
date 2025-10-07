@@ -59,7 +59,7 @@ export const withdrawLiquidity = async (
       throw new Error('Transaction confirmed but failed');
     }
 
-    return JSON.stringify({
+    return {
       status: 'success',
       data: {
         transaction_hash,
@@ -70,11 +70,11 @@ export const withdrawLiquidity = async (
         fees_only: params.fees_only,
         collect_fees: collectFees,
       },
-    });
+    };
   } catch (error: any) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error.message || 'Unknown error while withdrawing liquidity',
-    });
+    };
   }
 };

@@ -33,7 +33,7 @@ export const getTokenPrice = async (
 
     const finalPrice = isTokenALower ? price : 1 / price;
 
-    return JSON.stringify({
+    return {
       status: 'success',
       data: {
         base_token: params.token.assetValue,
@@ -41,7 +41,7 @@ export const getTokenPrice = async (
         price: finalPrice,
         sqrt_price: sqrtPrice.toString(),
       },
-    });
+    };
   } catch (error: any) {
     console.error('Error getting token price:', error);
     const errorMessage = error.message;
@@ -51,9 +51,9 @@ export const getTokenPrice = async (
         ? `${errorMessage}. Try specifying different fee/tick_spacing values. Common pairs: fee=0.05 tick_spacing=0.1, fee=0.3 tick_spacing=0.6, or fee=1 tick_spacing=2.`
         : errorMessage;
 
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: suggestion,
-    });
+    };
   }
 };
