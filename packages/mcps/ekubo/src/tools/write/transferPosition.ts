@@ -1,0 +1,43 @@
+import { cairo } from 'starknet';
+import { getContract } from '../../lib/utils/contracts.js';
+import { TransferPositionSchema } from '../../schemas/index.js';
+import { envWrite } from '../../interfaces/index.js';
+
+export const transferPosition = async (
+  env: envWrite,
+  params: TransferPositionSchema
+) => {
+  try {
+    const account = env.account;
+    const NFTContract = await getContract(env.provider, 'positionsNFT');
+
+    NFTContract.connect(account);
+    const transferCalldata = NFTContract.populate('transfer_from', [
+      account.address,
+      params.to_address,
+      cairo.uint256(params.position_id),
+    ]);
+
+    const { transaction_hash } = await account.execute([transferCalldata]);
+
+    const receipt = await account.waitForTransaction(transaction_hash);
+    if (!receipt.isSuccess()) {
+      throw new Error('Transaction confirmed but failed');
+    }
+
+    return {
+      status: 'success',
+      data: {
+        transaction_hash,
+        position_id: params.position_id,
+        from: account.address,
+        to: params.to_address,
+      },
+    };
+  } catch (error: any) {
+    return {
+      status: 'failure',
+      error: error.message || 'Unknown error while transferring position',
+    };
+  }
+};

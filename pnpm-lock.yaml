@@ -253,6 +253,9 @@ importers:
 
   packages/mcps/ekubo:
     dependencies:
+      '@ekubo/starknet-sdk':
+        specifier: ^0.0.7
+        version: 0.0.7
       '@modelcontextprotocol/sdk':
         specifier: ^1.11.2
         version: 1.17.5
@@ -865,6 +868,9 @@ packages:
 
   '@dabh/diagnostics@2.0.3':
     resolution: {integrity: sha512-hrlQOIi7hAfzsMqlGSFyVucrx38O+j6wiGOf//H2ecvIEqYN4ADBSS2iLMh5UFyDunCNniUIPk/q3riFv45xRA==}
+
+  '@ekubo/starknet-sdk@0.0.7':
+    resolution: {integrity: sha512-YJf+DjijbOpX/lRGl4K56+bQZIHcdqCEuU6WzSFqUn+Po4p20NEHPQtCOhUq3BUTTHxhoWWPGRB9zC0nQEoiAA==}
 
   '@eslint-community/eslint-utils@4.7.0':
     resolution: {integrity: sha512-dyybb3AcajC7uha6CvhdVRJqaKyn7w2YKqKyAN37NKYgZT36w+iRb0Dymmc5qEJ549c/S31cMMSFd75bteCpCw==}
@@ -4019,6 +4025,8 @@ snapshots:
       colorspace: 1.1.4
       enabled: 2.0.0
       kuler: 2.0.0
+
+  '@ekubo/starknet-sdk@0.0.7': {}
 
   '@eslint-community/eslint-utils@4.7.0(eslint@9.26.0(jiti@1.21.7))':
     dependencies:

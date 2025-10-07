@@ -16,6 +16,7 @@
     "build"
   ],
   "dependencies": {
+    "@ekubo/starknet-sdk": "^0.0.7",
     "@modelcontextprotocol/sdk": "^1.11.2",
     "@snaknet/core": "workspace:*",
     "dotenv": "^16.4.7",
