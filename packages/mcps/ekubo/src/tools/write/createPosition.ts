@@ -1,7 +1,8 @@
-import { getERC20Contract } from '../../lib/utils/contracts.js';
+import { getChain, getEkuboAddress, getERC20Contract } from '../../lib/utils/contracts.js';
 import { getContract } from '../../lib/utils/contracts.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 import { buildBounds, sortAmounts } from '../../lib/utils/liquidity.js';
+import { extractPositionIdFromReceipt } from '../../lib/utils/events.js';
 import { CreatePositionSchema } from '../../schemas/index.js';
 import { envWrite } from '../../interfaces/index.js';
 
@@ -60,32 +61,17 @@ export const createPosition = async (env: envWrite, params: CreatePositionSchema
       throw new Error('Transaction confirmed but failed');
     }
 
-    let positionId: string | undefined;
-    const TRANSFER_EVENT_KEY =
-      '0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9';
-    let POSITION_NFT =
-      '0x7b696af58c967c1b14c9dde0ace001720635a660a8e90c565ea459345318b30';
-    if ('events' in receipt && Array.isArray(receipt.events)) {
-      for (const event of receipt.events) {
-        if (
-          event.from_address === POSITION_NFT &&
-          event.keys?.[0] === TRANSFER_EVENT_KEY
-        ) {
-          const fromAddress = event.data?.[0];
-          if (fromAddress === '0x0') {
-            console.error(`EVENT DATE: ${event.data}`);
-            positionId = event.data?.[2];
-            break;
-          }
-        }
-      }
-    }
+    const chain = await getChain(env.provider);
+    const positionId = extractPositionIdFromReceipt(
+      receipt,
+      getEkuboAddress('positionsNFT', chain)
+    );
 
     return JSON.stringify({
       status: 'success',
       data: {
         transaction_hash: executeResult.transaction_hash,
-        position_id: positionId ? BigInt(positionId).toString() : undefined,
+        position_id: positionId,
         token0: token0.symbol,
         token1: token1.symbol,
         amount0: amount0,
