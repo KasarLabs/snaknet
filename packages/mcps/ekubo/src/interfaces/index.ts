@@ -14,3 +14,12 @@ export interface CompletePoolInfo {
   };
   current_tick: number;
 }
+
+export interface envRead {
+  provider: RpcProvider;
+}
+
+export interface envWrite {
+  provider: RpcProvider;
+  account: Account;
+}

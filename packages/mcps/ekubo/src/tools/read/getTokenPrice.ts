@@ -1,5 +1,6 @@
 import { calculateActualPrice } from '../../lib/utils/math.js';
-import { GetTokenPriceSchema, envRead } from '../../schemas/index.js';
+import { envRead } from '../../interfaces/index.js';
+import { GetTokenPriceSchema } from '../../schemas/index.js';
 import { getContract } from '../../lib/utils/contracts.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 

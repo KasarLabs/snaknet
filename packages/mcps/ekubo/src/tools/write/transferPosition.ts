@@ -1,9 +1,10 @@
 import { cairo } from 'starknet';
 import { getContract } from '../../lib/utils/contracts.js';
 import { TransferPositionSchema } from '../../schemas/index.js';
+import { envWrite } from '../../interfaces/index.js';
 
 export const transferPosition = async (
-  env: any,
+  env: envWrite,
   params: TransferPositionSchema
 ) => {
   try {
@@ -12,7 +13,7 @@ export const transferPosition = async (
 
     NFTContract.connect(account);
     const transferCalldata = NFTContract.populate('transfer_from', [
-      env.accountAddress,
+      account.address,
       params.to_address,
       cairo.uint256(params.position_id),
     ]);
@@ -29,7 +30,7 @@ export const transferPosition = async (
       data: {
         transaction_hash,
         position_id: params.position_id,
-        from: env.accountAddress,
+        from: account.address,
         to: params.to_address,
       },
     });

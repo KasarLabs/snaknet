@@ -1,4 +1,5 @@
-import { PoolKey, envRead } from '../../schemas/index.js';
+import { envRead } from '../../interfaces/index.js';
+import { PoolKey } from '../../schemas/index.js';
 import {
   calculateTickFromSqrtPrice,
   calculateActualPrice,

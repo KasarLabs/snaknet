@@ -2,9 +2,10 @@ import { getContract } from '../../lib/utils/contracts.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 import { WithdrawLiquiditySchema } from '../../schemas/index.js';
 import { buildBounds } from '../../lib/utils/liquidity.js';
+import { envWrite } from '../../interfaces/index.js';
 
 export const withdrawLiquidity = async (
-  env: any,
+  env: envWrite,
   params: WithdrawLiquiditySchema
 ) => {
   try {

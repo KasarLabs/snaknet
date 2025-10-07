@@ -12,8 +12,9 @@ import {
   extractExpectedOutput,
   calculateMinimumOutputU256,
 } from '../../lib/utils/quote.js';
+import { envWrite } from '../../interfaces/index.js';
 
-export const swap = async (env: any, params: SwapTokensSchema) => {
+export const swap = async (env: envWrite, params: SwapTokensSchema) => {
   try {
     const account = env.account;
     const routerContract = await getContract(env.provider, 'routerV3');

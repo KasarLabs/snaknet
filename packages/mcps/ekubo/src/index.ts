@@ -12,8 +12,6 @@ import {
   swapTokensSchema,
   addLiquiditySchema,
   withdrawLiquiditySchema,
-  envRead,
-  envWrite,
   transferPositionSchema,
   createPositionSchema,
 } from './schemas/index.js';
@@ -28,6 +26,7 @@ import { createPosition } from './tools/write/createPosition.js';
 import { addLiquidity } from './tools/write/addLiquidity.js';
 import { withdrawLiquidity } from './tools/write/withdrawLiquidity.js';
 import { transferPosition } from './tools/write/transferPosition.js';
+import { envRead, envWrite } from './interfaces/index.js';
 
 dotenv.config();
 
