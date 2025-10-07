@@ -14,9 +14,9 @@ export const transferPosition = async (
 
     NFTContract.connect(account);
     const transferCalldata = NFTContract.populate('transfer_from', [
-      env.accountAddress, // from (current owner)
-      params.to_address,  // to (new owner)
-      tokenId             // token_id (position NFT ID)
+      env.accountAddress,
+      params.to_address, 
+      tokenId       
     ]);
 
     const { transaction_hash } = await account.execute([transferCalldata]);

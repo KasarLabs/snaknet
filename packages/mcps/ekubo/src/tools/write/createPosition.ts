@@ -2,6 +2,7 @@ import { getERC20Contract } from '../../lib/contracts/index.js';
 import { getContract } from '../../lib/utils/contracts.js';
 import { AddLiquiditySchema } from '../../schemas/index.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
+import { buildBounds, sortAmounts } from '../../lib/utils/liquidity.js';
 
 export const createPosition = async (
   env: any,
@@ -11,7 +12,7 @@ export const createPosition = async (
     const account = env.account;
     const positionsContract = await getContract(env.provider, 'positions');
 
-    const { poolKey, token0, token1 } = await preparePoolKeyFromParams(
+    const { poolKey, token0, token1, isTokenALower } = await preparePoolKeyFromParams(
       env.provider,
       {
         token0: params.token0,
@@ -22,35 +23,18 @@ export const createPosition = async (
       }
     );
 
-    const amount0 = token0.address < token1.address ? params.amount0 : params.amount1;
-    const amount1 = token0.address < token1.address ? params.amount1 : params.amount0;
-
-    // Build bounds (price range)
-    const bounds = {
-      lower: {
-        mag: BigInt(Math.abs(params.lower_tick)),
-        sign: params.lower_tick < 0
-      },
-      upper: {
-        mag: BigInt(Math.abs(params.upper_tick)),
-        sign: params.upper_tick < 0
-      }
-    };
-
-    // Min liquidity (set to 0 for now, can be improved with calculation)
+    const { amount0, amount1 } = sortAmounts(params.amount0, params.amount1, isTokenALower);
+    const bounds = buildBounds(params.lower_tick, params.upper_tick);
     const minLiquidity = 0;
 
-    // Transfer token0 to Positions contract
     const token0Contract = getERC20Contract(token0.address, env.provider);
     token0Contract.connect(account);
     const transfer0Calldata = token0Contract.populate('transfer', [positionsContract.address, amount0]);
 
-    // Transfer token1 to Positions contract
     const token1Contract = getERC20Contract(token1.address, env.provider);
     token1Contract.connect(account);
     const transfer1Calldata = token1Contract.populate('transfer', [positionsContract.address, amount1]);
 
-    // Call mint_and_deposit_and_clear_both
     positionsContract.connect(account);
     const mintCalldata = positionsContract.populate('mint_and_deposit_and_clear_both', [
       poolKey,
@@ -58,7 +42,6 @@ export const createPosition = async (
       minLiquidity
     ]);
 
-    // Execute all in a single V3 transaction: transfer token0, transfer token1, mint
     const executeResult = await account.execute([
       transfer0Calldata,
       transfer1Calldata,

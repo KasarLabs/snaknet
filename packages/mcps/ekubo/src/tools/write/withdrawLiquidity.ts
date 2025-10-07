@@ -1,6 +1,7 @@
 import { getContract } from '../../lib/contracts/index.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 import { WithdrawLiquiditySchema } from '../../schemas/index.js';
+import { buildBounds } from '../../lib/utils/liquidity.js';
 
 export const withdrawLiquidity = async (
   env: any,
@@ -21,28 +22,15 @@ export const withdrawLiquidity = async (
       }
     );
 
-    // Build bounds (price range)
-    const bounds = {
-      lower: {
-        mag: BigInt(Math.abs(params.lower_tick)),
-        sign: params.lower_tick < 0
-      },
-      upper: {
-        mag: BigInt(Math.abs(params.upper_tick)),
-        sign: params.upper_tick < 0
-      }
-    };
-
-    // Determine liquidity and min amounts based on fees_only option
+    const bounds = buildBounds(params.lower_tick, params.upper_tick);
     const liquidity = params.fees_only ? 0 : BigInt(params.liquidity_amount);
-    const minToken0 = 0; // Can be improved with slippage calculation
-    const minToken1 = 0; // Can be improved with slippage calculation
+    const minToken0 = 0;
+    const minToken1 = 0;
     const collectFees = params.collect_fees ?? true;
 
-    // Call withdraw on Positions contract
     positionsContract.connect(account);
     const withdrawCalldata = positionsContract.populate('withdraw', [
-      params.position_id, // u64 position ID
+      params.position_id,
       poolKey,
       bounds,
       liquidity,
@@ -51,17 +39,14 @@ export const withdrawLiquidity = async (
       collectFees
     ]);
 
-    // Clear token0 to receive withdrawn tokens
     const clearToken0Calldata = positionsContract.populate('clear', [
       { contract_address: token0.address }
     ]);
 
-    // Clear token1 to receive withdrawn tokens
     const clearToken1Calldata = positionsContract.populate('clear', [
       { contract_address: token1.address }
     ]);
 
-    // Execute withdraw + clear transactions
     const { transaction_hash } = await account.execute([
       withdrawCalldata,
       clearToken0Calldata,
