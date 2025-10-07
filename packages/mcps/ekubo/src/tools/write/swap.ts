@@ -1,10 +1,9 @@
-import { cairo } from 'starknet';
 import { getERC20Contract } from '../../lib/contracts/index.js';
-import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
 import { getContract } from '../../lib/utils/contracts.js';
-import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { SwapTokensSchema } from '../../schemas/index.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
+import { buildRouteNode, buildTokenAmount, calculateSqrtRatioLimit } from '../../lib/utils/swap.js';
+import { getSwapQuote, extractExpectedOutput, calculateMinimumOutputU256 } from '../../lib/utils/quote.js';
 
 export const swap = async (
   env: any,
@@ -28,84 +27,35 @@ export const swap = async (
 
     const tokenIn = isTokenALower ? token0 : token1;
     const tokenOut = isTokenALower ? token1 : token0;
-    
-    // Get current pool price for slippage calculation
+
+    // Get current pool price and calculate sqrt_ratio_limit with slippage
     const priceResult = await coreContract.get_pool_price(poolKey);
     const currentSqrtPrice = BigInt(priceResult.sqrt_ratio);
+    const sqrtRatioLimit = calculateSqrtRatioLimit(currentSqrtPrice, params.slippage_tolerance, isTokenALower);
 
-    // Min and max sqrt_ratio values (from Ekubo bounds)
-    const MIN_SQRT_RATIO = BigInt("18446748437148339061");
-    const MAX_SQRT_RATIO = BigInt("6277100250585753475930931601400621808602321654880405518632");
+    // Build route node and token amount for swap
+    const routeNode = buildRouteNode(poolKey, sqrtRatioLimit);
+    const tokenAmount = buildTokenAmount(tokenIn.address, params.amount, params.is_amount_in);
 
-    let sqrtRatioLimit: string;
-    if (isTokenALower) {
-      const slippageMultiplier = 1 - (params.slippage_tolerance / 100);
-      const calculatedLimit = BigInt(Math.floor(Number(currentSqrtPrice) * Math.sqrt(slippageMultiplier)));
-      sqrtRatioLimit = calculatedLimit < currentSqrtPrice && calculatedLimit >= MIN_SQRT_RATIO
-        ? calculatedLimit.toString()
-        : MIN_SQRT_RATIO.toString();
-    } else {
-      const slippageMultiplier = 1 + (params.slippage_tolerance / 100);
-      const calculatedLimit = BigInt(Math.floor(Number(currentSqrtPrice) * Math.sqrt(slippageMultiplier)));
-      sqrtRatioLimit = calculatedLimit > currentSqrtPrice && calculatedLimit <= MAX_SQRT_RATIO
-        ? calculatedLimit.toString()
-        : MAX_SQRT_RATIO.toString();
-    }
+    // Get quote to calculate minimum output with slippage
+    const quote = await getSwapQuote(routerContract, routeNode, tokenAmount);
+    const expectedOutput = extractExpectedOutput(quote, isTokenALower);
+    const minimumOutput = calculateMinimumOutputU256(expectedOutput, params.slippage_tolerance);
 
-    // Convert sqrt_ratio_limit to u256 format using cairo utility
-    const limitU256 = cairo.uint256(sqrtRatioLimit);
-
-    // Build RouteNode for Router
-    const routeNode = {
-      pool_key: poolKey,
-      sqrt_ratio_limit: limitU256,
-      skip_ahead: 0
-    };
-
-    // Build TokenAmount for Router
-    const tokenAmount = {
-      token: tokenIn.address,
-      amount: {
-        mag: BigInt(params.amount),
-        sign: !params.is_amount_in // false = positive (exact input), true = negative (exact output)
-      }
-    };
-
-    // 1. D'abord, appeler quote_swap (read-only, pas dans la transaction)
-    const quote = await routerContract.quote_swap(routeNode, tokenAmount);
-
-    // 2. Le quote retourne un Delta avec amount0 et amount1
-    // Selon la direction du swap, prendre le bon montant
-    const expectedOutput = isTokenALower 
-      ? quote.amount1.mag  // Si on vend token0, on reçoit token1
-      : quote.amount0.mag; // Si on vend token1, on reçoit token0
-
-      // 3. Calculer le minimum avec slippage
-    const slippageMultiplier = 1 - (params.slippage_tolerance / 100);
-    const minimumAmount = BigInt(Math.floor(Number(expectedOutput) * slippageMultiplier));
-    const minimumOutput = cairo.uint256(minimumAmount.toString());
-
-    // Transfer tokens to Router before swap
-    // The Router expects tokens to be already transferred
     const tokenInContract = getERC20Contract(tokenIn.address, env.provider);
     tokenInContract.connect(account);
     const transferCalldata = tokenInContract.populate('transfer', [routerContract.address, params.amount]);
-    console.error("Transfer populated");
 
     routerContract.connect(account);
     const swapCalldata = routerContract.populate('swap', [routeNode, tokenAmount]);
-    console.error("Swap populated");
 
     const clearMinimumCalldata = routerContract.populate('clear_minimum', [
       { contract_address: tokenOut.address }, 
       minimumOutput
     ]);
-    console.error("Clear minimum populated");
 
     const clearCalldata = routerContract.populate('clear', [{ contract_address: tokenOut.address }]);
-    console.error("Clear populated");
 
-    // Execute all in a single V3 transaction: transfer, swap, clear_minimum, clear
     const { transaction_hash } = await account.execute([
       transferCalldata,
       swapCalldata,
