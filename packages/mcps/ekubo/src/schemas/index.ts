@@ -232,3 +232,41 @@ export const transferPositionSchema = z.object({
 });
 
 export type TransferPositionSchema = z.infer<typeof transferPositionSchema>;
+
+export const createPositionSchema = z.object({
+  token0: assetSchema.describe(
+    'The asset information (symbol or contract address) of the first token'
+  ),
+  token1: assetSchema.describe(
+    'The asset information (symbol or contract address) of the second token'
+  ),
+  amount0: z
+    .string()
+    .describe('The amount of token0 to add (in token decimals)'),
+  amount1: z
+    .string()
+    .describe('The amount of token1 to add (in token decimals)'),
+  lower_tick: z.number().describe('The lower tick of the position range'),
+  upper_tick: z.number().describe('The upper tick of the position range'),
+  fee: z
+    .number()
+    .optional()
+    .default(0.05)
+    .describe(
+      'The fee tier as a percentage (e.g., 0.05 for 0.05%, 0.3 for 0.3%, 1 for 1%, defaults to 0.05)'
+    ),
+  tick_spacing: z
+    .number()
+    .optional()
+    .default(0.1)
+    .describe(
+      'The tick spacing as a percentage (e.g., 0.01 for 0.01%, 0.1 for 0.1%, 1 for 1%, defaults to 0.1)'
+    ),
+  extension: z
+    .string()
+    .optional()
+    .default('0x0')
+    .describe('The extension contract address (default: "0x0")'),
+});
+
+export type CreatePositionSchema = z.infer<typeof createPositionSchema>;

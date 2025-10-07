@@ -15,6 +15,7 @@ import {
   envRead,
   envWrite,
   transferPositionSchema,
+  createPositionSchema,
 } from './schemas/index.js';
 
 import { getPoolInfo } from './tools/read/getPoolInfo.js';
@@ -131,7 +132,7 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
     name: 'create_position',
     description:
       'Create a new liquidity position (NFT) in an Ekubo pool within a specified price range (concentrated liquidity). Mints a new NFT position.',
-    schema: addLiquiditySchema,
+    schema: createPositionSchema,
     execute: async (params: any) => {
       const envWrite = getEnvWrite();
       return await createPosition(envWrite, params);
@@ -183,7 +184,7 @@ async function main() {
 
   await RegisterToolInServer();
   await server.connect(transport);
-  // console.error('Starknet Ekubo MCP Server running on stdio');
+  console.error('Starknet Ekubo MCP Server running on stdio');
 }
 
 main().catch((error) => {
