@@ -1,101 +1,1256 @@
-// Standard ERC20 ABI for STRK token
-export const erc20Abi = [
+export const OLD_ERC20_ABI = [
   {
-    type: 'function',
-    name: 'name',
-    inputs: [],
-    outputs: [{ type: 'core::felt252' }],
-    state_mutability: 'view',
+    name: 'MintableToken',
+    type: 'impl',
+    interface_name: 'src::mintable_token_interface::IMintableToken',
   },
   {
-    type: 'function',
-    name: 'symbol',
-    inputs: [],
-    outputs: [{ type: 'core::felt252' }],
-    state_mutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'decimals',
-    inputs: [],
-    outputs: [{ type: 'core::integer::u8' }],
-    state_mutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'total_supply',
-    inputs: [],
-    outputs: [{ type: 'core::integer::u256' }],
-    state_mutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'balance_of',
-    inputs: [
+    name: 'core::integer::u256',
+    type: 'struct',
+    members: [
       {
-        name: 'account',
-        type: 'core::starknet::contract_address::ContractAddress',
+        name: 'low',
+        type: 'core::integer::u128',
+      },
+      {
+        name: 'high',
+        type: 'core::integer::u128',
       },
     ],
-    outputs: [{ type: 'core::integer::u256' }],
-    state_mutability: 'view',
   },
   {
-    type: 'function',
-    name: 'allowance',
+    name: 'src::mintable_token_interface::IMintableToken',
+    type: 'interface',
+    items: [
+      {
+        name: 'permissioned_mint',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'amount',
+            type: 'core::integer::u256',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+      {
+        name: 'permissioned_burn',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'amount',
+            type: 'core::integer::u256',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+    ],
+  },
+  {
+    name: 'MintableTokenCamelImpl',
+    type: 'impl',
+    interface_name: 'src::mintable_token_interface::IMintableTokenCamel',
+  },
+  {
+    name: 'src::mintable_token_interface::IMintableTokenCamel',
+    type: 'interface',
+    items: [
+      {
+        name: 'permissionedMint',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'amount',
+            type: 'core::integer::u256',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+      {
+        name: 'permissionedBurn',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'amount',
+            type: 'core::integer::u256',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+    ],
+  },
+  {
+    name: 'Replaceable',
+    type: 'impl',
+    interface_name: 'src::replaceability_interface::IReplaceable',
+  },
+  {
+    name: 'core::array::Span::<core::felt252>',
+    type: 'struct',
+    members: [
+      {
+        name: 'snapshot',
+        type: '@core::array::Array::<core::felt252>',
+      },
+    ],
+  },
+  {
+    name: 'src::replaceability_interface::EICData',
+    type: 'struct',
+    members: [
+      {
+        name: 'eic_hash',
+        type: 'core::starknet::class_hash::ClassHash',
+      },
+      {
+        name: 'eic_init_data',
+        type: 'core::array::Span::<core::felt252>',
+      },
+    ],
+  },
+  {
+    name: 'core::option::Option::<src::replaceability_interface::EICData>',
+    type: 'enum',
+    variants: [
+      {
+        name: 'Some',
+        type: 'src::replaceability_interface::EICData',
+      },
+      {
+        name: 'None',
+        type: '()',
+      },
+    ],
+  },
+  {
+    name: 'core::bool',
+    type: 'enum',
+    variants: [
+      {
+        name: 'False',
+        type: '()',
+      },
+      {
+        name: 'True',
+        type: '()',
+      },
+    ],
+  },
+  {
+    name: 'src::replaceability_interface::ImplementationData',
+    type: 'struct',
+    members: [
+      {
+        name: 'impl_hash',
+        type: 'core::starknet::class_hash::ClassHash',
+      },
+      {
+        name: 'eic_data',
+        type: 'core::option::Option::<src::replaceability_interface::EICData>',
+      },
+      {
+        name: 'final',
+        type: 'core::bool',
+      },
+    ],
+  },
+  {
+    name: 'src::replaceability_interface::IReplaceable',
+    type: 'interface',
+    items: [
+      {
+        name: 'get_upgrade_delay',
+        type: 'function',
+        inputs: [],
+        outputs: [
+          {
+            type: 'core::integer::u64',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'get_impl_activation_time',
+        type: 'function',
+        inputs: [
+          {
+            name: 'implementation_data',
+            type: 'src::replaceability_interface::ImplementationData',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::integer::u64',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'add_new_implementation',
+        type: 'function',
+        inputs: [
+          {
+            name: 'implementation_data',
+            type: 'src::replaceability_interface::ImplementationData',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+      {
+        name: 'remove_implementation',
+        type: 'function',
+        inputs: [
+          {
+            name: 'implementation_data',
+            type: 'src::replaceability_interface::ImplementationData',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+      {
+        name: 'replace_to',
+        type: 'function',
+        inputs: [
+          {
+            name: 'implementation_data',
+            type: 'src::replaceability_interface::ImplementationData',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+    ],
+  },
+  {
+    name: 'AccessControlImplExternal',
+    type: 'impl',
+    interface_name: 'src::access_control_interface::IAccessControl',
+  },
+  {
+    name: 'src::access_control_interface::IAccessControl',
+    type: 'interface',
+    items: [
+      {
+        name: 'has_role',
+        type: 'function',
+        inputs: [
+          {
+            name: 'role',
+            type: 'core::felt252',
+          },
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::bool',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'get_role_admin',
+        type: 'function',
+        inputs: [
+          {
+            name: 'role',
+            type: 'core::felt252',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::felt252',
+          },
+        ],
+        state_mutability: 'view',
+      },
+    ],
+  },
+  {
+    name: 'RolesImpl',
+    type: 'impl',
+    interface_name: 'src::roles_interface::IMinimalRoles',
+  },
+  {
+    name: 'src::roles_interface::IMinimalRoles',
+    type: 'interface',
+    items: [
+      {
+        name: 'is_governance_admin',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::bool',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'is_upgrade_governor',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::bool',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'register_governance_admin',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+      {
+        name: 'remove_governance_admin',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+      {
+        name: 'register_upgrade_governor',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+      {
+        name: 'remove_upgrade_governor',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+      {
+        name: 'renounce',
+        type: 'function',
+        inputs: [
+          {
+            name: 'role',
+            type: 'core::felt252',
+          },
+        ],
+        outputs: [],
+        state_mutability: 'external',
+      },
+    ],
+  },
+  {
+    name: 'ERC20Impl',
+    type: 'impl',
+    interface_name: 'openzeppelin::token::erc20::interface::IERC20',
+  },
+  {
+    name: 'openzeppelin::token::erc20::interface::IERC20',
+    type: 'interface',
+    items: [
+      {
+        name: 'name',
+        type: 'function',
+        inputs: [],
+        outputs: [
+          {
+            type: 'core::felt252',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'symbol',
+        type: 'function',
+        inputs: [],
+        outputs: [
+          {
+            type: 'core::felt252',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'decimals',
+        type: 'function',
+        inputs: [],
+        outputs: [
+          {
+            type: 'core::integer::u8',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'total_supply',
+        type: 'function',
+        inputs: [],
+        outputs: [
+          {
+            type: 'core::integer::u256',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'balance_of',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::integer::u256',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'allowance',
+        type: 'function',
+        inputs: [
+          {
+            name: 'owner',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'spender',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::integer::u256',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'transfer',
+        type: 'function',
+        inputs: [
+          {
+            name: 'recipient',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'amount',
+            type: 'core::integer::u256',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::bool',
+          },
+        ],
+        state_mutability: 'external',
+      },
+      {
+        name: 'transfer_from',
+        type: 'function',
+        inputs: [
+          {
+            name: 'sender',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'recipient',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'amount',
+            type: 'core::integer::u256',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::bool',
+          },
+        ],
+        state_mutability: 'external',
+      },
+      {
+        name: 'approve',
+        type: 'function',
+        inputs: [
+          {
+            name: 'spender',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'amount',
+            type: 'core::integer::u256',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::bool',
+          },
+        ],
+        state_mutability: 'external',
+      },
+    ],
+  },
+  {
+    name: 'ERC20CamelOnlyImpl',
+    type: 'impl',
+    interface_name: 'openzeppelin::token::erc20::interface::IERC20CamelOnly',
+  },
+  {
+    name: 'openzeppelin::token::erc20::interface::IERC20CamelOnly',
+    type: 'interface',
+    items: [
+      {
+        name: 'totalSupply',
+        type: 'function',
+        inputs: [],
+        outputs: [
+          {
+            type: 'core::integer::u256',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'balanceOf',
+        type: 'function',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::integer::u256',
+          },
+        ],
+        state_mutability: 'view',
+      },
+      {
+        name: 'transferFrom',
+        type: 'function',
+        inputs: [
+          {
+            name: 'sender',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'recipient',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'amount',
+            type: 'core::integer::u256',
+          },
+        ],
+        outputs: [
+          {
+            type: 'core::bool',
+          },
+        ],
+        state_mutability: 'external',
+      },
+    ],
+  },
+  {
+    name: 'constructor',
+    type: 'constructor',
     inputs: [
       {
+        name: 'name',
+        type: 'core::felt252',
+      },
+      {
+        name: 'symbol',
+        type: 'core::felt252',
+      },
+      {
+        name: 'decimals',
+        type: 'core::integer::u8',
+      },
+      {
+        name: 'initial_supply',
+        type: 'core::integer::u256',
+      },
+      {
+        name: 'recipient',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        name: 'permitted_minter',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        name: 'provisional_governance_admin',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        name: 'upgrade_delay',
+        type: 'core::integer::u64',
+      },
+    ],
+  },
+  {
+    name: 'increase_allowance',
+    type: 'function',
+    inputs: [
+      {
+        name: 'spender',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        name: 'added_value',
+        type: 'core::integer::u256',
+      },
+    ],
+    outputs: [
+      {
+        type: 'core::bool',
+      },
+    ],
+    state_mutability: 'external',
+  },
+  {
+    name: 'decrease_allowance',
+    type: 'function',
+    inputs: [
+      {
+        name: 'spender',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        name: 'subtracted_value',
+        type: 'core::integer::u256',
+      },
+    ],
+    outputs: [
+      {
+        type: 'core::bool',
+      },
+    ],
+    state_mutability: 'external',
+  },
+  {
+    name: 'increaseAllowance',
+    type: 'function',
+    inputs: [
+      {
+        name: 'spender',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        name: 'addedValue',
+        type: 'core::integer::u256',
+      },
+    ],
+    outputs: [
+      {
+        type: 'core::bool',
+      },
+    ],
+    state_mutability: 'external',
+  },
+  {
+    name: 'decreaseAllowance',
+    type: 'function',
+    inputs: [
+      {
+        name: 'spender',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        name: 'subtractedValue',
+        type: 'core::integer::u256',
+      },
+    ],
+    outputs: [
+      {
+        type: 'core::bool',
+      },
+    ],
+    state_mutability: 'external',
+  },
+  {
+    kind: 'struct',
+    name: 'openzeppelin::token::erc20_v070::erc20::ERC20::Transfer',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'from',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        kind: 'data',
+        name: 'to',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        kind: 'data',
+        name: 'value',
+        type: 'core::integer::u256',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'openzeppelin::token::erc20_v070::erc20::ERC20::Approval',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
         name: 'owner',
         type: 'core::starknet::contract_address::ContractAddress',
       },
       {
+        kind: 'data',
         name: 'spender',
         type: 'core::starknet::contract_address::ContractAddress',
       },
+      {
+        kind: 'data',
+        name: 'value',
+        type: 'core::integer::u256',
+      },
     ],
-    outputs: [{ type: 'core::integer::u256' }],
-    state_mutability: 'view',
   },
   {
-    type: 'function',
-    name: 'transfer',
-    inputs: [
+    kind: 'struct',
+    name: 'src::replaceability_interface::ImplementationAdded',
+    type: 'event',
+    members: [
       {
-        name: 'recipient',
+        kind: 'data',
+        name: 'implementation_data',
+        type: 'src::replaceability_interface::ImplementationData',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::replaceability_interface::ImplementationRemoved',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'implementation_data',
+        type: 'src::replaceability_interface::ImplementationData',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::replaceability_interface::ImplementationReplaced',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'implementation_data',
+        type: 'src::replaceability_interface::ImplementationData',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::replaceability_interface::ImplementationFinalized',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'impl_hash',
+        type: 'core::starknet::class_hash::ClassHash',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::access_control_interface::RoleGranted',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'role',
+        type: 'core::felt252',
+      },
+      {
+        kind: 'data',
+        name: 'account',
         type: 'core::starknet::contract_address::ContractAddress',
       },
-      { name: 'amount', type: 'core::integer::u256' },
-    ],
-    outputs: [{ type: 'core::bool' }],
-    state_mutability: 'external',
-  },
-  {
-    type: 'function',
-    name: 'transfer_from',
-    inputs: [
       {
+        kind: 'data',
         name: 'sender',
         type: 'core::starknet::contract_address::ContractAddress',
       },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::access_control_interface::RoleRevoked',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'role',
+        type: 'core::felt252',
+      },
+      {
+        kind: 'data',
+        name: 'account',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        kind: 'data',
+        name: 'sender',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::access_control_interface::RoleAdminChanged',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'role',
+        type: 'core::felt252',
+      },
+      {
+        kind: 'data',
+        name: 'previous_admin_role',
+        type: 'core::felt252',
+      },
+      {
+        kind: 'data',
+        name: 'new_admin_role',
+        type: 'core::felt252',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::roles_interface::GovernanceAdminAdded',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'added_account',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        kind: 'data',
+        name: 'added_by',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::roles_interface::GovernanceAdminRemoved',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'removed_account',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        kind: 'data',
+        name: 'removed_by',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::roles_interface::UpgradeGovernorAdded',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'added_account',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        kind: 'data',
+        name: 'added_by',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+    ],
+  },
+  {
+    kind: 'struct',
+    name: 'src::roles_interface::UpgradeGovernorRemoved',
+    type: 'event',
+    members: [
+      {
+        kind: 'data',
+        name: 'removed_account',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+      {
+        kind: 'data',
+        name: 'removed_by',
+        type: 'core::starknet::contract_address::ContractAddress',
+      },
+    ],
+  },
+  {
+    kind: 'enum',
+    name: 'openzeppelin::token::erc20_v070::erc20::ERC20::Event',
+    type: 'event',
+    variants: [
+      {
+        kind: 'nested',
+        name: 'Transfer',
+        type: 'openzeppelin::token::erc20_v070::erc20::ERC20::Transfer',
+      },
+      {
+        kind: 'nested',
+        name: 'Approval',
+        type: 'openzeppelin::token::erc20_v070::erc20::ERC20::Approval',
+      },
+      {
+        kind: 'nested',
+        name: 'ImplementationAdded',
+        type: 'src::replaceability_interface::ImplementationAdded',
+      },
+      {
+        kind: 'nested',
+        name: 'ImplementationRemoved',
+        type: 'src::replaceability_interface::ImplementationRemoved',
+      },
+      {
+        kind: 'nested',
+        name: 'ImplementationReplaced',
+        type: 'src::replaceability_interface::ImplementationReplaced',
+      },
+      {
+        kind: 'nested',
+        name: 'ImplementationFinalized',
+        type: 'src::replaceability_interface::ImplementationFinalized',
+      },
+      {
+        kind: 'nested',
+        name: 'RoleGranted',
+        type: 'src::access_control_interface::RoleGranted',
+      },
+      {
+        kind: 'nested',
+        name: 'RoleRevoked',
+        type: 'src::access_control_interface::RoleRevoked',
+      },
+      {
+        kind: 'nested',
+        name: 'RoleAdminChanged',
+        type: 'src::access_control_interface::RoleAdminChanged',
+      },
+      {
+        kind: 'nested',
+        name: 'GovernanceAdminAdded',
+        type: 'src::roles_interface::GovernanceAdminAdded',
+      },
+      {
+        kind: 'nested',
+        name: 'GovernanceAdminRemoved',
+        type: 'src::roles_interface::GovernanceAdminRemoved',
+      },
+      {
+        kind: 'nested',
+        name: 'UpgradeGovernorAdded',
+        type: 'src::roles_interface::UpgradeGovernorAdded',
+      },
+      {
+        kind: 'nested',
+        name: 'UpgradeGovernorRemoved',
+        type: 'src::roles_interface::UpgradeGovernorRemoved',
+      },
+    ],
+  },
+];
+
+export const NEW_ERC20_ABI = [
+  {
+    type: 'impl',
+    name: 'ERC20MetadataImpl',
+    interface_name: 'token::erc20::ERC20Token::IERC20Metadata',
+  },
+  {
+    type: 'struct',
+    name: 'core::byte_array::ByteArray',
+    members: [
+      { name: 'data', type: 'core::array::Array::<core::bytes_31::bytes31>' },
+      { name: 'pending_word', type: 'core::felt252' },
+      { name: 'pending_word_len', type: 'core::integer::u32' },
+    ],
+  },
+  {
+    type: 'interface',
+    name: 'token::erc20::ERC20Token::IERC20Metadata',
+    items: [
+      {
+        type: 'function',
+        name: 'name',
+        inputs: [],
+        outputs: [{ type: 'core::byte_array::ByteArray' }],
+        state_mutability: 'view',
+      },
+      {
+        type: 'function',
+        name: 'symbol',
+        inputs: [],
+        outputs: [{ type: 'core::byte_array::ByteArray' }],
+        state_mutability: 'view',
+      },
+      {
+        type: 'function',
+        name: 'decimals',
+        inputs: [],
+        outputs: [{ type: 'core::integer::u8' }],
+        state_mutability: 'view',
+      },
+    ],
+  },
+  {
+    type: 'impl',
+    name: 'ERC20MixinImpl',
+    interface_name: 'openzeppelin::token::erc20::interface::IERC20',
+  },
+  {
+    type: 'struct',
+    name: 'core::integer::u256',
+    members: [
+      { name: 'low', type: 'core::integer::u128' },
+      { name: 'high', type: 'core::integer::u128' },
+    ],
+  },
+  {
+    type: 'enum',
+    name: 'core::bool',
+    variants: [
+      { name: 'False', type: '()' },
+      { name: 'True', type: '()' },
+    ],
+  },
+  {
+    type: 'interface',
+    name: 'openzeppelin::token::erc20::interface::IERC20',
+    items: [
+      {
+        type: 'function',
+        name: 'total_supply',
+        inputs: [],
+        outputs: [{ type: 'core::integer::u256' }],
+        state_mutability: 'view',
+      },
+      {
+        type: 'function',
+        name: 'balance_of',
+        inputs: [
+          {
+            name: 'account',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [{ type: 'core::integer::u256' }],
+        state_mutability: 'view',
+      },
+      {
+        type: 'function',
+        name: 'allowance',
+        inputs: [
+          {
+            name: 'owner',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'spender',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+        ],
+        outputs: [{ type: 'core::integer::u256' }],
+        state_mutability: 'view',
+      },
+      {
+        type: 'function',
+        name: 'transfer',
+        inputs: [
+          {
+            name: 'recipient',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          { name: 'amount', type: 'core::integer::u256' },
+        ],
+        outputs: [{ type: 'core::bool' }],
+        state_mutability: 'external',
+      },
+      {
+        type: 'function',
+        name: 'transfer_from',
+        inputs: [
+          {
+            name: 'sender',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          {
+            name: 'recipient',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          { name: 'amount', type: 'core::integer::u256' },
+        ],
+        outputs: [{ type: 'core::bool' }],
+        state_mutability: 'external',
+      },
+      {
+        type: 'function',
+        name: 'approve',
+        inputs: [
+          {
+            name: 'spender',
+            type: 'core::starknet::contract_address::ContractAddress',
+          },
+          { name: 'amount', type: 'core::integer::u256' },
+        ],
+        outputs: [{ type: 'core::bool' }],
+        state_mutability: 'external',
+      },
+    ],
+  },
+  {
+    type: 'constructor',
+    name: 'constructor',
+    inputs: [
+      { name: 'name', type: 'core::byte_array::ByteArray' },
+      { name: 'symbol', type: 'core::byte_array::ByteArray' },
+      { name: 'fixed_supply', type: 'core::integer::u256' },
       {
         name: 'recipient',
         type: 'core::starknet::contract_address::ContractAddress',
       },
-      { name: 'amount', type: 'core::integer::u256' }],
-    outputs: [{ type: 'core::bool' }],
-    state_mutability: 'external',
+    ],
   },
   {
-    type: 'function',
-    name: 'approve',
-    inputs: [
+    type: 'event',
+    name: 'openzeppelin::token::erc20::erc20::ERC20Component::Transfer',
+    kind: 'struct',
+    members: [
+      {
+        name: 'from',
+        type: 'core::starknet::contract_address::ContractAddress',
+        kind: 'key',
+      },
+      {
+        name: 'to',
+        type: 'core::starknet::contract_address::ContractAddress',
+        kind: 'key',
+      },
+      { name: 'value', type: 'core::integer::u256', kind: 'data' },
+    ],
+  },
+  {
+    type: 'event',
+    name: 'openzeppelin::token::erc20::erc20::ERC20Component::Approval',
+    kind: 'struct',
+    members: [
+      {
+        name: 'owner',
+        type: 'core::starknet::contract_address::ContractAddress',
+        kind: 'key',
+      },
       {
         name: 'spender',
         type: 'core::starknet::contract_address::ContractAddress',
+        kind: 'key',
       },
-      { name: 'amount', type: 'core::integer::u256' },
+      { name: 'value', type: 'core::integer::u256', kind: 'data' },
     ],
-    outputs: [{ type: 'core::bool' }],
-    state_mutability: 'external',
   },
-] as const;
+  {
+    type: 'event',
+    name: 'openzeppelin::token::erc20::erc20::ERC20Component::Event',
+    kind: 'enum',
+    variants: [
+      {
+        name: 'Transfer',
+        type: 'openzeppelin::token::erc20::erc20::ERC20Component::Transfer',
+        kind: 'nested',
+      },
+      {
+        name: 'Approval',
+        type: 'openzeppelin::token::erc20::erc20::ERC20Component::Approval',
+        kind: 'nested',
+      },
+    ],
+  },
+  {
+    type: 'event',
+    name: 'token::erc20::ERC20Token::Event',
+    kind: 'enum',
+    variants: [
+      {
+        name: 'ERC20Event',
+        type: 'openzeppelin::token::erc20::erc20::ERC20Component::Event',
+        kind: 'flat',
+      },
+    ],
+  },
+];
