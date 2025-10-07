@@ -6,7 +6,7 @@ import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from "./
 export async function preparePoolKeyFromParams(
   provider: RpcProvider,
   params: PoolKey
-): Promise<{ poolKey: any, token0: validToken, token1: validToken }> {
+): Promise<{ poolKey: any, token0: validToken, token1: validToken, isTokenALower: boolean }> {
   const { assetSymbol: symbolToken0, assetAddress: addressToken0 } = extractAssetInfo(params.token0);
   const { assetSymbol: symbolToken1, assetAddress: addressToken1 } = extractAssetInfo(params.token1);
 
@@ -21,5 +21,6 @@ export async function preparePoolKeyFromParams(
     tick_spacing: convertTickSpacingPercentToExponent(params.tick_spacing)
   };
 
-  return { poolKey, token0, token1 };
+  const isTokenALower = token0.address < token1.address ? true : false;
+  return { poolKey, token0, token1, isTokenALower };
 }

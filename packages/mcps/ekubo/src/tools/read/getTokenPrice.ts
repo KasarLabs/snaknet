@@ -12,7 +12,7 @@ export const getTokenPrice = async (
   try {
     const contract = await getContract(provider, 'core');
 
-    const { poolKey, token0, token1 } = await preparePoolKeyFromParams(
+    const { poolKey, token0, token1, isTokenALower } = await preparePoolKeyFromParams(
       env.provider,
       {
         token0: params.token,
@@ -29,14 +29,14 @@ export const getTokenPrice = async (
     // Price from Ekubo is always token1/token0
     const price = calculateActualPrice(sqrtPrice, token0.decimals, token1.decimals);
     // // If token order was reversed, invert the price // TO CHECK AGAIN
-    // const finalPrice = token0.symbol === params.token.assetValue ? price : 1 / price;
+    const finalPrice = isTokenALower ? price : 1 / price;
 
     return JSON.stringify({
       status: 'success',
       data: {
         base_token: params.token.assetValue,
         quote_token: params.quote_currency.assetValue,
-        price: price,
+        price: finalPrice,
         sqrt_price: sqrtPrice.toString(),
       }
     });

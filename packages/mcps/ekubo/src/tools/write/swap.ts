@@ -4,6 +4,7 @@ import { convertFeePercentToU128, convertTickSpacingPercentToExponent } from '..
 import { getContract } from '../../lib/utils/contracts.js';
 import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
 import { SwapTokensSchema } from '../../schemas/index.js';
+import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 
 export const swap = async (
   env: any,
@@ -14,53 +15,36 @@ export const swap = async (
     const routerContract = await getContract(env.provider, 'routerV3');
     const coreContract = await getContract(env.provider, 'core');
 
-    // Validate tokens
-    const { assetSymbol: tokenInSymbol, assetAddress: tokenInAddress } = extractAssetInfo(params.token_in);
-    const { assetSymbol: tokenOutSymbol, assetAddress: tokenOutAddress } = extractAssetInfo(params.token_out);
+    const { poolKey, token0, token1, isTokenALower } = await preparePoolKeyFromParams(
+      env.provider,
+      {
+        token0: params.token_in,
+        token1: params.token_out,
+        fee: params.fee,
+        tick_spacing: params.tick_spacing,
+        extension: params.extension
+      }
+    );
 
-    const tokenIn: validToken = await validateToken(env.provider, tokenInSymbol, tokenInAddress);
-    const tokenOut: validToken = await validateToken(env.provider, tokenOutSymbol, tokenOutAddress);
-    console.error("Tokens validated");
-
-    // Build pool key (tokens must be sorted)
-    const poolKey = {
-      token0: tokenIn.address < tokenOut.address ? tokenIn.address : tokenOut.address,
-      token1: tokenIn.address < tokenOut.address ? tokenOut.address : tokenIn.address,
-      fee: convertFeePercentToU128(params.fee),
-      tick_spacing: convertTickSpacingPercentToExponent(params.tick_spacing),
-      extension: params.extension
-    };
-    console.error("Pool key built");
-
+    const tokenIn = isTokenALower ? token0 : token1;
+    const tokenOut = isTokenALower ? token1 : token0;
+    
     // Get current pool price for slippage calculation
     const priceResult = await coreContract.get_pool_price(poolKey);
-    console.error("Pool price:", priceResult.sqrt_ratio);
     const currentSqrtPrice = BigInt(priceResult.sqrt_ratio);
-
-    // Calculate sqrt_ratio_limit based on slippage and swap direction
-    // Per Ekubo docs: "if your swap increases token0 balance of the pool,
-    // your sqrt_ratio_limit must be greater than current sqrt_ratio"
-    //
-    // When selling token0: token1 increases in pool → sqrt_ratio DECREASES → limit must be LESS than current
-    // When selling token1: token0 increases in pool → sqrt_ratio INCREASES → limit must be GREATER than current
-    const isSellingToken0 = tokenIn.address < tokenOut.address;
 
     // Min and max sqrt_ratio values (from Ekubo bounds)
     const MIN_SQRT_RATIO = BigInt("18446748437148339061");
     const MAX_SQRT_RATIO = BigInt("6277100250585753475930931601400621808602321654880405518632");
 
     let sqrtRatioLimit: string;
-    if (isSellingToken0) {
-      // Selling token0: token1 increases in pool, sqrt_ratio DECREASES
-      // Set LOWER limit (with slippage protection)
+    if (isTokenALower) {
       const slippageMultiplier = 1 - (params.slippage_tolerance / 100);
       const calculatedLimit = BigInt(Math.floor(Number(currentSqrtPrice) * Math.sqrt(slippageMultiplier)));
       sqrtRatioLimit = calculatedLimit < currentSqrtPrice && calculatedLimit >= MIN_SQRT_RATIO
         ? calculatedLimit.toString()
         : MIN_SQRT_RATIO.toString();
     } else {
-      // Selling token1: token0 increases in pool, sqrt_ratio INCREASES
-      // Set UPPER limit (with slippage protection)
       const slippageMultiplier = 1 + (params.slippage_tolerance / 100);
       const calculatedLimit = BigInt(Math.floor(Number(currentSqrtPrice) * Math.sqrt(slippageMultiplier)));
       sqrtRatioLimit = calculatedLimit > currentSqrtPrice && calculatedLimit <= MAX_SQRT_RATIO
@@ -92,7 +76,7 @@ export const swap = async (
 
     // 2. Le quote retourne un Delta avec amount0 et amount1
     // Selon la direction du swap, prendre le bon montant
-    const expectedOutput = isSellingToken0 
+    const expectedOutput = isTokenALower 
       ? quote.amount1.mag  // Si on vend token0, on reçoit token1
       : quote.amount0.mag; // Si on vend token1, on reçoit token0
 
