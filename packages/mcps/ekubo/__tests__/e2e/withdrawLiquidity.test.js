@@ -15,39 +15,12 @@ const client = new Client({
 try {
   await client.connect(transport);
 
-  // Test 1: Withdraw full liquidity + collect fees
-  console.log('\n=== Test 1: Withdraw full liquidity + collect fees ===');
-  const result1 = await client.callTool({
-    name: 'withdraw_liquidity',
-    arguments: {
-      position_id: 2164550, // Replace with your actual position ID
-      token0: {
-        assetType: 'SYMBOL',
-        assetValue: 'STRK',
-      },
-      token1: {
-        assetType: 'SYMBOL',
-        assetValue: 'ETH',
-      },
-      liquidity_amount: '66600', // Replace with actual liquidity amount
-      lower_tick: -1000,
-      upper_tick: 1000,
-      fee: 0.05,
-      tick_spacing: 0.1,
-      extension: '0x0',
-      fees_only: false,
-      collect_fees: true,
-    },
-  });
-
-  console.log('Raw result:', JSON.stringify(result1, null, 2));
-
   // Test 2: Collect fees only (no liquidity withdrawal)
-  console.log('\n=== Test 2: Collect fees only ===');
+  console.log('\n=== Test 1: Collect fees only ===');
   const result2 = await client.callTool({
     name: 'withdraw_liquidity',
     arguments: {
-      position_id: 2165129,
+      position_id: 2183917,
       token0: {
         assetType: 'SYMBOL',
         assetValue: 'STRK',
@@ -68,6 +41,33 @@ try {
   });
 
   console.log('Raw result:', JSON.stringify(result2, null, 2));
+  // Test 1: Withdraw full liquidity + collect fees
+  console.log('\n=== Test 2: Withdraw full liquidity + collect fees ===');
+  const result1 = await client.callTool({
+    name: 'withdraw_liquidity',
+    arguments: {
+      position_id: 2183917, // Replace with your actual position ID
+      token0: {
+        assetType: 'SYMBOL',
+        assetValue: 'STRK',
+      },
+      token1: {
+        assetType: 'SYMBOL',
+        assetValue: 'ETH',
+      },
+      liquidity_amount: '666', // Replace with actual liquidity amount
+      lower_tick: -1000,
+      upper_tick: 1000,
+      fee: 0.05,
+      tick_spacing: 0.1,
+      extension: '0x0',
+      fees_only: false,
+      collect_fees: true,
+    },
+  });
+
+  console.log('Raw result:', JSON.stringify(result1, null, 2));
+
 } catch (error) {
   console.error('Error:', error.message);
   console.error('Full error:', error);

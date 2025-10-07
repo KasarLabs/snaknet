@@ -30,7 +30,7 @@ export const getTokenPrice = async (
       token0.decimals,
       token1.decimals
     );
-    // // If token order was reversed, invert the price // TO CHECK AGAIN
+    
     const finalPrice = isTokenALower ? price : 1 / price;
 
     return JSON.stringify({
@@ -44,8 +44,6 @@ export const getTokenPrice = async (
     });
   } catch (error: any) {
     console.error('Error getting token price:', error);
-
-    // Si le pool n'existe pas avec les paramètres par défaut, suggérer d'essayer d'autres valeurs
     const errorMessage = error.message;
     const suggestion =
       errorMessage.includes('Pool not found') ||

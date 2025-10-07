@@ -18,7 +18,7 @@ try {
   const result = await client.callTool({
     name: 'add_liquidity',
     arguments: {
-      position_id: 2165129,
+      position_id: 2183917,
       token0: {
         assetType: 'SYMBOL',
         assetValue: 'STRK',
