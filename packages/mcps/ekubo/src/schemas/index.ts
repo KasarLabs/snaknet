@@ -52,14 +52,16 @@ const positionRangeSchema = z.object({
   upper_tick: z.number().describe('The upper tick of the position range'),
 });
 
-export const poolKeySchema = z.object({
-  token0: assetSchema.describe(
-    'The asset information (symbol or contract address) of the first token in the pool'
-  ),
-  token1: assetSchema.describe(
-    'The asset information (symbol or contract address) of the second token in the pool'
-  ),
-}).merge(poolParamsSchema);
+export const poolKeySchema = z
+  .object({
+    token0: assetSchema.describe(
+      'The asset information (symbol or contract address) of the first token in the pool'
+    ),
+    token1: assetSchema.describe(
+      'The asset information (symbol or contract address) of the second token in the pool'
+    ),
+  })
+  .merge(poolParamsSchema);
 
 export type PoolKey = z.infer<typeof poolKeySchema>;
 

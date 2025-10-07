@@ -30,7 +30,7 @@ export const getTokenPrice = async (
       token0.decimals,
       token1.decimals
     );
-    
+
     const finalPrice = isTokenALower ? price : 1 / price;
 
     return JSON.stringify({

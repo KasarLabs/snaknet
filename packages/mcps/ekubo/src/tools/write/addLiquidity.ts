@@ -5,7 +5,10 @@ import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 import { buildBounds, sortAmounts } from '../../lib/utils/liquidity.js';
 import { envWrite } from '../../interfaces/index.js';
 
-export const addLiquidity = async (env: envWrite, params: AddLiquiditySchema) => {
+export const addLiquidity = async (
+  env: envWrite,
+  params: AddLiquiditySchema
+) => {
   try {
     const account = env.account;
     const positionsContract = await getContract(env.provider, 'positions');

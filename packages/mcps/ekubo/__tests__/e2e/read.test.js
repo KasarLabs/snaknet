@@ -30,7 +30,8 @@ async function callTool(client, name, args) {
 
   // The MCP response is double-encoded JSON, so we need to parse twice
   const firstParse = JSON.parse(result.content[0].text);
-  const response = typeof firstParse === 'string' ? JSON.parse(firstParse) : firstParse;
+  const response =
+    typeof firstParse === 'string' ? JSON.parse(firstParse) : firstParse;
   console.log('Parsed response:', JSON.stringify(response, null, 2));
 
   return response;
@@ -59,7 +60,9 @@ async function testGetTokenPrice(client) {
   }
 
   console.log('✅ get_token_price test passed');
-  console.log(`   Price: ${response.data.base_token}/${response.data.quote_token} = ${response.data.price}`);
+  console.log(
+    `   Price: ${response.data.base_token}/${response.data.quote_token} = ${response.data.price}`
+  );
 
   return response;
 }
@@ -162,11 +165,13 @@ async function testDifferentTokenFormats(client) {
   const response = await callTool(client, 'get_token_price', {
     token: {
       assetType: 'ADDRESS',
-      assetValue: '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7', // ETH
+      assetValue:
+        '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7', // ETH
     },
     quote_currency: {
       assetType: 'ADDRESS',
-      assetValue: '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8', // USDC
+      assetValue:
+        '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8', // USDC
     },
     fee: 0.05,
     tick_spacing: 0.1,
@@ -203,7 +208,9 @@ async function testErrorHandling(client) {
   });
 
   if (response.status === 'success') {
-    console.log('⚠️  Expected error but got success (pool might exist with these params)');
+    console.log(
+      '⚠️  Expected error but got success (pool might exist with these params)'
+    );
   } else {
     console.log('✅ Error handling test passed');
     console.log(`   Error message: ${response.error}`);
@@ -233,7 +240,6 @@ async function runTests() {
     await testErrorHandling(client);
 
     console.log('\n✅ All tests completed successfully!');
-
   } catch (error) {
     console.error('\n❌ Test failed:', error.message);
     console.error('Full error:', error);

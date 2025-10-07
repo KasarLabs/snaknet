@@ -1,4 +1,8 @@
-import { getChain, getEkuboAddress, getERC20Contract } from '../../lib/utils/contracts.js';
+import {
+  getChain,
+  getEkuboAddress,
+  getERC20Contract,
+} from '../../lib/utils/contracts.js';
 import { getContract } from '../../lib/utils/contracts.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 import { buildBounds, sortAmounts } from '../../lib/utils/liquidity.js';
@@ -6,7 +10,10 @@ import { extractPositionIdFromReceipt } from '../../lib/utils/events.js';
 import { CreatePositionSchema } from '../../schemas/index.js';
 import { envWrite } from '../../interfaces/index.js';
 
-export const createPosition = async (env: envWrite, params: CreatePositionSchema) => {
+export const createPosition = async (
+  env: envWrite,
+  params: CreatePositionSchema
+) => {
   try {
     const account = env.account;
     const positionsContract = await getContract(env.provider, 'positions');

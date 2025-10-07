@@ -67,7 +67,6 @@ try {
   });
 
   console.log('Raw result:', JSON.stringify(result1, null, 2));
-
 } catch (error) {
   console.error('Error:', error.message);
   console.error('Full error:', error);
