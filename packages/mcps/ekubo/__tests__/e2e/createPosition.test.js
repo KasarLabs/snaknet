@@ -16,7 +16,7 @@ try {
   await client.connect(transport);
 
   const result = await client.callTool({
-    name: "ekubo_create_position",
+    name: "create_position",
     arguments: {
       token0: {
         "assetType": "SYMBOL",
@@ -37,8 +37,6 @@ try {
   });
 
   console.log('Raw result:', JSON.stringify(result, null, 2));
-  const response = JSON.parse(result.content[0].text);
-  console.log('Parsed response:', JSON.stringify(response, null, 2));
 } catch (error) {
   console.error('Error:', error.message);
   console.error('Full error:', error);

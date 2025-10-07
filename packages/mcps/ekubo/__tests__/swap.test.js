@@ -1,4 +1,4 @@
-// addLiquidity.test.js - Test for ekubo_add_liquidity tool
+// client.js - Simple MCP test
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
@@ -16,21 +16,19 @@ try {
   await client.connect(transport);
 
   const result = await client.callTool({
-    name: "ekubo_add_liquidity",
+    name: "swap",
     arguments: {
-      position_id: 2165129,
-      token0: {
-        "assetType": "SYMBOL",
-        "assetValue": "STRK"
-      },
-      token1: {
+      token_in: {
         "assetType": "SYMBOL",
         "assetValue": "ETH"
       },
-      amount0: "5000000",
-      amount1: "5000",
-      lower_tick: -1000,
-      upper_tick: 1000,
+      token_out: {
+        "assetType": "SYMBOL",
+        "assetValue": "USDC"
+      },
+      amount: "100000000000",
+      is_amount_in: true,
+      slippage_tolerance: 0.5,
       fee: 0.05,
       tick_spacing: 0.1,
       extension: "0x0"
@@ -38,6 +36,8 @@ try {
   });
 
   console.log('Raw result:', JSON.stringify(result, null, 2));
+  const response = JSON.parse(result.content[0].text);
+  console.log('Parsed response:', JSON.stringify(response, null, 2));
 } catch (error) {
   console.error('Error:', error.message);
   console.error('Full error:', error);

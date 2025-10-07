@@ -16,7 +16,7 @@ try {
   await client.connect(transport);
 
   const result = await client.callTool({
-    name: "ekubo_transfer_position",
+    name: "transfer_position",
     arguments: {
       position_id: 2164575,
       to_address: "0x059a5B246cBf2E4202445A5f1fA74C4A96BAdF0e6bB11067D2fD30Cb5391a8c1" 
@@ -24,8 +24,7 @@ try {
   });
 
   console.log('Raw result:', JSON.stringify(result, null, 2));
-  const response = JSON.parse(result.content[0].text);
-  console.log('Parsed response:', JSON.stringify(response, null, 2));
+
 } catch (error) {
   console.error('Error:', error.message);
   console.error('Full error:', error);

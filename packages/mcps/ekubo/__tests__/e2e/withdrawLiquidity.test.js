@@ -18,7 +18,7 @@ try {
   // Test 1: Withdraw full liquidity + collect fees
   console.log('\n=== Test 1: Withdraw full liquidity + collect fees ===');
   const result1 = await client.callTool({
-    name: "ekubo_withdraw_liquidity",
+    name: "withdraw_liquidity",
     arguments: {
       position_id: 2164550, // Replace with your actual position ID
       token0: {
@@ -41,13 +41,11 @@ try {
   });
 
   console.log('Raw result:', JSON.stringify(result1, null, 2));
-  const response1 = JSON.parse(result1.content[0].text);
-  console.log('Parsed response:', JSON.stringify(response1, null, 2));
 
   // Test 2: Collect fees only (no liquidity withdrawal)
   console.log('\n=== Test 2: Collect fees only ===');
   const result2 = await client.callTool({
-    name: "ekubo_withdraw_liquidity",
+    name: "withdraw_liquidity",
     arguments: {
       position_id: 2165129,
       token0: {
@@ -70,8 +68,6 @@ try {
   });
 
   console.log('Raw result:', JSON.stringify(result2, null, 2));
-  const response2 = JSON.parse(result2.content[0].text);
-  console.log('Parsed response:', JSON.stringify(response2, null, 2));
 } catch (error) {
   console.error('Error:', error.message);
   console.error('Full error:', error);
