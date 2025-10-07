@@ -61,7 +61,9 @@ export function convertFeePercentToU128(feePercent: number): string {
  * - 0.1% -> ~10000
  * - 1% -> ~100000
  */
-export function convertTickSpacingPercentToExponent(tickSpacingPercent: number): number {
+export function convertTickSpacingPercentToExponent(
+  tickSpacingPercent: number
+): number {
   // Convert percentage to decimal (0.01% -> 0.0001)
   const spacingDecimal = tickSpacingPercent / 100;
 

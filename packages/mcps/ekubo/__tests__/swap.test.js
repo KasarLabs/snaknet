@@ -16,23 +16,23 @@ try {
   await client.connect(transport);
 
   const result = await client.callTool({
-    name: "swap",
+    name: 'swap',
     arguments: {
       token_in: {
-        "assetType": "SYMBOL",
-        "assetValue": "ETH"
+        assetType: 'SYMBOL',
+        assetValue: 'ETH',
       },
       token_out: {
-        "assetType": "SYMBOL",
-        "assetValue": "USDC"
+        assetType: 'SYMBOL',
+        assetValue: 'USDC',
       },
-      amount: "100000000000",
+      amount: '100000000000',
       is_amount_in: true,
       slippage_tolerance: 0.5,
       fee: 0.05,
       tick_spacing: 0.1,
-      extension: "0x0"
-    }
+      extension: '0x0',
+    },
   });
 
   console.log('Raw result:', JSON.stringify(result, null, 2));

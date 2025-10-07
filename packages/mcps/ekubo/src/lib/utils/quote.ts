@@ -30,8 +30,10 @@ export function calculateMinimumOutput(
   expectedOutput: bigint,
   slippageTolerance: number
 ): string {
-  const slippageMultiplier = 1 - (slippageTolerance / 100);
-  const minimumAmount = BigInt(Math.floor(Number(expectedOutput) * slippageMultiplier));
+  const slippageMultiplier = 1 - slippageTolerance / 100;
+  const minimumAmount = BigInt(
+    Math.floor(Number(expectedOutput) * slippageMultiplier)
+  );
   return minimumAmount.toString();
 }
 
@@ -42,6 +44,9 @@ export function calculateMinimumOutputU256(
   expectedOutput: bigint,
   slippageTolerance: number
 ) {
-  const minimumAmountStr = calculateMinimumOutput(expectedOutput, slippageTolerance);
+  const minimumAmountStr = calculateMinimumOutput(
+    expectedOutput,
+    slippageTolerance
+  );
   return cairo.uint256(minimumAmountStr);
 }

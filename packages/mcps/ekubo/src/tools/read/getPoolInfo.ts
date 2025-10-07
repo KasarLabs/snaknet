@@ -1,12 +1,12 @@
 import { PoolKey, envRead } from '../../schemas/index.js';
-import { calculateTickFromSqrtPrice, calculateActualPrice } from "../../lib/utils/math.js";
+import {
+  calculateTickFromSqrtPrice,
+  calculateActualPrice,
+} from '../../lib/utils/math.js';
 import { getContract } from '../../lib/utils/contracts.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 
-export const getPoolInfo = async (
-  env: envRead,
-  params: PoolKey
-) => {
+export const getPoolInfo = async (env: envRead, params: PoolKey) => {
   const provider = env.provider;
   try {
     const contract = await getContract(provider, 'core');
@@ -18,7 +18,7 @@ export const getPoolInfo = async (
         token1: params.token1,
         fee: params.fee,
         tick_spacing: params.tick_spacing,
-        extension: params.extension
+        extension: params.extension,
       }
     );
 
@@ -30,7 +30,11 @@ export const getPoolInfo = async (
     const currentTick = calculateTickFromSqrtPrice(sqrtPrice);
 
     // Calculate human-readable price (token1/token0)
-    const readablePrice = calculateActualPrice(sqrtPrice, token0.decimals, token1.decimals);
+    const readablePrice = calculateActualPrice(
+      sqrtPrice,
+      token0.decimals,
+      token1.decimals
+    );
 
     return {
       status: 'success',
@@ -42,10 +46,10 @@ export const getPoolInfo = async (
         liquidity: liquidityResult.toString(),
         fees_per_liquidity: {
           fee_growth_global_0: feesResult.value0.toString(),
-          fee_growth_global_1: feesResult.value1.toString()
+          fee_growth_global_1: feesResult.value1.toString(),
         },
-        current_tick: currentTick
-      }
+        current_tick: currentTick,
+      },
     };
   } catch (error) {
     console.error('Error getting pool information:', error);

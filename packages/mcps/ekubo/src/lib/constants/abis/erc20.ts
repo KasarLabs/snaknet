@@ -1254,4 +1254,3 @@ export const NEW_ERC20_ABI = [
     ],
   },
 ];
-

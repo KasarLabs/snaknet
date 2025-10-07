@@ -37,12 +37,10 @@ const server = new McpServer({
 
 const getEnvRead = (): envRead => {
   if (!process.env.STARKNET_RPC_URL) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL'
-    );
+    throw new Error('Missing required environment variables: STARKNET_RPC_URL');
   }
   return {
-    provider: new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL })
+    provider: new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL }),
   };
 };
 
@@ -65,7 +63,7 @@ const getEnvWrite = (): envWrite => {
     undefined,
     constants.TRANSACTION_VERSION.V3
   );
-  
+
   return {
     provider,
     account,

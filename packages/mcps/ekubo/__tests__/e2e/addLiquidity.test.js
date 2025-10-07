@@ -16,25 +16,25 @@ try {
   await client.connect(transport);
 
   const result = await client.callTool({
-    name: "add_liquidity",
+    name: 'add_liquidity',
     arguments: {
       position_id: 2165129,
       token0: {
-        "assetType": "SYMBOL",
-        "assetValue": "STRK"
+        assetType: 'SYMBOL',
+        assetValue: 'STRK',
       },
       token1: {
-        "assetType": "SYMBOL",
-        "assetValue": "ETH"
+        assetType: 'SYMBOL',
+        assetValue: 'ETH',
       },
-      amount0: "5000000",
-      amount1: "5000",
+      amount0: '5000000',
+      amount1: '5000',
       lower_tick: -1000,
       upper_tick: 1000,
       fee: 0.05,
       tick_spacing: 0.1,
-      extension: "0x0"
-    }
+      extension: '0x0',
+    },
   });
 
   console.log('Raw result:', JSON.stringify(result, null, 2));

@@ -11,22 +11,24 @@ export const getTokenPrice = async (
   try {
     const contract = await getContract(provider, 'core');
 
-    const { poolKey, token0, token1, isTokenALower } = await preparePoolKeyFromParams(
-      env.provider,
-      {
+    const { poolKey, token0, token1, isTokenALower } =
+      await preparePoolKeyFromParams(env.provider, {
         token0: params.token,
         token1: params.quote_currency,
         fee: params.fee,
         tick_spacing: params.tick_spacing,
-        extension: params.extension
-      }
-    );
+        extension: params.extension,
+      });
 
     const priceResult = await contract.get_pool_price(poolKey);
     const sqrtPrice = priceResult.sqrt_ratio;
 
     // Price from Ekubo is always token1/token0
-    const price = calculateActualPrice(sqrtPrice, token0.decimals, token1.decimals);
+    const price = calculateActualPrice(
+      sqrtPrice,
+      token0.decimals,
+      token1.decimals
+    );
     // // If token order was reversed, invert the price // TO CHECK AGAIN
     const finalPrice = isTokenALower ? price : 1 / price;
 
@@ -37,16 +39,18 @@ export const getTokenPrice = async (
         quote_token: params.quote_currency.assetValue,
         price: finalPrice,
         sqrt_price: sqrtPrice.toString(),
-      }
+      },
     });
   } catch (error: any) {
     console.error('Error getting token price:', error);
 
     // Si le pool n'existe pas avec les paramètres par défaut, suggérer d'essayer d'autres valeurs
     const errorMessage = error.message;
-    const suggestion = errorMessage.includes('Pool not found') || errorMessage.includes('does not exist')
-      ? `${errorMessage}. Try specifying different fee/tick_spacing values. Common pairs: fee=0.05 tick_spacing=0.1, fee=0.3 tick_spacing=0.6, or fee=1 tick_spacing=2.`
-      : errorMessage;
+    const suggestion =
+      errorMessage.includes('Pool not found') ||
+      errorMessage.includes('does not exist')
+        ? `${errorMessage}. Try specifying different fee/tick_spacing values. Common pairs: fee=0.05 tick_spacing=0.1, fee=0.3 tick_spacing=0.6, or fee=1 tick_spacing=2.`
+        : errorMessage;
 
     return JSON.stringify({
       status: 'failure',

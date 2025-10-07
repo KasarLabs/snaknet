@@ -5,12 +5,12 @@ export function buildBounds(lowerTick: number, upperTick: number) {
   return {
     lower: {
       mag: BigInt(Math.abs(lowerTick)),
-      sign: lowerTick < 0
+      sign: lowerTick < 0,
     },
     upper: {
       mag: BigInt(Math.abs(upperTick)),
-      sign: upperTick < 0
-    }
+      sign: upperTick < 0,
+    },
   };
 }
 
@@ -24,6 +24,6 @@ export function sortAmounts(
 ): { amount0: string; amount1: string } {
   return {
     amount0: isTokenALower ? amount0Input : amount1Input,
-    amount1: isTokenALower ? amount1Input : amount0Input
+    amount1: isTokenALower ? amount1Input : amount0Input,
   };
 }

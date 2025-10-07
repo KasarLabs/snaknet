@@ -18,7 +18,7 @@ export const withdrawLiquidity = async (
         token1: params.token1,
         fee: params.fee,
         tick_spacing: params.tick_spacing,
-        extension: params.extension
+        extension: params.extension,
       }
     );
 
@@ -36,21 +36,21 @@ export const withdrawLiquidity = async (
       liquidity,
       minToken0,
       minToken1,
-      collectFees
+      collectFees,
     ]);
 
     const clearToken0Calldata = positionsContract.populate('clear', [
-      { contract_address: token0.address }
+      { contract_address: token0.address },
     ]);
 
     const clearToken1Calldata = positionsContract.populate('clear', [
-      { contract_address: token1.address }
+      { contract_address: token1.address },
     ]);
 
     const { transaction_hash } = await account.execute([
       withdrawCalldata,
       clearToken0Calldata,
-      clearToken1Calldata
+      clearToken1Calldata,
     ]);
 
     const receipt = await account.waitForTransaction(transaction_hash);
@@ -67,13 +67,13 @@ export const withdrawLiquidity = async (
         position_id: params.position_id,
         liquidity_withdrawn: liquidity.toString(),
         fees_only: params.fees_only,
-        collect_fees: collectFees
-      }
+        collect_fees: collectFees,
+      },
     });
   } catch (error: any) {
     return JSON.stringify({
       status: 'failure',
-      error: error.message || 'Unknown error while withdrawing liquidity'
+      error: error.message || 'Unknown error while withdrawing liquidity',
     });
   }
 };

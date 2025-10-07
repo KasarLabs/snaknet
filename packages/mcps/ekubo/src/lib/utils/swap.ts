@@ -4,14 +4,11 @@ import { MIN_SQRT_RATIO, MAX_SQRT_RATIO } from '@ekubo/starknet-sdk';
 /**
  * Builds a RouteNode for Ekubo Router swap
  */
-export function buildRouteNode(
-  poolKey: any,
-  sqrtRatioLimit: string
-) {
+export function buildRouteNode(poolKey: any, sqrtRatioLimit: string) {
   return {
     pool_key: poolKey,
     sqrt_ratio_limit: cairo.uint256(sqrtRatioLimit),
-    skip_ahead: 0
+    skip_ahead: 0,
   };
 }
 
@@ -27,8 +24,8 @@ export function buildTokenAmount(
     token: tokenAddress,
     amount: {
       mag: BigInt(amount),
-      sign: !isAmountIn // false = positive (exact input), true = negative (exact output)
-    }
+      sign: !isAmountIn, // false = positive (exact input), true = negative (exact output)
+    },
   };
 }
 
@@ -41,15 +38,21 @@ export function calculateSqrtRatioLimit(
   isTokenALower: boolean
 ): string {
   if (isTokenALower) {
-    const slippageMultiplier = 1 - (slippageTolerance / 100);
-    const calculatedLimit = BigInt(Math.floor(Number(currentSqrtPrice) * Math.sqrt(slippageMultiplier)));
-    return calculatedLimit < currentSqrtPrice && calculatedLimit >= MIN_SQRT_RATIO
+    const slippageMultiplier = 1 - slippageTolerance / 100;
+    const calculatedLimit = BigInt(
+      Math.floor(Number(currentSqrtPrice) * Math.sqrt(slippageMultiplier))
+    );
+    return calculatedLimit < currentSqrtPrice &&
+      calculatedLimit >= MIN_SQRT_RATIO
       ? calculatedLimit.toString()
       : MIN_SQRT_RATIO.toString();
   } else {
-    const slippageMultiplier = 1 + (slippageTolerance / 100);
-    const calculatedLimit = BigInt(Math.floor(Number(currentSqrtPrice) * Math.sqrt(slippageMultiplier)));
-    return calculatedLimit > currentSqrtPrice && calculatedLimit <= MAX_SQRT_RATIO
+    const slippageMultiplier = 1 + slippageTolerance / 100;
+    const calculatedLimit = BigInt(
+      Math.floor(Number(currentSqrtPrice) * Math.sqrt(slippageMultiplier))
+    );
+    return calculatedLimit > currentSqrtPrice &&
+      calculatedLimit <= MAX_SQRT_RATIO
       ? calculatedLimit.toString()
       : MAX_SQRT_RATIO.toString();
   }

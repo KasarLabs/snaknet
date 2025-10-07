@@ -8,10 +8,10 @@ import {
   cairo,
   Uint256,
   Call,
-  Account
+  Account,
 } from 'starknet';
 import { erc20Addresses } from '../constants/addresses.js';
-import { NEW_ERC20_ABI, OLD_ERC20_ABI } from '../constants/abis/index.js'
+import { NEW_ERC20_ABI, OLD_ERC20_ABI } from '../constants/abis/index.js';
 
 /**
  * Token decimals configuration
@@ -53,7 +53,6 @@ export interface ExecuteV3Args {
   call: Call;
   account: Account;
 }
-
 
 /**
  * Detects the ABI type of a token contract
@@ -187,7 +186,6 @@ export const validateAndFormatParams = (
     throw new Error(`Parameter validation failed: ${error.message}`);
   }
 };
-
 
 /**
  * Validates token by his symbol or address

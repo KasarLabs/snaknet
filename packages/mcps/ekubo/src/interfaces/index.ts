@@ -1,8 +1,8 @@
 import { Account, RpcProvider } from 'starknet';
 
 export interface EnvParams {
-    provider: RpcProvider;
-    account: Account;
+  provider: RpcProvider;
+  account: Account;
 }
 
 export interface CompletePoolInfo {

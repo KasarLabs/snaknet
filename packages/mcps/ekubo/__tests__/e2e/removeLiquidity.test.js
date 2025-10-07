@@ -16,26 +16,26 @@ try {
   await client.connect(transport);
 
   const result = await client.callTool({
-    name: "remove_liquidity",
+    name: 'remove_liquidity',
     arguments: {
-      position_id: "123456",
+      position_id: '123456',
       token0: {
-        "assetType": "SYMBOL",
-        "assetValue": "ETH"
+        assetType: 'SYMBOL',
+        assetValue: 'ETH',
       },
       token1: {
-        "assetType": "SYMBOL",
-        "assetValue": "USDC"
+        assetType: 'SYMBOL',
+        assetValue: 'USDC',
       },
-      liquidity_amount: "500000",
+      liquidity_amount: '500000',
       lower_tick: -50,
       upper_tick: 50,
       fee: 0.05,
       tick_spacing: 0.1,
-      extension: "0x0",
+      extension: '0x0',
       fees_only: false,
-      collect_fees: true
-    }
+      collect_fees: true,
+    },
   });
 
   console.log('Raw result:', JSON.stringify(result, null, 2));

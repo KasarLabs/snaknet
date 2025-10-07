@@ -13,8 +13,8 @@ export const transferPosition = async (
     NFTContract.connect(account);
     const transferCalldata = NFTContract.populate('transfer_from', [
       env.accountAddress,
-      params.to_address, 
-      cairo.uint256(params.position_id)      
+      params.to_address,
+      cairo.uint256(params.position_id),
     ]);
 
     const { transaction_hash } = await account.execute([transferCalldata]);
@@ -30,13 +30,13 @@ export const transferPosition = async (
         transaction_hash,
         position_id: params.position_id,
         from: env.accountAddress,
-        to: params.to_address
-      }
+        to: params.to_address,
+      },
     });
   } catch (error: any) {
     return JSON.stringify({
       status: 'failure',
-      error: error.message || 'Unknown error while transferring position'
+      error: error.message || 'Unknown error while transferring position',
     });
   }
 };
