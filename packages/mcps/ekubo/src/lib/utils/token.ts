@@ -10,8 +10,8 @@ import {
   Call,
   Account
 } from 'starknet';
-import { erc20Addresses } from '../contracts/addresses.js';
-import { NEW_ERC20_ABI, OLD_ERC20_ABI } from '../abis/erc20.js';
+import { erc20Addresses } from '../constants/addresses.js';
+import { NEW_ERC20_ABI, OLD_ERC20_ABI } from '../constants/abis/index.js'
 
 /**
  * Token decimals configuration

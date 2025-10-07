@@ -1,6 +1,6 @@
 import { RpcProvider, shortString, Contract } from 'starknet';
-import { ekuboAddress } from '../contracts/addresses.js';
-import { CORE_ABI, POSITIONS_ABI, NFT_POSITIONS_CONTRACT_ABI, NEW_ERC20_ABI, ROUTER_ABI } from '../abis/index.js';
+import { ekuboAddress } from '../constants/addresses.js';
+import { CORE_ABI, POSITIONS_ABI, NFT_POSITIONS_CONTRACT_ABI, NEW_ERC20_ABI, ROUTER_ABI } from '../constants/abis/index.js'
 
 export type Network = 'sepolia' | 'mainnet';
 export type EkuboContract = keyof typeof ekuboAddress;

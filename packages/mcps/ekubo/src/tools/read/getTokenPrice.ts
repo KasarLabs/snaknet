@@ -1,7 +1,6 @@
-import { calculateActualPrice, convertFeePercentToU128, convertTickSpacingPercentToExponent } from '../../lib/utils/math.js';
-import { extractAssetInfo, validateToken, validToken } from '../../lib/utils/token.js';
+import { calculateActualPrice } from '../../lib/utils/math.js';
 import { GetTokenPriceSchema, envRead } from '../../schemas/index.js';
-import { getContract } from '../../lib/contracts/index.js';
+import { getContract } from '../../lib/utils/contracts.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 
 export const getTokenPrice = async (

@@ -1,4 +1,4 @@
-import { getERC20Contract } from '../../lib/contracts/index.js';
+import { getERC20Contract } from '../../lib/utils/contracts.js';
 import { getContract } from '../../lib/utils/contracts.js';
 import { SwapTokensSchema } from '../../schemas/index.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';

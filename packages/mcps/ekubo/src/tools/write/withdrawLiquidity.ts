@@ -1,4 +1,4 @@
-import { getContract } from '../../lib/contracts/index.js';
+import { getContract } from '../../lib/utils/contracts.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 import { WithdrawLiquiditySchema } from '../../schemas/index.js';
 import { buildBounds } from '../../lib/utils/liquidity.js';

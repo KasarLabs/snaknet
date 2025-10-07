@@ -10,13 +10,11 @@ export const transferPosition = async (
     const account = env.account;
     const NFTContract = await getContract(env.provider, 'positionsNFT');
 
-    const tokenId = cairo.uint256(params.position_id);
-
     NFTContract.connect(account);
     const transferCalldata = NFTContract.populate('transfer_from', [
       env.accountAddress,
       params.to_address, 
-      tokenId       
+      cairo.uint256(params.position_id)      
     ]);
 
     const { transaction_hash } = await account.execute([transferCalldata]);
