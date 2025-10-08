@@ -1,4 +1,9 @@
-import { getWithdrawQueueNFTContract } from '../../lib/utils/contracts.js';
+import {
+  getWithdrawQueueNFTContract,
+  getTokenDecimals,
+  getLiquidTokenName,
+  getUnderlyingTokenName,
+} from '../../lib/utils/contracts.js';
 import { GetWithdrawRequestInfoSchema } from '../../schemas/index.js';
 import { envRead } from '../../interfaces/index.js';
 import { formatUnits } from '../../lib/utils/formatting.js';
@@ -8,7 +13,10 @@ export const getWithdrawRequestInfo = async (
   params: GetWithdrawRequestInfoSchema
 ) => {
   try {
-    const withdrawQueueContract = getWithdrawQueueNFTContract(env.provider);
+    const withdrawQueueContract = getWithdrawQueueNFTContract(env.provider, params.token_type);
+    const decimals = getTokenDecimals(params.token_type);
+    const liquidTokenName = getLiquidTokenName(params.token_type);
+    const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
     // Convert request_id string to u128
     const requestId = BigInt(params.withdraw_request_id);
@@ -30,11 +38,14 @@ export const getWithdrawRequestInfo = async (
     return {
       status: 'success',
       data: {
+        token_type: params.token_type,
+        underlying_token: underlyingTokenName,
+        liquid_token: liquidTokenName,
         withdraw_request_id: params.withdraw_request_id,
         assets_amount: assets.toString(),
-        assets_amount_formatted: formatUnits(assets, 18),
+        assets_amount_formatted: formatUnits(assets, decimals),
         shares_amount: shares.toString(),
-        shares_amount_formatted: formatUnits(shares, 18),
+        shares_amount_formatted: formatUnits(shares, decimals),
         is_claimed: isClaimed,
         timestamp: timestamp.toString(),
         claim_time: claimTime.toString(),

@@ -376,18 +376,18 @@
         "STARKNET_PRIVATE_KEY": ""
       }
     },
-    "description": "Endur.fi liquid staking protocol for STRK tokens on Starknet",
+    "description": "Endur.fi liquid staking protocol for STRK and BTC tokens (WBTC, tBTC, LBTC) on Starknet",
     "promptInfo": {
-      "expertise": "Liquid staking with xSTRK on Endur.fi",
+      "expertise": "Liquid staking with xSTRK, xyWBTC, xytBTC, and xyLBTC on Endur.fi",
       "tools": [
-        "preview_stake_strk",
-        "preview_unstake_xstrk",
-        "get_user_xstrk_balance",
-        "get_total_staked_strk",
+        "preview_stake",
+        "preview_unstake",
+        "get_user_balance",
+        "get_total_staked",
         "get_withdraw_request_info",
-        "stake_strk",
-        "unstake_xstrk_queue",
-        "claim_unstake_request"
+        "stake",
+        "unstake",
+        "claim"
       ]
     }
   }

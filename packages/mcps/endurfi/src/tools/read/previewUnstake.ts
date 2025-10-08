@@ -1,28 +1,34 @@
-import { getXStrkContract } from '../../lib/utils/contracts.js';
+import {
+  getLiquidTokenContract,
+  getTokenDecimals,
+  getLiquidTokenName,
+  getUnderlyingTokenName,
+} from '../../lib/utils/contracts.js';
 import { PreviewUnstakeSchema } from '../../schemas/index.js';
 import { envRead } from '../../interfaces/index.js';
 import { formatUnits } from '../../lib/utils/formatting.js';
 
-export const previewUnstake = async (
-  env: envRead,
-  params: PreviewUnstakeSchema
-) => {
+export const previewUnstake = async (env: envRead, params: PreviewUnstakeSchema) => {
   try {
-    const xStrkContract = getXStrkContract(env.provider);
+    const liquidTokenContract = getLiquidTokenContract(env.provider, params.token_type);
+    const decimals = getTokenDecimals(params.token_type);
+    const liquidTokenName = getLiquidTokenName(params.token_type);
+    const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
-    // Preview how much STRK will be received for the given xSTRK amount
+    // Preview how much underlying token will be received for the given liquid token amount
     // starknet.js returns u256 directly as bigint
-    const assets = await xStrkContract.preview_redeem(
-      BigInt(params.xstrk_amount)
-    );
+    const assets = await liquidTokenContract.preview_redeem(BigInt(params.amount));
 
     return {
       status: 'success',
       data: {
-        xstrk_amount: params.xstrk_amount,
-        xstrk_amount_formatted: formatUnits(BigInt(params.xstrk_amount), 18),
-        estimated_strk_amount: assets.toString(),
-        estimated_strk_amount_formatted: formatUnits(assets, 18),
+        token_type: params.token_type,
+        liquid_token: liquidTokenName,
+        underlying_token: underlyingTokenName,
+        amount: params.amount,
+        amount_formatted: formatUnits(BigInt(params.amount), decimals),
+        estimated_assets: assets.toString(),
+        estimated_assets_formatted: formatUnits(assets, decimals),
       },
     };
   } catch (error: any) {

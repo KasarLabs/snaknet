@@ -4,20 +4,20 @@ import {
   getLiquidTokenName,
   getUnderlyingTokenName,
 } from '../../lib/utils/contracts.js';
-import { PreviewStakeSchema } from '../../schemas/index.js';
+import { GetTotalStakedSchema } from '../../schemas/index.js';
 import { envRead } from '../../interfaces/index.js';
 import { formatUnits } from '../../lib/utils/formatting.js';
 
-export const previewStake = async (env: envRead, params: PreviewStakeSchema) => {
+export const getTotalStaked = async (env: envRead, params: GetTotalStakedSchema) => {
   try {
     const liquidTokenContract = getLiquidTokenContract(env.provider, params.token_type);
     const decimals = getTokenDecimals(params.token_type);
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
-    // Preview how much liquid token will be received for the given underlying token amount
+    // Get total assets managed by the vault (TVL)
     // starknet.js returns u256 directly as bigint
-    const shares = await liquidTokenContract.preview_deposit(BigInt(params.amount));
+    const totalAssets = await liquidTokenContract.total_assets();
 
     return {
       status: 'success',
@@ -25,16 +25,15 @@ export const previewStake = async (env: envRead, params: PreviewStakeSchema) => 
         token_type: params.token_type,
         underlying_token: underlyingTokenName,
         liquid_token: liquidTokenName,
-        amount: params.amount,
-        amount_formatted: formatUnits(BigInt(params.amount), decimals),
-        estimated_shares: shares.toString(),
-        estimated_shares_formatted: formatUnits(shares, decimals),
+        total_staked: totalAssets.toString(),
+        total_staked_formatted: formatUnits(totalAssets, decimals),
+        description: `Total ${underlyingTokenName} staked on Endur.fi (TVL)`,
       },
     };
   } catch (error: any) {
     return {
       status: 'failure',
-      error: error.message || 'Unknown error previewing stake',
+      error: error.message || 'Unknown error getting total staked',
     };
   }
 };

@@ -1,26 +1,29 @@
 import {
-  getXStrkContract,
+  getLiquidTokenContract,
   getWithdrawQueueNFTAddress,
+  getTokenDecimals,
+  getLiquidTokenName,
+  getUnderlyingTokenName,
 } from '../../lib/utils/contracts.js';
-import { UnstakeXstrkQueueSchema } from '../../schemas/index.js';
+import { UnstakeSchema } from '../../schemas/index.js';
 import { envWrite } from '../../interfaces/index.js';
 import { formatUnits } from '../../lib/utils/formatting.js';
 import { extractWithdrawRequestIdFromReceipt } from '../../lib/utils/events.js';
 
-export const unstakeXstrkQueue = async (
-  env: envWrite,
-  params: UnstakeXstrkQueueSchema
-) => {
+export const unstake = async (env: envWrite, params: UnstakeSchema) => {
   try {
     const account = env.account;
-    const xStrkContract = getXStrkContract(env.provider);
+    const liquidTokenContract = getLiquidTokenContract(env.provider, params.token_type);
+    const decimals = getTokenDecimals(params.token_type);
+    const liquidTokenName = getLiquidTokenName(params.token_type);
+    const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
     // Convert amount string to bigint - starknet.js handles u256 conversion
-    const shares = BigInt(params.xstrk_amount);
+    const shares = BigInt(params.amount);
 
     // Call redeem to create a withdraw request (NFT)
-    xStrkContract.connect(account);
-    const redeemCalldata = xStrkContract.populate('redeem', [
+    liquidTokenContract.connect(account);
+    const redeemCalldata = liquidTokenContract.populate('redeem', [
       shares,
       account.address,
       account.address,
@@ -33,7 +36,8 @@ export const unstakeXstrkQueue = async (
       throw new Error('Transaction confirmed but failed');
     }
 
-    const withdrawQueueNftAddress = getWithdrawQueueNFTAddress(env.provider);
+    // Extract withdraw request ID from receipt events
+    const withdrawQueueNftAddress = getWithdrawQueueNFTAddress(env.provider, params.token_type);
     const withdrawRequestId = extractWithdrawRequestIdFromReceipt(
       receipt,
       withdrawQueueNftAddress
@@ -42,18 +46,20 @@ export const unstakeXstrkQueue = async (
     return {
       status: 'success',
       data: {
+        token_type: params.token_type,
         transaction_hash: transaction_hash,
-        xstrk_amount: params.xstrk_amount,
-        xstrk_amount_formatted: formatUnits(shares, 18),
+        liquid_token: liquidTokenName,
+        unstaked_amount: params.amount,
+        unstaked_amount_formatted: formatUnits(shares, decimals),
         withdraw_request_id: withdrawRequestId || 'Not found in events',
-        message:
-          'Unstake request created. Wait 1-2 days before claiming with claim_unstake_request.',
+        underlying_token: underlyingTokenName,
+        message: `Unstake request created. Wait 1-2 days before claiming ${underlyingTokenName}.`,
       },
     };
   } catch (error: any) {
     return {
       status: 'failure',
-      error: error.message || 'Unknown error during xSTRK unstaking',
+      error: error.message || `Unknown error during ${params.token_type} unstaking`,
     };
   }
 };

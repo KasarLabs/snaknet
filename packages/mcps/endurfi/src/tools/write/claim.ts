@@ -1,22 +1,21 @@
-import { getWithdrawQueueNFTContract } from '../../lib/utils/contracts.js';
-import { ClaimUnstakeRequestSchema } from '../../schemas/index.js';
+import {
+  getWithdrawQueueNFTContract,
+  getUnderlyingTokenName,
+} from '../../lib/utils/contracts.js';
+import { ClaimSchema } from '../../schemas/index.js';
 import { envWrite } from '../../interfaces/index.js';
 
-export const claimUnstakeRequest = async (
-  env: envWrite,
-  params: ClaimUnstakeRequestSchema
-) => {
+export const claim = async (env: envWrite, params: ClaimSchema) => {
   try {
     const account = env.account;
-    const withdrawQueueContract = getWithdrawQueueNFTContract(env.provider);
+    const withdrawQueueContract = getWithdrawQueueNFTContract(env.provider, params.token_type);
+    const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
     // Convert request_id string to u128
     const requestId = BigInt(params.withdraw_request_id);
 
     withdrawQueueContract.connect(account);
-    const claimCalldata = withdrawQueueContract.populate('claim_withdrawal', [
-      requestId,
-    ]);
+    const claimCalldata = withdrawQueueContract.populate('claim_withdrawal', [requestId]);
 
     const { transaction_hash } = await account.execute([claimCalldata]);
 
@@ -28,9 +27,11 @@ export const claimUnstakeRequest = async (
     return {
       status: 'success',
       data: {
+        token_type: params.token_type,
         transaction_hash: transaction_hash,
         withdraw_request_id: params.withdraw_request_id,
-        message: 'STRK successfully claimed from withdraw request',
+        underlying_token: underlyingTokenName,
+        message: `${underlyingTokenName} successfully claimed from withdraw request`,
       },
     };
   } catch (error: any) {

@@ -1,33 +1,39 @@
 import {
-  getXStrkContract,
-  getStrkContract,
+  getLiquidTokenContract,
+  getUnderlyingTokenContract,
+  getTokenDecimals,
+  getLiquidTokenName,
+  getUnderlyingTokenName,
 } from '../../lib/utils/contracts.js';
-import { StakeStrkSchema } from '../../schemas/index.js';
+import { StakeSchema } from '../../schemas/index.js';
 import { envWrite } from '../../interfaces/index.js';
 import { formatUnits } from '../../lib/utils/formatting.js';
 
-export const stakeStrk = async (env: envWrite, params: StakeStrkSchema) => {
+export const stake = async (env: envWrite, params: StakeSchema) => {
   try {
     const account = env.account;
-    const xStrkContract = getXStrkContract(env.provider);
-    const strkContract = getStrkContract(env.provider);
+    const liquidTokenContract = getLiquidTokenContract(env.provider, params.token_type);
+    const underlyingTokenContract = getUnderlyingTokenContract(env.provider, params.token_type);
+    const decimals = getTokenDecimals(params.token_type);
+    const liquidTokenName = getLiquidTokenName(params.token_type);
+    const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
     // Convert amount string to bigint - starknet.js handles u256 conversion
     const amount = BigInt(params.amount);
 
-    // Preview how much xSTRK will be received before staking
-    const expectedXstrkShares = await xStrkContract.preview_deposit(amount);
+    // Preview how much liquid token will be received before staking
+    const expectedShares = await liquidTokenContract.preview_deposit(amount);
 
-    // Step 1: Approve xSTRK contract to spend STRK
-    strkContract.connect(account);
-    const approveCalldata = strkContract.populate('approve', [
-      xStrkContract.address,
+    // Step 1: Approve liquid token contract to spend underlying token
+    underlyingTokenContract.connect(account);
+    const approveCalldata = underlyingTokenContract.populate('approve', [
+      liquidTokenContract.address,
       amount,
     ]);
 
-    // Step 2: Deposit STRK to receive xSTRK
-    xStrkContract.connect(account);
-    const depositCalldata = xStrkContract.populate('deposit', [
+    // Step 2: Deposit underlying token to receive liquid token
+    liquidTokenContract.connect(account);
+    const depositCalldata = liquidTokenContract.populate('deposit', [
       amount,
       account.address,
     ]);
@@ -46,17 +52,20 @@ export const stakeStrk = async (env: envWrite, params: StakeStrkSchema) => {
     return {
       status: 'success',
       data: {
+        token_type: params.token_type,
         transaction_hash: transaction_hash,
-        strk_staked: params.amount,
-        strk_staked_formatted: formatUnits(amount, 18),
-        xstrk_received: expectedXstrkShares.toString(),
-        xstrk_received_formatted: formatUnits(expectedXstrkShares, 18),
+        underlying_token: underlyingTokenName,
+        staked_amount: params.amount,
+        staked_amount_formatted: formatUnits(amount, decimals),
+        liquid_token: liquidTokenName,
+        received_amount: expectedShares.toString(),
+        received_amount_formatted: formatUnits(expectedShares, decimals),
       },
     };
   } catch (error: any) {
     return {
       status: 'failure',
-      error: error.message || 'Unknown error during STRK staking',
+      error: error.message || `Unknown error during ${params.token_type} staking`,
     };
   }
 };
