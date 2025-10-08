@@ -17,9 +17,9 @@ import {
   getWithdrawRequestInfoSchema,
 } from './schemas/index.js';
 
-import { stakeStrk } from './tools/write/stakeStrk.js';
-import { unstakeXstrkQueue } from './tools/write/unstakeXstrkQueue.js';
-import { claimUnstakeRequest } from './tools/write/claimUnstakeRequest.js';
+import { stakeStrk } from './tools/write/stake.js';
+import { unstakeXstrkQueue } from './tools/write/unstake.js';
+import { claimUnstakeRequest } from './tools/write/claim.js';
 
 import { previewStake } from './tools/read/previewStake.js';
 import { previewUnstake } from './tools/read/previewUnstake.js';

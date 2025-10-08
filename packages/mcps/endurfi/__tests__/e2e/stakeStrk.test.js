@@ -29,8 +29,6 @@ try {
   if (response.status === 'success') {
     console.log('\n✅ Stake STRK transaction successful!');
     console.log(`   Transaction hash: ${response.data.transaction_hash}`);
-    console.log(`   Staked amount: ${response.data.strk_amount} STRK`);
-    console.log(`   Received amount: ${response.data.xstrk_received} xSTRK`);
   } else {
     console.log('\n❌ Stake STRK transaction failed');
     console.log(`   Error: ${response.error}`);

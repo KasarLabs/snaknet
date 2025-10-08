@@ -22,10 +22,15 @@ export const getStrkContract = (provider: RpcProvider): Contract => {
   return new Contract(NEW_ERC20_ABI, address, provider);
 };
 
-// Get withdraw queue NFT contract (if needed in the future)
+// Get withdraw queue NFT contract
 export const getWithdrawQueueNFTContract = (provider: RpcProvider): Contract => {
   const network = getNetwork(provider);
   const address = endurfiAddress.withdrawQueueNFT[network];
-  // For now, return a basic contract - we'll need the proper ABI for NFT operations
   return new Contract(WITHDRAW_QUEUE_ABI, address, provider);
+};
+
+// Get withdraw queue NFT contract address
+export const getWithdrawQueueNFTAddress = (provider: RpcProvider): string => {
+  const network = getNetwork(provider);
+  return endurfiAddress.withdrawQueueNFT[network];
 };

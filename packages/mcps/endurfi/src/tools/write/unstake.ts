@@ -1,7 +1,11 @@
-import { getXStrkContract } from '../../lib/utils/contracts.js';
+import {
+  getXStrkContract,
+  getWithdrawQueueNFTAddress,
+} from '../../lib/utils/contracts.js';
 import { UnstakeXstrkQueueSchema } from '../../schemas/index.js';
 import { envWrite } from '../../interfaces/index.js';
 import { formatUnits } from '../../lib/utils/formatting.js';
+import { extractWithdrawRequestIdFromReceipt } from '../../lib/utils/events.js';
 
 export const unstakeXstrkQueue = async (
   env: envWrite,
@@ -29,16 +33,21 @@ export const unstakeXstrkQueue = async (
       throw new Error('Transaction confirmed but failed');
     }
 
-    // Note: The withdraw_request_id (NFT ID) would be emitted in events
-    // For now, we return success with transaction hash
+    const withdrawQueueNftAddress = getWithdrawQueueNFTAddress(env.provider);
+    const withdrawRequestId = extractWithdrawRequestIdFromReceipt(
+      receipt,
+      withdrawQueueNftAddress
+    );
+
     return {
       status: 'success',
       data: {
         transaction_hash: transaction_hash,
         xstrk_amount: params.xstrk_amount,
         xstrk_amount_formatted: formatUnits(shares, 18),
+        withdraw_request_id: withdrawRequestId || 'Not found in events',
         message:
-          'Unstake request created. Check transaction events for withdraw request ID (NFT). Wait 1-2 days before claiming.',
+          'Unstake request created. Wait 1-2 days before claiming with claim_unstake_request.',
       },
     };
   } catch (error: any) {

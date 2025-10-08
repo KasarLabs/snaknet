@@ -16,7 +16,7 @@ try {
   await client.connect(transport);
 
   // Replace with an actual NFT ID from a previous unstake_xstrk_queue call
-  const withdrawRequestId = '1';
+  const withdrawRequestId = '6477';
 
   const result = await client.callTool({
     name: 'claim_unstake_request',
@@ -32,8 +32,6 @@ try {
   if (response.status === 'success') {
     console.log('\n✅ Claim unstake request transaction successful!');
     console.log(`   Transaction hash: ${response.data.transaction_hash}`);
-    console.log(`   NFT ID claimed: ${response.data.nft_id}`);
-    console.log(`   STRK received: ${response.data.strk_received} STRK`);
   } else {
     console.log('\n❌ Claim unstake request transaction failed');
     console.log(`   Error: ${response.error}`);

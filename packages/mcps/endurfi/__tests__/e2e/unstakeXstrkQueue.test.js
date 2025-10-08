@@ -18,7 +18,7 @@ try {
   const result = await client.callTool({
     name: 'unstake_xstrk_queue',
     arguments: {
-      xstrk_amount: '50000', // 0.5 xSTRK (18 decimals)
+      xstrk_amount: '5000', // 0.5 xSTRK (18 decimals)
     },
   });
 
@@ -29,9 +29,6 @@ try {
   if (response.status === 'success') {
     console.log('\n✅ Unstake xSTRK (queue) transaction successful!');
     console.log(`   Transaction hash: ${response.data.transaction_hash}`);
-    console.log(`   Unstaked amount: ${response.data.xstrk_amount} xSTRK`);
-    console.log(`   Expected STRK: ${response.data.expected_strk} STRK`);
-    console.log(`   NFT ID: ${response.data.nft_id}`);
     console.log(
       '\n   ⏳ Wait 1-2 days before claiming with claim_unstake_request'
     );
