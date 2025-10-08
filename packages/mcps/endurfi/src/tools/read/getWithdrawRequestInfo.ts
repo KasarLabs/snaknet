@@ -1,6 +1,7 @@
 import { getWithdrawQueueNFTContract } from '../../lib/utils/contracts.js';
 import { GetWithdrawRequestInfoSchema } from '../../schemas/index.js';
 import { envRead } from '../../interfaces/index.js';
+import { formatUnits } from '../../lib/utils/formatting.js';
 
 export const getWithdrawRequestInfo = async (
   env: envRead,
@@ -15,9 +16,9 @@ export const getWithdrawRequestInfo = async (
     // Get withdraw request information
     const requestInfo = await withdrawQueueContract.get_request_info(requestId);
 
-    // Parse the WithdrawRequest struct
-    const assets = BigInt(requestInfo.assets.low) + (BigInt(requestInfo.assets.high) << 128n);
-    const shares = BigInt(requestInfo.shares.low) + (BigInt(requestInfo.shares.high) << 128n);
+    // Parse the WithdrawRequest struct - starknet.js returns u256 as bigint
+    const assets = requestInfo.assets;
+    const shares = requestInfo.shares;
     const isClaimed = requestInfo.isClaimed;
     const timestamp = BigInt(requestInfo.timestamp);
     const claimTime = BigInt(requestInfo.claimTime);
@@ -31,7 +32,9 @@ export const getWithdrawRequestInfo = async (
       data: {
         withdraw_request_id: params.withdraw_request_id,
         assets_amount: assets.toString(),
+        assets_amount_formatted: formatUnits(assets, 18),
         shares_amount: shares.toString(),
+        shares_amount_formatted: formatUnits(shares, 18),
         is_claimed: isClaimed,
         timestamp: timestamp.toString(),
         claim_time: claimTime.toString(),

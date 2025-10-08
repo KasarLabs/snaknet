@@ -36,29 +36,11 @@ async function callTool(client, name, args) {
 }
 
 /**
- * Test get_xstrk_exchange_rate tool
- */
-async function testGetExchangeRate(client) {
-  const response = await callTool(client, 'get_xstrk_exchange_rate', {});
-
-  if (response.status !== 'success') {
-    throw new Error(`get_xstrk_exchange_rate failed: ${response.error}`);
-  }
-
-  console.log('✅ get_xstrk_exchange_rate test passed');
-  console.log(`   Exchange rate: 1 xSTRK = ${response.data.exchange_rate} STRK`);
-  console.log(`   xSTRK address: ${response.data.xstrk_address}`);
-  console.log(`   STRK address: ${response.data.strk_address}`);
-
-  return response;
-}
-
-/**
  * Test preview_stake_strk tool
  */
 async function testPreviewStake(client) {
   const response = await callTool(client, 'preview_stake_strk', {
-    amount: '1000000000000000000', // 1 STRK (18 decimals)
+    strk_amount: '1000000000000000000', // 1 STRK (18 decimals)
   });
 
   if (response.status !== 'success') {
@@ -67,8 +49,7 @@ async function testPreviewStake(client) {
 
   console.log('✅ preview_stake_strk test passed');
   console.log(`   Staking ${response.data.strk_amount} STRK`);
-  console.log(`   Will receive: ${response.data.xstrk_amount} xSTRK`);
-  console.log(`   Exchange rate: ${response.data.exchange_rate}`);
+  console.log(`   Will receive: ${response.data.estimated_xstrk_amount} xSTRK`);
 
   return response;
 }
@@ -78,7 +59,7 @@ async function testPreviewStake(client) {
  */
 async function testPreviewUnstake(client) {
   const response = await callTool(client, 'preview_unstake_xstrk', {
-    amount: '1000000000000000000', // 1 xSTRK (18 decimals)
+    xstrk_amount: '1000000000000000000', // 1 xSTRK (18 decimals)
   });
 
   if (response.status !== 'success') {
@@ -87,8 +68,7 @@ async function testPreviewUnstake(client) {
 
   console.log('✅ preview_unstake_xstrk test passed');
   console.log(`   Unstaking ${response.data.xstrk_amount} xSTRK`);
-  console.log(`   Will receive: ${response.data.strk_amount} STRK`);
-  console.log(`   Exchange rate: ${response.data.exchange_rate}`);
+  console.log(`   Will receive: ${response.data.estimated_strk_amount} STRK`);
 
   return response;
 }
@@ -146,7 +126,7 @@ async function testGetWithdrawRequestInfo(client) {
 
   // Test with a hypothetical NFT ID
   const response = await callTool(client, 'get_withdraw_request_info', {
-    nft_id: '1',
+    withdraw_request_id: '1',
   });
 
   if (response.status === 'success') {
@@ -203,8 +183,6 @@ async function runTests() {
     client = await createClient();
     console.log('✅ Client connected successfully\n');
 
-    // Run all tests
-    await testGetExchangeRate(client);
     await testPreviewStake(client);
     await testPreviewUnstake(client);
     await testGetUserBalance(client);

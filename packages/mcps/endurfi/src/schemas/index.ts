@@ -27,11 +27,6 @@ export const claimUnstakeRequestSchema = z.object({
 
 export type ClaimUnstakeRequestSchema = z.infer<typeof claimUnstakeRequestSchema>;
 
-// Get xSTRK/STRK exchange rate
-export const getExchangeRateSchema = z.object({});
-
-export type GetExchangeRateSchema = z.infer<typeof getExchangeRateSchema>;
-
 // Preview stake - how much xSTRK for X STRK
 export const previewStakeSchema = z.object({
   strk_amount: z

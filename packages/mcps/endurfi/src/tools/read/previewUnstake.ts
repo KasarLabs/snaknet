@@ -1,6 +1,7 @@
 import { getXStrkContract } from '../../lib/utils/contracts.js';
 import { PreviewUnstakeSchema } from '../../schemas/index.js';
 import { envRead } from '../../interfaces/index.js';
+import { formatUnits } from '../../lib/utils/formatting.js';
 
 export const previewUnstake = async (
   env: envRead,
@@ -9,21 +10,17 @@ export const previewUnstake = async (
   try {
     const xStrkContract = getXStrkContract(env.provider);
 
-    // Convert amount string to u256 format
-    const shares = {
-      low: BigInt(params.xstrk_amount) & ((1n << 128n) - 1n),
-      high: BigInt(params.xstrk_amount) >> 128n,
-    };
-
-    // Preview how much STRK will be received
-    const assetsResult = await xStrkContract.preview_redeem(shares);
-    const assets = BigInt(assetsResult.low) + (BigInt(assetsResult.high) << 128n);
+    // Preview how much STRK will be received for the given xSTRK amount
+    // starknet.js returns u256 directly as bigint
+    const assets = await xStrkContract.preview_redeem(BigInt(params.xstrk_amount));
 
     return {
       status: 'success',
       data: {
         xstrk_amount: params.xstrk_amount,
+        xstrk_amount_formatted: formatUnits(BigInt(params.xstrk_amount), 18),
         estimated_strk_amount: assets.toString(),
+        estimated_strk_amount_formatted: formatUnits(assets, 18),
       },
     };
   } catch (error: any) {

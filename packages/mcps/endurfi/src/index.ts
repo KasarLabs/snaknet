@@ -10,7 +10,6 @@ import {
   stakeStrkSchema,
   unstakeXstrkQueueSchema,
   claimUnstakeRequestSchema,
-  getExchangeRateSchema,
   previewStakeSchema,
   previewUnstakeSchema,
   getUserXstrkBalanceSchema,
@@ -22,7 +21,6 @@ import { stakeStrk } from './tools/write/stakeStrk.js';
 import { unstakeXstrkQueue } from './tools/write/unstakeXstrkQueue.js';
 import { claimUnstakeRequest } from './tools/write/claimUnstakeRequest.js';
 
-import { getExchangeRate } from './tools/read/getExchangeRate.js';
 import { previewStake } from './tools/read/previewStake.js';
 import { previewUnstake } from './tools/read/previewUnstake.js';
 import { getUserXstrkBalance } from './tools/read/getUserXstrkBalance.js';
@@ -74,18 +72,6 @@ const getEnvWrite = (): envWrite => {
 };
 
 const registerTools = (EndurfiToolRegistry: mcpTool[]) => {
-  // Read operations
-  EndurfiToolRegistry.push({
-    name: 'get_xstrk_exchange_rate',
-    description:
-      'Get the current exchange rate between xSTRK and STRK (how much 1 xSTRK is worth in STRK)',
-    schema: getExchangeRateSchema,
-    execute: async (params: any) => {
-      const envRead = getEnvRead();
-      return await getExchangeRate(envRead, params);
-    },
-  });
-
   EndurfiToolRegistry.push({
     name: 'preview_stake_strk',
     description:
