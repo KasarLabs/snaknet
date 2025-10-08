@@ -18,7 +18,7 @@ try {
   const result = await client.callTool({
     name: 'unstake_xstrk_queue',
     arguments: {
-      amount: '500000000000000000', // 0.5 xSTRK (18 decimals)
+      xstrk_amount: '50000', // 0.5 xSTRK (18 decimals)
     },
   });
 

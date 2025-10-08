@@ -16,12 +16,12 @@ try {
   await client.connect(transport);
 
   // Replace with an actual NFT ID from a previous unstake_xstrk_queue call
-  const nftId = '1';
+  const withdrawRequestId = '1';
 
   const result = await client.callTool({
     name: 'claim_unstake_request',
     arguments: {
-      nft_id: nftId,
+      withdraw_request_id: withdrawRequestId,
     },
   });
 

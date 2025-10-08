@@ -18,7 +18,7 @@ try {
   const result = await client.callTool({
     name: 'stake_strk',
     arguments: {
-      amount: '1000000000000000000', // 1 STRK (18 decimals)
+      amount: '150000000000', // 1 STRK (18 decimals)
     },
   });
 

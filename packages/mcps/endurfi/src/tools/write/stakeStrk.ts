@@ -1,6 +1,7 @@
 import { getXStrkContract, getStrkContract } from '../../lib/utils/contracts.js';
 import { StakeStrkSchema } from '../../schemas/index.js';
 import { envWrite } from '../../interfaces/index.js';
+import { formatUnits } from '../../lib/utils/formatting.js';
 
 export const stakeStrk = async (env: envWrite, params: StakeStrkSchema) => {
   try {
@@ -8,11 +9,11 @@ export const stakeStrk = async (env: envWrite, params: StakeStrkSchema) => {
     const xStrkContract = getXStrkContract(env.provider);
     const strkContract = getStrkContract(env.provider);
 
-    // Convert amount string to u256 format
-    const amount = {
-      low: BigInt(params.amount) & ((1n << 128n) - 1n),
-      high: BigInt(params.amount) >> 128n,
-    };
+    // Convert amount string to bigint - starknet.js handles u256 conversion
+    const amount = BigInt(params.amount);
+
+    // Preview how much xSTRK will be received before staking
+    const expectedXstrkShares = await xStrkContract.preview_deposit(amount);
 
     // Step 1: Approve xSTRK contract to spend STRK
     strkContract.connect(account);
@@ -39,16 +40,14 @@ export const stakeStrk = async (env: envWrite, params: StakeStrkSchema) => {
       throw new Error('Transaction confirmed but failed');
     }
 
-    // Get the xSTRK balance after staking to return shares received
-    const xStrkBalance = await xStrkContract.balance_of(account.address);
-    const xStrkReceived = xStrkBalance.toString();
-
     return {
       status: 'success',
       data: {
         transaction_hash: transaction_hash,
         strk_staked: params.amount,
-        xstrk_received: xStrkReceived,
+        strk_staked_formatted: formatUnits(amount, 18),
+        xstrk_received: expectedXstrkShares.toString(),
+        xstrk_received_formatted: formatUnits(expectedXstrkShares, 18),
       },
     };
   } catch (error: any) {

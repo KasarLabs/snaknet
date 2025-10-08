@@ -1,6 +1,7 @@
 import { getXStrkContract } from '../../lib/utils/contracts.js';
 import { UnstakeXstrkQueueSchema } from '../../schemas/index.js';
 import { envWrite } from '../../interfaces/index.js';
+import { formatUnits } from '../../lib/utils/formatting.js';
 
 export const unstakeXstrkQueue = async (
   env: envWrite,
@@ -10,11 +11,8 @@ export const unstakeXstrkQueue = async (
     const account = env.account;
     const xStrkContract = getXStrkContract(env.provider);
 
-    // Convert amount string to u256 format
-    const shares = {
-      low: BigInt(params.xstrk_amount) & ((1n << 128n) - 1n),
-      high: BigInt(params.xstrk_amount) >> 128n,
-    };
+    // Convert amount string to bigint - starknet.js handles u256 conversion
+    const shares = BigInt(params.xstrk_amount);
 
     // Call redeem to create a withdraw request (NFT)
     xStrkContract.connect(account);
@@ -38,6 +36,7 @@ export const unstakeXstrkQueue = async (
       data: {
         transaction_hash: transaction_hash,
         xstrk_amount: params.xstrk_amount,
+        xstrk_amount_formatted: formatUnits(shares, 18),
         message:
           'Unstake request created. Check transaction events for withdraw request ID (NFT). Wait 1-2 days before claiming.',
       },
