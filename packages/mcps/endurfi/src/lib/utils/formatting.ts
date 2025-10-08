@@ -17,14 +17,20 @@ export const formatUnits = (value: bigint, decimals: number): string => {
 // Parse human-readable string to BigInt with decimals
 export const parseUnits = (value: string, decimals: number): bigint => {
   const [wholePart, fractionalPart = '0'] = value.split('.');
-  const paddedFractional = fractionalPart.padEnd(decimals, '0').slice(0, decimals);
+  const paddedFractional = fractionalPart
+    .padEnd(decimals, '0')
+    .slice(0, decimals);
   return BigInt(wholePart) * BigInt(10 ** decimals) + BigInt(paddedFractional);
 };
 
 // Calculate exchange rate from convert_to_assets/convert_to_shares
-export const calculateExchangeRate = (assets: bigint, shares: bigint, decimals: number = 18): number => {
+export const calculateExchangeRate = (
+  assets: bigint,
+  shares: bigint,
+  decimals: number = 18
+): number => {
   if (shares === 0n) return 0;
   // Return xSTRK/STRK rate (how much 1 xSTRK is worth in STRK)
-  const rate = (Number(assets) / Number(shares));
+  const rate = Number(assets) / Number(shares);
   return rate;
 };

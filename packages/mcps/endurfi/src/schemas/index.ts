@@ -4,7 +4,9 @@ import { z } from 'zod';
 export const stakeStrkSchema = z.object({
   amount: z
     .string()
-    .describe('The amount of STRK to stake (in token decimals, e.g., "1000000000000000000" for 1 STRK)'),
+    .describe(
+      'The amount of STRK to stake (in token decimals, e.g., "1000000000000000000" for 1 STRK)'
+    ),
 });
 
 export type StakeStrkSchema = z.infer<typeof stakeStrkSchema>;
@@ -25,7 +27,9 @@ export const claimUnstakeRequestSchema = z.object({
     .describe('The NFT ID of the withdraw request to claim'),
 });
 
-export type ClaimUnstakeRequestSchema = z.infer<typeof claimUnstakeRequestSchema>;
+export type ClaimUnstakeRequestSchema = z.infer<
+  typeof claimUnstakeRequestSchema
+>;
 
 // Preview stake - how much xSTRK for X STRK
 export const previewStakeSchema = z.object({
@@ -50,10 +54,14 @@ export const getUserXstrkBalanceSchema = z.object({
   user_address: z
     .string()
     .optional()
-    .describe('The user address to check balance for (optional, defaults to connected account)'),
+    .describe(
+      'The user address to check balance for (optional, defaults to connected account)'
+    ),
 });
 
-export type GetUserXstrkBalanceSchema = z.infer<typeof getUserXstrkBalanceSchema>;
+export type GetUserXstrkBalanceSchema = z.infer<
+  typeof getUserXstrkBalanceSchema
+>;
 
 // Get total STRK staked on Endur.fi
 export const getTotalStakedStrkSchema = z.object({});
@@ -67,4 +75,6 @@ export const getWithdrawRequestInfoSchema = z.object({
     .describe('The NFT ID of the withdraw request to query'),
 });
 
-export type GetWithdrawRequestInfoSchema = z.infer<typeof getWithdrawRequestInfoSchema>;
+export type GetWithdrawRequestInfoSchema = z.infer<
+  typeof getWithdrawRequestInfoSchema
+>;

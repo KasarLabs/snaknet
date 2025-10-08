@@ -1,6 +1,10 @@
 import { Contract, RpcProvider } from 'starknet';
 import { endurfiAddress, strkTokenAddress } from '../constants/addresses.js';
-import { WITHDRAW_QUEUE_ABI, XSTRK_ABI, NEW_ERC20_ABI } from '../constants/abis/index.js';
+import {
+  WITHDRAW_QUEUE_ABI,
+  XSTRK_ABI,
+  NEW_ERC20_ABI,
+} from '../constants/abis/index.js';
 
 // Determine network from RPC URL
 const getNetwork = (provider: RpcProvider): 'mainnet' | 'sepolia' => {
@@ -23,7 +27,9 @@ export const getStrkContract = (provider: RpcProvider): Contract => {
 };
 
 // Get withdraw queue NFT contract
-export const getWithdrawQueueNFTContract = (provider: RpcProvider): Contract => {
+export const getWithdrawQueueNFTContract = (
+  provider: RpcProvider
+): Contract => {
   const network = getNetwork(provider);
   const address = endurfiAddress.withdrawQueueNFT[network];
   return new Contract(WITHDRAW_QUEUE_ABI, address, provider);

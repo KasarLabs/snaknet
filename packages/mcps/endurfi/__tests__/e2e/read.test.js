@@ -110,7 +110,9 @@ async function testGetTotalStaked(client) {
 
   console.log('✅ get_total_staked_strk test passed');
   console.log(`   Total staked (TVL): ${response.data.total_staked_strk} STRK`);
-  console.log(`   Total xSTRK supply: ${response.data.total_xstrk_supply} xSTRK`);
+  console.log(
+    `   Total xSTRK supply: ${response.data.total_xstrk_supply} xSTRK`
+  );
   console.log(`   Exchange rate: ${response.data.exchange_rate}`);
 
   return response;

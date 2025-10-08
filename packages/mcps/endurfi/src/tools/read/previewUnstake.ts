@@ -12,7 +12,9 @@ export const previewUnstake = async (
 
     // Preview how much STRK will be received for the given xSTRK amount
     // starknet.js returns u256 directly as bigint
-    const assets = await xStrkContract.preview_redeem(BigInt(params.xstrk_amount));
+    const assets = await xStrkContract.preview_redeem(
+      BigInt(params.xstrk_amount)
+    );
 
     return {
       status: 'success',

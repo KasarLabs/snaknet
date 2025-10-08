@@ -1,4 +1,7 @@
-import { getXStrkContract, getStrkContract } from '../../lib/utils/contracts.js';
+import {
+  getXStrkContract,
+  getStrkContract,
+} from '../../lib/utils/contracts.js';
 import { StakeStrkSchema } from '../../schemas/index.js';
 import { envWrite } from '../../interfaces/index.js';
 import { formatUnits } from '../../lib/utils/formatting.js';
