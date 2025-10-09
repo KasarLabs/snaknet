@@ -21,7 +21,6 @@ export const unstake = async (env: envWrite, params: UnstakeSchema) => {
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
-    // Convert amount string to bigint - starknet.js handles u256 conversion
     const shares = BigInt(params.amount);
 
     // Call redeem to create a withdraw request (NFT)

@@ -22,7 +22,6 @@ export const getUserBalance = async (
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
-    // Use provided address or default to connected account
     let userAddress: string;
     if (params.user_address) {
       userAddress = params.user_address;
@@ -32,10 +31,8 @@ export const getUserBalance = async (
       throw new Error('No user address provided and no account connected');
     }
 
-    // Get liquid token balance - starknet.js returns u256 directly as bigint
     const liquidBalance = await liquidTokenContract.balance_of(userAddress);
 
-    // Convert liquid token to underlying token equivalent value
     const underlyingValue =
       await liquidTokenContract.convert_to_assets(liquidBalance);
 

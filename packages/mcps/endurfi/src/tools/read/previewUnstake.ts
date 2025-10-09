@@ -21,8 +21,6 @@ export const previewUnstake = async (
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
-    // Preview how much underlying token will be received for the given liquid token amount
-    // starknet.js returns u256 directly as bigint
     const assets = await liquidTokenContract.preview_redeem(
       BigInt(params.amount)
     );

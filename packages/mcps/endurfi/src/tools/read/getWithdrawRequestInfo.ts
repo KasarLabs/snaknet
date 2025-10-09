@@ -21,13 +21,10 @@ export const getWithdrawRequestInfo = async (
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
-    // Convert request_id string to u128
     const requestId = BigInt(params.withdraw_request_id);
 
-    // Get withdraw request information
     const requestInfo = await withdrawQueueContract.get_request_info(requestId);
 
-    // Parse the WithdrawRequest struct - starknet.js returns u256 as bigint
     const assets = requestInfo.assets;
     const shares = requestInfo.shares;
     const isClaimed = requestInfo.isClaimed;

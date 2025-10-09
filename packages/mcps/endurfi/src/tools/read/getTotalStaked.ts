@@ -21,8 +21,6 @@ export const getTotalStaked = async (
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
-    // Get total assets managed by the vault (TVL)
-    // starknet.js returns u256 directly as bigint
     const totalAssets = await liquidTokenContract.total_assets();
 
     return {

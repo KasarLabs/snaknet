@@ -24,10 +24,8 @@ export const stake = async (env: envWrite, params: StakeSchema) => {
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
-    // Convert amount string to bigint - starknet.js handles u256 conversion
     const amount = BigInt(params.amount);
 
-    // Preview how much liquid token will be received before staking
     const expectedShares = await liquidTokenContract.preview_deposit(amount);
 
     // Step 1: Approve liquid token contract to spend underlying token
@@ -44,7 +42,6 @@ export const stake = async (env: envWrite, params: StakeSchema) => {
       account.address,
     ]);
 
-    // Execute both transactions
     const { transaction_hash } = await account.execute([
       approveCalldata,
       depositCalldata,

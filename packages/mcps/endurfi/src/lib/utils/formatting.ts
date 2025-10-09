@@ -23,14 +23,3 @@ export const parseUnits = (value: string, decimals: number): bigint => {
   return BigInt(wholePart) * BigInt(10 ** decimals) + BigInt(paddedFractional);
 };
 
-// Calculate exchange rate from convert_to_assets/convert_to_shares
-export const calculateExchangeRate = (
-  assets: bigint,
-  shares: bigint,
-  decimals: number = 18
-): number => {
-  if (shares === 0n) return 0;
-  // Return xSTRK/STRK rate (how much 1 xSTRK is worth in STRK)
-  const rate = Number(assets) / Number(shares);
-  return rate;
-};
