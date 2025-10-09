@@ -35,19 +35,10 @@ export const getUnderlyingTokenContract = (
   tokenType: TokenType
 ): Contract => {
   const network = getNetwork(provider);
+  const config = TOKEN_CONFIG[tokenType];
+  const address = config.underlyingToken[network];
 
-  // Get underlying token address based on type
-  let address: string;
-
-  if (tokenType === 'STRK') {
-    const strkAddresses = {
-      mainnet: '0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
-      sepolia: '0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d',
-    };
-    address = strkAddresses[network];
-  } else {
-    // For BTC tokens, we'll need to add their addresses
-    // TODO: Add WBTC, tBTC, LBTC ERC20 token addresses
+  if (!address) {
     throw new Error(`Underlying token address not configured for ${tokenType} on ${network}`);
   }
 

@@ -36,115 +36,149 @@ async function callTool(client, name, args) {
 }
 
 /**
- * Test preview_stake_strk tool
+ * Test preview_stake tool for all token types
  */
 async function testPreviewStake(client) {
-  const response = await callTool(client, 'preview_stake_strk', {
-    strk_amount: '1000000000000000000', // 1 STRK (18 decimals)
-  });
+  const tokenTests = [
+    { type: 'STRK', amount: '1000000000000000000', decimals: 18 }, // 1 STRK
+    { type: 'WBTC', amount: '100000000', decimals: 8 }, // 1 WBTC
+    { type: 'tBTC', amount: '1000000000000000000', decimals: 18 }, // 1 tBTC
+    { type: 'LBTC', amount: '100000000', decimals: 8 }, // 1 LBTC
+  ];
 
-  if (response.status !== 'success') {
-    throw new Error(`preview_stake_strk failed: ${response.error}`);
+  for (const token of tokenTests) {
+    const response = await callTool(client, 'preview_stake', {
+      token_type: token.type,
+      amount: token.amount,
+    });
+
+    if (response.status !== 'success') {
+      throw new Error(`preview_stake failed for ${token.type}: ${response.error}`);
+    }
+
+    console.log(`✅ preview_stake test passed for ${token.type}`);
+    console.log(`   Staking ${response.data.amount_formatted} ${response.data.underlying_token}`);
+    console.log(`   Will receive: ${response.data.estimated_liquid_amount_formatted} ${response.data.liquid_token}`);
   }
 
-  console.log('✅ preview_stake_strk test passed');
-  console.log(`   Staking ${response.data.strk_amount} STRK`);
-  console.log(`   Will receive: ${response.data.estimated_xstrk_amount} xSTRK`);
-
-  return response;
+  return true;
 }
 
 /**
- * Test preview_unstake_xstrk tool
+ * Test preview_unstake tool for all token types
  */
 async function testPreviewUnstake(client) {
-  const response = await callTool(client, 'preview_unstake_xstrk', {
-    xstrk_amount: '1000000000000000000', // 1 xSTRK (18 decimals)
-  });
+  const tokenTests = [
+    { type: 'STRK', amount: '1000000000000000000', decimals: 18 }, // 1 xSTRK
+    { type: 'WBTC', amount: '100000000', decimals: 8 }, // 1 xyWBTC
+    { type: 'tBTC', amount: '1000000000000000000', decimals: 18 }, // 1 xytBTC
+    { type: 'LBTC', amount: '100000000', decimals: 8 }, // 1 xyLBTC
+  ];
 
-  if (response.status !== 'success') {
-    throw new Error(`preview_unstake_xstrk failed: ${response.error}`);
+  for (const token of tokenTests) {
+    const response = await callTool(client, 'preview_unstake', {
+      token_type: token.type,
+      amount: token.amount,
+    });
+
+    if (response.status !== 'success') {
+      throw new Error(`preview_unstake failed for ${token.type}: ${response.error}`);
+    }
+
+    console.log(`✅ preview_unstake test passed for ${token.type}`);
+    console.log(`   Unstaking ${response.data.liquid_amount_formatted} ${response.data.liquid_token}`);
+    console.log(`   Will receive: ${response.data.estimated_underlying_amount_formatted} ${response.data.underlying_token}`);
   }
 
-  console.log('✅ preview_unstake_xstrk test passed');
-  console.log(`   Unstaking ${response.data.xstrk_amount} xSTRK`);
-  console.log(`   Will receive: ${response.data.estimated_strk_amount} STRK`);
-
-  return response;
+  return true;
 }
 
 /**
- * Test get_user_xstrk_balance tool
+ * Test get_user_balance tool for all token types
  */
 async function testGetUserBalance(client) {
-  // Use a known address with likely xSTRK balance (replace with actual address)
+  // Use a known address with likely balance (replace with actual address)
   const testAddress =
     '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7';
 
-  const response = await callTool(client, 'get_user_xstrk_balance', {
-    user_address: testAddress,
-  });
+  const tokenTypes = ['STRK', 'WBTC', 'tBTC', 'LBTC'];
 
-  if (response.status !== 'success') {
-    throw new Error(`get_user_xstrk_balance failed: ${response.error}`);
+  for (const tokenType of tokenTypes) {
+    const response = await callTool(client, 'get_user_balance', {
+      token_type: tokenType,
+      user_address: testAddress,
+    });
+
+    if (response.status !== 'success') {
+      throw new Error(`get_user_balance failed for ${tokenType}: ${response.error}`);
+    }
+
+    console.log(`✅ get_user_balance test passed for ${tokenType}`);
+    console.log(`   User: ${response.data.user_address}`);
+    console.log(`   ${response.data.liquid_token} balance: ${response.data.liquid_balance_formatted}`);
+    console.log(`   ${response.data.underlying_token} value: ${response.data.underlying_value_formatted}`);
+    console.log(`   Exchange rate: ${response.data.exchange_rate}`);
   }
 
-  console.log('✅ get_user_xstrk_balance test passed');
-  console.log(`   User: ${response.data.user_address}`);
-  console.log(`   xSTRK balance: ${response.data.xstrk_balance}`);
-  console.log(`   STRK value: ${response.data.strk_value}`);
-  console.log(`   Exchange rate: ${response.data.exchange_rate}`);
-
-  return response;
+  return true;
 }
 
 /**
- * Test get_total_staked_strk tool
+ * Test get_total_staked tool for all token types
  */
 async function testGetTotalStaked(client) {
-  const response = await callTool(client, 'get_total_staked_strk', {});
+  const tokenTypes = ['STRK', 'WBTC', 'tBTC', 'LBTC'];
 
-  if (response.status !== 'success') {
-    throw new Error(`get_total_staked_strk failed: ${response.error}`);
+  for (const tokenType of tokenTypes) {
+    const response = await callTool(client, 'get_total_staked', {
+      token_type: tokenType,
+    });
+
+    if (response.status !== 'success') {
+      throw new Error(`get_total_staked failed for ${tokenType}: ${response.error}`);
+    }
+
+    console.log(`✅ get_total_staked test passed for ${tokenType}`);
+    console.log(`   Total staked (TVL): ${response.data.total_staked_formatted} ${response.data.underlying_token}`);
+    console.log(`   Liquid token: ${response.data.liquid_token}`);
+    console.log(`   Description: ${response.data.description}`);
   }
 
-  console.log('✅ get_total_staked_strk test passed');
-  console.log(`   Total staked (TVL): ${response.data.total_staked_strk} STRK`);
-  console.log(
-    `   Total xSTRK supply: ${response.data.total_xstrk_supply} xSTRK`
-  );
-  console.log(`   Exchange rate: ${response.data.exchange_rate}`);
-
-  return response;
+  return true;
 }
 
 /**
- * Test get_withdraw_request_info tool
+ * Test get_withdraw_request_info tool for all token types
  */
 async function testGetWithdrawRequestInfo(client) {
   console.log(
     '\n--- Testing get_withdraw_request_info (may fail if no NFT exists) ---'
   );
 
-  // Test with a hypothetical NFT ID
-  const response = await callTool(client, 'get_withdraw_request_info', {
-    withdraw_request_id: '1',
-  });
+  const tokenTypes = ['STRK', 'WBTC', 'tBTC', 'LBTC'];
 
-  if (response.status === 'success') {
-    console.log('✅ get_withdraw_request_info test passed');
-    console.log(`   NFT ID: ${response.data.nft_id}`);
-    console.log(`   Amount: ${response.data.amount_strk} STRK`);
-    console.log(`   Claimable: ${response.data.is_claimable}`);
-    console.log(`   Owner: ${response.data.owner}`);
-  } else {
-    console.log(
-      '⚠️  get_withdraw_request_info returned error (expected if NFT does not exist)'
-    );
-    console.log(`   Error: ${response.error}`);
+  for (const tokenType of tokenTypes) {
+    // Test with a hypothetical NFT ID
+    const response = await callTool(client, 'get_withdraw_request_info', {
+      token_type: tokenType,
+      withdraw_request_id: '1',
+    });
+
+    if (response.status === 'success') {
+      console.log(`✅ get_withdraw_request_info test passed for ${tokenType}`);
+      console.log(`   NFT ID: ${response.data.nft_id}`);
+      console.log(`   Amount: ${response.data.amount_formatted} ${response.data.underlying_token}`);
+      console.log(`   Claimable: ${response.data.is_claimable}`);
+      console.log(`   Owner: ${response.data.owner}`);
+    } else {
+      console.log(
+        `⚠️  get_withdraw_request_info returned error for ${tokenType} (expected if NFT does not exist)`
+      );
+      console.log(`   Error: ${response.error}`);
+    }
   }
 
-  return response;
+  return true;
 }
 
 /**
@@ -155,7 +189,8 @@ async function testErrorHandling(client) {
 
   // Test preview_stake with invalid amount
   try {
-    const response = await callTool(client, 'preview_stake_strk', {
+    const response = await callTool(client, 'preview_stake', {
+      token_type: 'STRK',
       amount: 'invalid',
     });
 
@@ -167,6 +202,24 @@ async function testErrorHandling(client) {
     }
   } catch (error) {
     console.log('✅ Error handling test passed (threw exception)');
+    console.log(`   Exception: ${error.message}`);
+  }
+
+  // Test with invalid token type
+  try {
+    const response = await callTool(client, 'preview_stake', {
+      token_type: 'INVALID_TOKEN',
+      amount: '1000000000000000000',
+    });
+
+    if (response.status === 'failure') {
+      console.log('✅ Error handling test passed (invalid token type)');
+      console.log(`   Error message: ${response.error}`);
+    } else {
+      console.log('⚠️  Expected error but got success');
+    }
+  } catch (error) {
+    console.log('✅ Error handling test passed (threw exception for invalid token)');
     console.log(`   Exception: ${error.message}`);
   }
 
