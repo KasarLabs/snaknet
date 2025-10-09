@@ -22,4 +22,3 @@ export const parseUnits = (value: string, decimals: number): bigint => {
     .slice(0, decimals);
   return BigInt(wholePart) * BigInt(10 ** decimals) + BigInt(paddedFractional);
 };
-
