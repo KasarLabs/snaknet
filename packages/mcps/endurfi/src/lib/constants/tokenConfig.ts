@@ -1,24 +1,5 @@
-// Configuration for all supported tokens on Endur.fi
-
-export type TokenType = 'STRK' | 'WBTC' | 'tBTC' | 'LBTC';
-
-export interface TokenConfig {
-  underlyingToken: {
-    mainnet: string;
-    sepolia: string;
-  };
-  asset: {
-    mainnet: string;
-    sepolia: string;
-  };
-  withdrawQueue: {
-    mainnet: string;
-    sepolia: string;
-  };
-  decimals: number;
-  liquidTokenName: string;
-  underlyingTokenName: string;
-}
+import { TokenConfig } from '../../interfaces/index.js';
+import { TokenType } from '../../schemas/index.js';
 
 export const TOKEN_CONFIG: Record<TokenType, TokenConfig> = {
   STRK: {
@@ -105,29 +86,3 @@ export const TOKEN_CONFIG: Record<TokenType, TokenConfig> = {
     underlyingTokenName: 'LBTC',
   },
 } as const;
-
-/**
- * Get token configuration for a specific token type
- */
-export function getTokenConfig(tokenType: TokenType): TokenConfig {
-  return TOKEN_CONFIG[tokenType];
-}
-
-/**
- * Get the underlying token address (STRK, WBTC, etc.) for a network
- */
-export function getUnderlyingTokenAddress(
-  tokenType: TokenType,
-  network: 'mainnet' | 'sepolia'
-): string {
-  const config = getTokenConfig(tokenType);
-  const address = config.underlyingToken[network];
-
-  if (!address) {
-    throw new Error(
-      `Underlying token address not configured for ${tokenType} on ${network}`
-    );
-  }
-
-  return address;
-}

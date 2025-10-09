@@ -1,16 +1,44 @@
 import { Contract, RpcProvider } from 'starknet';
-import { TOKEN_CONFIG, TokenType } from '../constants/tokenConfig.js';
+import { TOKEN_CONFIG } from '../constants/tokenConfig.js';
 import {
   WITHDRAW_QUEUE_ABI,
   XSTRK_ABI,
   NEW_ERC20_ABI,
 } from '../constants/abis/index.js';
+import { TokenType } from '../../schemas/index.js';
+import { TokenConfig } from '../../interfaces/index.js';
 
 // Determine network from RPC URL
 export const getNetwork = (provider: RpcProvider): 'mainnet' | 'sepolia' => {
   const nodeUrl = provider.channel.nodeUrl;
   return nodeUrl.includes('sepolia') ? 'sepolia' : 'mainnet';
 };
+
+/**
+ * Get token configuration for a specific token type
+ */
+export function getTokenConfig(tokenType: TokenType): TokenConfig {
+  return TOKEN_CONFIG[tokenType];
+}
+
+/**
+ * Get the underlying token address (STRK, WBTC, etc.) for a network
+ */
+export function getUnderlyingTokenAddress(
+  tokenType: TokenType,
+  network: 'mainnet' | 'sepolia'
+): string {
+  const config = getTokenConfig(tokenType);
+  const address = config.underlyingToken[network];
+
+  if (!address) {
+    throw new Error(
+      `Underlying token address not configured for ${tokenType} on ${network}`
+    );
+  }
+
+  return address;
+}
 
 /**
  * Get the liquid staking token contract (xSTRK, xyWBTC, etc.) for a given token type
