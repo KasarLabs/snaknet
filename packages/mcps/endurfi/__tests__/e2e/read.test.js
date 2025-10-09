@@ -53,12 +53,18 @@ async function testPreviewStake(client) {
     });
 
     if (response.status !== 'success') {
-      throw new Error(`preview_stake failed for ${token.type}: ${response.error}`);
+      throw new Error(
+        `preview_stake failed for ${token.type}: ${response.error}`
+      );
     }
 
     console.log(`✅ preview_stake test passed for ${token.type}`);
-    console.log(`   Staking ${response.data.amount_formatted} ${response.data.underlying_token}`);
-    console.log(`   Will receive: ${response.data.estimated_liquid_amount_formatted} ${response.data.liquid_token}`);
+    console.log(
+      `   Staking ${response.data.amount_formatted} ${response.data.underlying_token}`
+    );
+    console.log(
+      `   Will receive: ${response.data.estimated_liquid_amount_formatted} ${response.data.liquid_token}`
+    );
   }
 
   return true;
@@ -82,12 +88,18 @@ async function testPreviewUnstake(client) {
     });
 
     if (response.status !== 'success') {
-      throw new Error(`preview_unstake failed for ${token.type}: ${response.error}`);
+      throw new Error(
+        `preview_unstake failed for ${token.type}: ${response.error}`
+      );
     }
 
     console.log(`✅ preview_unstake test passed for ${token.type}`);
-    console.log(`   Unstaking ${response.data.liquid_amount_formatted} ${response.data.liquid_token}`);
-    console.log(`   Will receive: ${response.data.estimated_underlying_amount_formatted} ${response.data.underlying_token}`);
+    console.log(
+      `   Unstaking ${response.data.liquid_amount_formatted} ${response.data.liquid_token}`
+    );
+    console.log(
+      `   Will receive: ${response.data.estimated_underlying_amount_formatted} ${response.data.underlying_token}`
+    );
   }
 
   return true;
@@ -110,13 +122,19 @@ async function testGetUserBalance(client) {
     });
 
     if (response.status !== 'success') {
-      throw new Error(`get_user_balance failed for ${tokenType}: ${response.error}`);
+      throw new Error(
+        `get_user_balance failed for ${tokenType}: ${response.error}`
+      );
     }
 
     console.log(`✅ get_user_balance test passed for ${tokenType}`);
     console.log(`   User: ${response.data.user_address}`);
-    console.log(`   ${response.data.liquid_token} balance: ${response.data.liquid_balance_formatted}`);
-    console.log(`   ${response.data.underlying_token} value: ${response.data.underlying_value_formatted}`);
+    console.log(
+      `   ${response.data.liquid_token} balance: ${response.data.liquid_balance_formatted}`
+    );
+    console.log(
+      `   ${response.data.underlying_token} value: ${response.data.underlying_value_formatted}`
+    );
     console.log(`   Exchange rate: ${response.data.exchange_rate}`);
   }
 
@@ -135,11 +153,15 @@ async function testGetTotalStaked(client) {
     });
 
     if (response.status !== 'success') {
-      throw new Error(`get_total_staked failed for ${tokenType}: ${response.error}`);
+      throw new Error(
+        `get_total_staked failed for ${tokenType}: ${response.error}`
+      );
     }
 
     console.log(`✅ get_total_staked test passed for ${tokenType}`);
-    console.log(`   Total staked (TVL): ${response.data.total_staked_formatted} ${response.data.underlying_token}`);
+    console.log(
+      `   Total staked (TVL): ${response.data.total_staked_formatted} ${response.data.underlying_token}`
+    );
     console.log(`   Liquid token: ${response.data.liquid_token}`);
     console.log(`   Description: ${response.data.description}`);
   }
@@ -167,7 +189,9 @@ async function testGetWithdrawRequestInfo(client) {
     if (response.status === 'success') {
       console.log(`✅ get_withdraw_request_info test passed for ${tokenType}`);
       console.log(`   NFT ID: ${response.data.nft_id}`);
-      console.log(`   Amount: ${response.data.amount_formatted} ${response.data.underlying_token}`);
+      console.log(
+        `   Amount: ${response.data.amount_formatted} ${response.data.underlying_token}`
+      );
       console.log(`   Claimable: ${response.data.is_claimable}`);
       console.log(`   Owner: ${response.data.owner}`);
     } else {
@@ -219,7 +243,9 @@ async function testErrorHandling(client) {
       console.log('⚠️  Expected error but got success');
     }
   } catch (error) {
-    console.log('✅ Error handling test passed (threw exception for invalid token)');
+    console.log(
+      '✅ Error handling test passed (threw exception for invalid token)'
+    );
     console.log(`   Exception: ${error.message}`);
   }
 

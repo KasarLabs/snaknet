@@ -25,7 +25,9 @@ try {
 
   // Test stake for each token type
   for (const token of tokenTests) {
-    console.log(`\n=== Testing stake for ${token.type} (${token.description}) ===`);
+    console.log(
+      `\n=== Testing stake for ${token.type} (${token.description}) ===`
+    );
 
     const result = await client.callTool({
       name: 'stake',
@@ -42,7 +44,9 @@ try {
     if (response.status === 'success') {
       console.log(`\n✅ Stake ${token.type} transaction successful!`);
       console.log(`   Transaction hash: ${response.data.transaction_hash}`);
-      console.log(`   Amount: ${response.data.amount_formatted} ${response.data.underlying_token}`);
+      console.log(
+        `   Amount: ${response.data.amount_formatted} ${response.data.underlying_token}`
+      );
       console.log(`   Liquid token received: ${response.data.liquid_token}`);
     } else {
       console.log(`\n❌ Stake ${token.type} transaction failed`);

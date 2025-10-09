@@ -8,14 +8,19 @@ import { envWrite } from '../../interfaces/index.js';
 export const claim = async (env: envWrite, params: ClaimSchema) => {
   try {
     const account = env.account;
-    const withdrawQueueContract = getWithdrawQueueNFTContract(env.provider, params.token_type);
+    const withdrawQueueContract = getWithdrawQueueNFTContract(
+      env.provider,
+      params.token_type
+    );
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
     // Convert request_id string to u128
     const requestId = BigInt(params.withdraw_request_id);
 
     withdrawQueueContract.connect(account);
-    const claimCalldata = withdrawQueueContract.populate('claim_withdrawal', [requestId]);
+    const claimCalldata = withdrawQueueContract.populate('claim_withdrawal', [
+      requestId,
+    ]);
 
     const { transaction_hash } = await account.execute([claimCalldata]);
 

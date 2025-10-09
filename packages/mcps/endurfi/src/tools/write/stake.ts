@@ -12,8 +12,14 @@ import { formatUnits } from '../../lib/utils/formatting.js';
 export const stake = async (env: envWrite, params: StakeSchema) => {
   try {
     const account = env.account;
-    const liquidTokenContract = getLiquidTokenContract(env.provider, params.token_type);
-    const underlyingTokenContract = getUnderlyingTokenContract(env.provider, params.token_type);
+    const liquidTokenContract = getLiquidTokenContract(
+      env.provider,
+      params.token_type
+    );
+    const underlyingTokenContract = getUnderlyingTokenContract(
+      env.provider,
+      params.token_type
+    );
     const decimals = getTokenDecimals(params.token_type);
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
@@ -65,7 +71,8 @@ export const stake = async (env: envWrite, params: StakeSchema) => {
   } catch (error: any) {
     return {
       status: 'failure',
-      error: error.message || `Unknown error during ${params.token_type} staking`,
+      error:
+        error.message || `Unknown error during ${params.token_type} staking`,
     };
   }
 };

@@ -32,7 +32,9 @@ export type UnstakeSchema = z.infer<typeof unstakeSchema>;
 
 // Claim unstake request after waiting period
 export const claimSchema = z.object({
-  token_type: tokenTypeEnum.describe('Type of token to claim: STRK, WBTC, tBTC, or LBTC'),
+  token_type: tokenTypeEnum.describe(
+    'Type of token to claim: STRK, WBTC, tBTC, or LBTC'
+  ),
   withdraw_request_id: z
     .string()
     .describe('The NFT ID of the withdraw request to claim'),
@@ -51,7 +53,11 @@ export type PreviewStakeSchema = z.infer<typeof previewStakeSchema>;
 // Preview unstake - how much underlying token for X liquid token
 export const previewUnstakeSchema = z.object({
   token_type: tokenTypeEnum.describe('Token type to preview unstaking for'),
-  amount: z.string().describe('Amount of liquid token to preview unstaking (in token decimals)'),
+  amount: z
+    .string()
+    .describe(
+      'Amount of liquid token to preview unstaking (in token decimals)'
+    ),
 });
 
 export type PreviewUnstakeSchema = z.infer<typeof previewUnstakeSchema>;

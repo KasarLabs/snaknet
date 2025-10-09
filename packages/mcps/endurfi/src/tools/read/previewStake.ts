@@ -8,16 +8,24 @@ import { PreviewStakeSchema } from '../../schemas/index.js';
 import { envRead } from '../../interfaces/index.js';
 import { formatUnits } from '../../lib/utils/formatting.js';
 
-export const previewStake = async (env: envRead, params: PreviewStakeSchema) => {
+export const previewStake = async (
+  env: envRead,
+  params: PreviewStakeSchema
+) => {
   try {
-    const liquidTokenContract = getLiquidTokenContract(env.provider, params.token_type);
+    const liquidTokenContract = getLiquidTokenContract(
+      env.provider,
+      params.token_type
+    );
     const decimals = getTokenDecimals(params.token_type);
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
 
     // Preview how much liquid token will be received for the given underlying token amount
     // starknet.js returns u256 directly as bigint
-    const shares = await liquidTokenContract.preview_deposit(BigInt(params.amount));
+    const shares = await liquidTokenContract.preview_deposit(
+      BigInt(params.amount)
+    );
 
     return {
       status: 'success',

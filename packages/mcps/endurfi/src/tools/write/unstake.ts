@@ -13,7 +13,10 @@ import { extractWithdrawRequestIdFromReceipt } from '../../lib/utils/events.js';
 export const unstake = async (env: envWrite, params: UnstakeSchema) => {
   try {
     const account = env.account;
-    const liquidTokenContract = getLiquidTokenContract(env.provider, params.token_type);
+    const liquidTokenContract = getLiquidTokenContract(
+      env.provider,
+      params.token_type
+    );
     const decimals = getTokenDecimals(params.token_type);
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
@@ -37,7 +40,10 @@ export const unstake = async (env: envWrite, params: UnstakeSchema) => {
     }
 
     // Extract withdraw request ID from receipt events
-    const withdrawQueueNftAddress = getWithdrawQueueNFTAddress(env.provider, params.token_type);
+    const withdrawQueueNftAddress = getWithdrawQueueNFTAddress(
+      env.provider,
+      params.token_type
+    );
     const withdrawRequestId = extractWithdrawRequestIdFromReceipt(
       receipt,
       withdrawQueueNftAddress
@@ -59,7 +65,8 @@ export const unstake = async (env: envWrite, params: UnstakeSchema) => {
   } catch (error: any) {
     return {
       status: 'failure',
-      error: error.message || `Unknown error during ${params.token_type} unstaking`,
+      error:
+        error.message || `Unknown error during ${params.token_type} unstaking`,
     };
   }
 };

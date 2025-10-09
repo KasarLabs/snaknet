@@ -25,7 +25,9 @@ try {
 
   // Test claim_unstake_request for each token type
   for (const token of tokenTests) {
-    console.log(`\n=== Testing claim_unstake_request for ${token.type} (${token.description}) ===`);
+    console.log(
+      `\n=== Testing claim_unstake_request for ${token.type} (${token.description}) ===`
+    );
 
     const result = await client.callTool({
       name: 'claim',
@@ -42,10 +44,16 @@ try {
     if (response.status === 'success') {
       console.log(`\n✅ Claim unstake request for ${token.type} successful!`);
       console.log(`   Transaction hash: ${response.data.transaction_hash}`);
-      console.log(`   Withdraw request ID: ${response.data.withdraw_request_id}`);
-      console.log(`   Amount claimed: ${response.data.amount_claimed_formatted} ${response.data.underlying_token}`);
+      console.log(
+        `   Withdraw request ID: ${response.data.withdraw_request_id}`
+      );
+      console.log(
+        `   Amount claimed: ${response.data.amount_claimed_formatted} ${response.data.underlying_token}`
+      );
     } else {
-      console.log(`\n⚠️  Claim unstake request for ${token.type} failed (may not be claimable yet)`);
+      console.log(
+        `\n⚠️  Claim unstake request for ${token.type} failed (may not be claimable yet)`
+      );
       console.log(`   Error: ${response.error}`);
     }
   }
@@ -53,8 +61,12 @@ try {
   console.log('\n✅ All claim_unstake_request tests completed!');
   console.log('\n   ℹ️  Note: Some tests may fail if:');
   console.log('   1. The NFT does not exist for this token type');
-  console.log('   2. The request is not claimable yet (wait 1-2 days after unstaking)');
-  console.log('   3. Replace withdraw_request_id with actual IDs from unstake_queue calls');
+  console.log(
+    '   2. The request is not claimable yet (wait 1-2 days after unstaking)'
+  );
+  console.log(
+    '   3. Replace withdraw_request_id with actual IDs from unstake_queue calls'
+  );
 } catch (error) {
   console.error('Error:', error.message);
   console.error('Full error:', error);

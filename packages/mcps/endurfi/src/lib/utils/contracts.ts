@@ -1,6 +1,10 @@
 import { Contract, RpcProvider } from 'starknet';
 import { TOKEN_CONFIG, TokenType } from '../constants/tokenConfig.js';
-import { WITHDRAW_QUEUE_ABI, XSTRK_ABI, NEW_ERC20_ABI } from '../constants/abis/index.js';
+import {
+  WITHDRAW_QUEUE_ABI,
+  XSTRK_ABI,
+  NEW_ERC20_ABI,
+} from '../constants/abis/index.js';
 
 // Determine network from RPC URL
 export const getNetwork = (provider: RpcProvider): 'mainnet' | 'sepolia' => {
@@ -39,7 +43,9 @@ export const getUnderlyingTokenContract = (
   const address = config.underlyingToken[network];
 
   if (!address) {
-    throw new Error(`Underlying token address not configured for ${tokenType} on ${network}`);
+    throw new Error(
+      `Underlying token address not configured for ${tokenType} on ${network}`
+    );
   }
 
   return new Contract(NEW_ERC20_ABI, address, provider);
@@ -57,7 +63,9 @@ export const getWithdrawQueueNFTContract = (
   const address = config.withdrawQueue[network];
 
   if (!address) {
-    throw new Error(`${tokenType} withdraw queue contract not available on ${network}`);
+    throw new Error(
+      `${tokenType} withdraw queue contract not available on ${network}`
+    );
   }
 
   return new Contract(WITHDRAW_QUEUE_ABI, address, provider);
@@ -75,7 +83,9 @@ export const getWithdrawQueueNFTAddress = (
   const address = config.withdrawQueue[network];
 
   if (!address) {
-    throw new Error(`${tokenType} withdraw queue contract not available on ${network}`);
+    throw new Error(
+      `${tokenType} withdraw queue contract not available on ${network}`
+    );
   }
 
   return address;

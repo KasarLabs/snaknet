@@ -13,7 +13,10 @@ export const getWithdrawRequestInfo = async (
   params: GetWithdrawRequestInfoSchema
 ) => {
   try {
-    const withdrawQueueContract = getWithdrawQueueNFTContract(env.provider, params.token_type);
+    const withdrawQueueContract = getWithdrawQueueNFTContract(
+      env.provider,
+      params.token_type
+    );
     const decimals = getTokenDecimals(params.token_type);
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);

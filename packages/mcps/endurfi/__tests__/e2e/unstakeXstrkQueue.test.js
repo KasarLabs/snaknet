@@ -25,7 +25,9 @@ try {
 
   // Test unstake_queue for each token type
   for (const token of tokenTests) {
-    console.log(`\n=== Testing unstake for ${token.type} (${token.description}) ===`);
+    console.log(
+      `\n=== Testing unstake for ${token.type} (${token.description}) ===`
+    );
 
     const result = await client.callTool({
       name: 'unstake',
@@ -42,8 +44,12 @@ try {
     if (response.status === 'success') {
       console.log(`\n✅ Unstake ${token.type} (queue) transaction successful!`);
       console.log(`   Transaction hash: ${response.data.transaction_hash}`);
-      console.log(`   Liquid amount: ${response.data.liquid_amount_formatted} ${response.data.liquid_token}`);
-      console.log(`   Withdraw request ID: ${response.data.withdraw_request_id}`);
+      console.log(
+        `   Liquid amount: ${response.data.liquid_amount_formatted} ${response.data.liquid_token}`
+      );
+      console.log(
+        `   Withdraw request ID: ${response.data.withdraw_request_id}`
+      );
       console.log(
         '\n   ⏳ Wait 1-2 days before claiming with claim_unstake_request'
       );

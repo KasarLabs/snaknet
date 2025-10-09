@@ -14,7 +14,10 @@ export const getUserBalance = async (
   params: GetUserBalanceSchema
 ) => {
   try {
-    const liquidTokenContract = getLiquidTokenContract(env.provider, params.token_type);
+    const liquidTokenContract = getLiquidTokenContract(
+      env.provider,
+      params.token_type
+    );
     const decimals = getTokenDecimals(params.token_type);
     const liquidTokenName = getLiquidTokenName(params.token_type);
     const underlyingTokenName = getUnderlyingTokenName(params.token_type);
@@ -33,7 +36,8 @@ export const getUserBalance = async (
     const liquidBalance = await liquidTokenContract.balance_of(userAddress);
 
     // Convert liquid token to underlying token equivalent value
-    const underlyingValue = await liquidTokenContract.convert_to_assets(liquidBalance);
+    const underlyingValue =
+      await liquidTokenContract.convert_to_assets(liquidBalance);
 
     return {
       status: 'success',
