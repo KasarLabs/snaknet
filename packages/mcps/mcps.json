@@ -371,13 +371,24 @@
       "args": ["build/index.js"],
       "transport": "stdio",
       "env": {
-        "STARKNET_RPC_URL": ""
+        "STARKNET_RPC_URL": "",
+        "STARKNET_ACCOUNT_ADDRESS": "",
+        "STARKNET_PRIVATE_KEY": ""
       }
     },
-    "description": "Endurfi functionality on Starknet",
+    "description": "Endur.fi liquid staking protocol for STRK and BTC tokens (WBTC, tBTC, LBTC) on Starknet",
     "promptInfo": {
-      "expertise": "Endurfi functionality on Starknet",
-      "tools": []
+      "expertise": "Liquid staking with xSTRK, xyWBTC, xytBTC, and xyLBTC on Endur.fi",
+      "tools": [
+        "preview_stake",
+        "preview_unstake",
+        "get_user_balance",
+        "get_total_staked",
+        "get_withdraw_request_info",
+        "stake",
+        "unstake",
+        "claim"
+      ]
     }
   }
 }
