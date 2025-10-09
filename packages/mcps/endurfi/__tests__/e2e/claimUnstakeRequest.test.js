@@ -14,10 +14,10 @@ const client = new Client({
 
 // Test data for different token types
 const tokenTests = [
-  { type: 'STRK', requestId: '1', description: 'STRK withdraw request' },
-  { type: 'WBTC', requestId: '1', description: 'WBTC withdraw request' },
-  { type: 'tBTC', requestId: '1', description: 'tBTC withdraw request' },
-  { type: 'LBTC', requestId: '1', description: 'LBTC withdraw request' },
+  { type: 'STRK', requestId: '6502', description: 'STRK withdraw request' },
+  { type: 'WBTC', requestId: '28', description: 'WBTC withdraw request' },
+  { type: 'tBTC', requestId: '8', description: 'tBTC withdraw request' },
+  { type: 'LBTC', requestId: '8', description: 'LBTC withdraw request' },
 ];
 
 try {
@@ -28,7 +28,7 @@ try {
     console.log(`\n=== Testing claim_unstake_request for ${token.type} (${token.description}) ===`);
 
     const result = await client.callTool({
-      name: 'claim_unstake_request',
+      name: 'claim',
       arguments: {
         token_type: token.type,
         withdraw_request_id: token.requestId,
