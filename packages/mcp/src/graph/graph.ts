@@ -24,18 +24,7 @@ export const GraphAnnotation = Annotation.Root({
   }),
   mcpEnvironment: Annotation<MCPEnvironment | undefined>({
     reducer: (x, y) => y ?? x,
-    default: () => {
-      // Load all environment variables
-      const env: MCPEnvironment = {};
-
-      Object.keys(process.env).forEach((key) => {
-        if (process.env[key]) {
-          env[key] = process.env[key];
-        }
-      });
-
-      return env;
-    },
+    default: () => undefined,
   }),
   routingInfo: Annotation<{
     reasoning?: string;
