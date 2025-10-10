@@ -31,7 +31,7 @@ dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-rpc',
-  version: '1.0.0',
+  version: '0.1.0',
 });
 
 const createProvider = () => {

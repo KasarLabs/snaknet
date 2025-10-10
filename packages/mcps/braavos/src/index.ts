@@ -15,7 +15,7 @@ dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-braavos',
-  version: '1.0.0',
+  version: '0.1.0',
 });
 
 // Mock agent interface for MCP compatibility
