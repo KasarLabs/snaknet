@@ -1,15 +1,10 @@
 import { END } from '@langchain/langgraph';
-import { ChatAnthropic } from '@langchain/anthropic';
 import { z } from 'zod';
-import {
-  BaseChatModel,
-  BaseChatModelCallOptions,
-} from '@langchain/core/language_models/chat_models';
 
 import { GraphAnnotation } from '../graph.js';
 import { AvailableAgents, getMCPDescription } from '../mcps/utilities.js';
-import { logger } from '../../utils/index.js';
-import { AIMessageChunk } from '@langchain/core/messages';
+import { logger } from '../../utils/logger.js';
+import { createLLM } from '../../utils/llm.js';
 
 const selectorOutputSchema = z.object({
   selectedAgent: z.enum([END, ...AvailableAgents] as [string, ...string[]]),
@@ -41,39 +36,23 @@ IMPORTANT: Look at the conversation history. If an agent has already successfull
 
 Respond with the exact name of the chosen agent or "__end__".`;
 
-  try {
-    const model = new ChatAnthropic({
-      model: 'claude-3-5-sonnet-latest',
-      temperature: 0,
-      apiKey: state.mcpEnvironment?.ANTHROPIC_API_KEY,
-    }) as BaseChatModel<BaseChatModelCallOptions, AIMessageChunk>;
+  const model = createLLM(state.mcpEnvironment);
+  const structuredModel = model.withStructuredOutput(selectorOutputSchema);
+  const response = await structuredModel.invoke([
+    { role: 'system', content: systemPrompt },
+    { role: 'user', content: `User's request : "${userInput}"` },
+  ]);
 
-    const structuredModel = model.withStructuredOutput(selectorOutputSchema);
-    const response = await structuredModel.invoke([
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: `User's request : "${userInput}"` },
-    ]);
+  logger.error(`Routing decision`, {
+    selectedAgent: response.selectedAgent,
+    reasoning: response.reasoning,
+  });
 
-    logger.error(`Routing decision`, {
-      selectedAgent: response.selectedAgent,
+  return {
+    next: response.selectedAgent,
+    routingInfo: {
       reasoning: response.reasoning,
-    });
-
-    return {
-      next: response.selectedAgent,
-      routingInfo: {
-        reasoning: response.reasoning,
-        timestamp: new Date().toISOString(),
-      },
-    };
-  } catch (error) {
-    console.error('Selector error:', error);
-    return {
-      next: END,
-      routingInfo: {
-        reasoning: 'Technical selector error',
-        timestamp: new Date().toISOString(),
-      },
-    };
-  }
+      timestamp: new Date().toISOString(),
+    },
+  };
 };

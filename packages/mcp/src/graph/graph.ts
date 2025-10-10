@@ -11,7 +11,7 @@ import { selectorAgent } from './agents/selector.js';
 import { AgentName } from './mcps/utilities.js';
 import { MCPEnvironment } from './mcps/interfaces.js';
 import { specializedNode } from './agents/specialized.js';
-import { logger } from '../utils/index.js';
+import { logger } from '../utils/logger.js';
 
 export const GraphAnnotation = Annotation.Root({
   messages: Annotation<BaseMessage[]>({
@@ -22,26 +22,8 @@ export const GraphAnnotation = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => END as AgentName,
   }),
-  mcpEnvironment: Annotation<MCPEnvironment | undefined>({
+  mcpEnvironment: Annotation<MCPEnvironment>({
     reducer: (x, y) => y ?? x,
-    default: () => {
-      // Load required environment variables
-      const env: MCPEnvironment = {};
-
-      // Load STARKNET_* variables
-      Object.keys(process.env).forEach((key) => {
-        if (key.startsWith('STARKNET_') && process.env[key]) {
-          env[key] = process.env[key];
-        }
-      });
-
-      // Load ANTHROPIC_API_KEY if available
-      if (process.env.ANTHROPIC_API_KEY) {
-        env.ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
-      }
-
-      return env;
-    },
   }),
   routingInfo: Annotation<{
     reasoning?: string;
