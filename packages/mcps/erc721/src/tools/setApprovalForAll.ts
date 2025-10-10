@@ -16,7 +16,7 @@ import { validateAndParseAddress } from 'starknet';
 export const setApprovalForAll = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof setApprovalForAllSchema>
-): Promise<string> => {
+) => {
   try {
     if (
       !params?.operatorAddress ||

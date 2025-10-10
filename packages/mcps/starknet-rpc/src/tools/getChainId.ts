@@ -4,14 +4,14 @@ export const getChainId = async (provider: RpcProvider) => {
   try {
     const chainId = await provider.getChainId();
 
-    return JSON.stringify({
+    return {
       status: 'success',
       chainId,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

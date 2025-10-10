@@ -56,15 +56,15 @@ export const deployERC721Contract = async (
       }
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transactionHash: response.transactionHash,
       contractAddress: response.contractAddress,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

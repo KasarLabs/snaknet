@@ -282,7 +282,7 @@ export const withdrawEarnPosition = async (
   try {
     const withdrawEarn = withdrawService(agent, accountAddress);
     const result = await withdrawEarn.withdrawEarnTransaction(params, agent);
-    return JSON.stringify(result);
+    return result;
   } catch (error) {
     // console.error('Detailed withdraw error:', error);
     if (error instanceof Error) {
@@ -290,9 +290,9 @@ export const withdrawEarnPosition = async (
       // console.error('Error message:', error.message);
       // console.error('Error stack:', error.stack);
     }
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

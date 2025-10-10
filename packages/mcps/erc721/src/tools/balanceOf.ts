@@ -14,7 +14,7 @@ import { getBalanceSchema, getOwnBalanceSchema } from '../schemas/index.js';
 export const getBalance = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof getBalanceSchema>
-): Promise<string> => {
+) => {
   try {
     if (!params?.accountAddress || !params?.contractAddress) {
       throw new Error('Both account address and contract address are required');
@@ -33,15 +33,15 @@ export const getBalance = async (
 
     const balanceResponse = await contract.balanceOf(accountAddress);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       balance: balanceResponse.toString(),
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -54,7 +54,7 @@ export const getBalance = async (
 export const getOwnBalance = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof getOwnBalanceSchema>
-): Promise<string> => {
+) => {
   try {
     if (!params?.contractAddress) {
       throw new Error('Contract address are required');
@@ -75,14 +75,14 @@ export const getOwnBalance = async (
       accountCredentials.accountPublicKey
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       balance: balanceResponse.toString(),
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

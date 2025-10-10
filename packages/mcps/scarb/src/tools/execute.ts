@@ -13,7 +13,7 @@ import { executeProgramSchema } from '../schemas/index.js';
  */
 export const executeProgram = async (
   params: z.infer<typeof executeProgramSchema>
-): Promise<string> => {
+) => {
   try {
     await checkScarbInstalled();
 
@@ -40,18 +40,18 @@ export const executeProgram = async (
       params.arguments || undefined
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: 'Program executed successfully',
-      ...JSON.parse(result),
+      result,
       projectPath: params.path,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       message: `Execution failed: ${error.message}`,
       error: error.message,
-    });
+    };
   }
 };
 

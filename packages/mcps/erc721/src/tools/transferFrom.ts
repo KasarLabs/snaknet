@@ -19,7 +19,7 @@ import { TransactionResult } from '../lib/types/types.js';
 export const transferFrom = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof transferFromSchema>
-): Promise<string> => {
+) => {
   try {
     if (
       !params?.fromAddress ||

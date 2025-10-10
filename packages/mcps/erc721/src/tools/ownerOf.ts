@@ -16,7 +16,7 @@ import { validateAndParseAddress } from 'starknet';
 export const getOwner = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof ownerOfSchema>
-): Promise<string> => {
+) => {
   try {
     if (!params?.tokenId || !params?.contractAddress) {
       throw new Error('Both token ID and contract address are required');
@@ -35,14 +35,14 @@ export const getOwner = async (
 
     const ownerResponse = await contract.ownerOf(tokenId);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       owner: bigintToHex(BigInt(ownerResponse)),
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

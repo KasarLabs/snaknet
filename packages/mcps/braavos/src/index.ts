@@ -40,7 +40,7 @@ const registerTools = (BraavosToolRegistry: mcpTool[]) => {
       'Create a new Braavos account and return the privateKey/publicKey/contractAddress',
     execute: async () => {
       const response = await CreateBraavosAccount();
-      return wrapAccountCreationResponse(response);
+      response;
     },
   });
 

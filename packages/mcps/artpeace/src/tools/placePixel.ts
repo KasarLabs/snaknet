@@ -53,17 +53,17 @@ export const placePixel = async (
       txHash.push(res.transaction_hash);
     }
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transaction_hash: txHash,
-    });
+    };
   } catch (error: any) {
-    return JSON.stringify({
+    return {
       status: 'error',
       error: {
         code: 'PLACE_PIXEL_DATA_ERROR',
         message: error.message || 'Failed to place a pixel',
       },
-    });
+    };
   }
 };

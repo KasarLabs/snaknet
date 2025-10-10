@@ -29,7 +29,7 @@ import { RpcProvider } from 'starknet';
 export const transferFrom = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof transferFromSchema>
-): Promise<string> => {
+) => {
   try {
     const credentials = agent.getAccountCredentials();
     const provider = agent.getProvider();
@@ -70,14 +70,14 @@ export const transferFrom = async (
       account: account,
     });
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transactionHash: txH,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

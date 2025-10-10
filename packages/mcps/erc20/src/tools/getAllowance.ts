@@ -23,7 +23,7 @@ import {
 export const getAllowance = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof getAllowanceSchema>
-): Promise<string> => {
+) => {
   try {
     const provider = agent.getProvider();
 
@@ -43,18 +43,18 @@ export const getAllowance = async (
       params.spenderAddress
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       owner: params.ownerAddress,
       spender: params.spenderAddress,
       allowance: formatBalance(allowanceResponse, token.decimals),
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -68,7 +68,7 @@ export const getAllowance = async (
 export const getMyGivenAllowance = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof getMyGivenAllowanceSchema>
-): Promise<string> => {
+) => {
   try {
     const provider = agent.getProvider();
     const ownerAddress = agent.getAccountCredentials().accountPublicKey;
@@ -89,18 +89,18 @@ export const getMyGivenAllowance = async (
       params.spenderAddress
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       owner: ownerAddress,
       spender: params.spenderAddress,
       allowance: formatBalance(allowanceResponse, token.decimals),
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -114,7 +114,7 @@ export const getMyGivenAllowance = async (
 export const getAllowanceGivenToMe = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof getAllowanceGivenToMeSchema>
-): Promise<string> => {
+) => {
   try {
     const provider = agent.getProvider();
     const spenderAddress = agent.getAccountCredentials().accountPublicKey;
@@ -135,17 +135,17 @@ export const getAllowanceGivenToMe = async (
       spenderAddress
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       owner: params.ownerAddress,
       spender: spenderAddress,
       allowance: formatBalance(allowanceResponse, token.decimals),
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

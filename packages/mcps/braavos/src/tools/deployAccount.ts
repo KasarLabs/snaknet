@@ -34,17 +34,17 @@ export const DeployBraavosAccount = async (
 
     const tx = await accountManager.deployAccount(params);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       wallet: 'Braavos',
       transaction_hash: tx.transactionHash,
       contract_address: tx.contractAddress,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -71,16 +71,16 @@ export const DeployBraavosAccountSignature = async (
 
     const tx = await accountManager.deployAccount(params);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       wallet: 'Braavos',
       transaction_hash: tx.transactionHash,
       contract_address: tx.contractAddress,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

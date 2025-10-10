@@ -15,7 +15,7 @@ const execAsync = promisify(exec);
  */
 export const installScarb = async (
   params: z.infer<typeof installScarbSchema>
-): Promise<string> => {
+) => {
   try {
     // Check if Scarb is already installed
     const currentVersion = await getScarbVersion();
@@ -58,7 +58,7 @@ export const installScarb = async (
     await checkScarbInstalled();
     const installedVersion = await getScarbVersion();
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: params.version
         ? `Scarb version ${params.version} installed successfully`
@@ -67,12 +67,12 @@ export const installScarb = async (
       installedVersion: installedVersion,
       output: stdout,
       errors: stderr || undefined,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
       message: `Failed to install Scarb${params.version ? ` version ${params.version}` : ''}`,
-    });
+    };
   }
 };

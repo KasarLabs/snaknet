@@ -93,15 +93,15 @@ export const launchOnEkubo = async (
       ekuboPoolParams
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       response,
-    });
+    };
   } catch (error) {
     console.error('Error launching on Ekubo:', error);
-    return JSON.stringify({
+    return {
       status: 'failed',
       error: error.message,
-    });
+    };
   }
 };

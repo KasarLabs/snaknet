@@ -14,7 +14,7 @@ import {
  */
 export const deployContract = async (
   params: z.infer<typeof deployContractSchema>
-): Promise<string> => {
+) => {
   try {
     // Validate file paths exist
     // await validateFilePaths(params.sierraFilePath, params.casmFilePath);
@@ -45,7 +45,7 @@ export const deployContract = async (
       params.constructorArgs || []
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transactionHash: deployResponse.transaction_hash,
       contractAddress: deployResponse.contract_address,
@@ -54,10 +54,10 @@ export const deployContract = async (
       sierraFilePath: params.sierraFilePath,
       casmFilePath: params.casmFilePath,
       message: 'Contract deployed successfully',
-    });
+    };
   } catch (error) {
     const errorMessage = formatContractError(error);
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: errorMessage,
       step: 'contract deployment',
@@ -65,6 +65,6 @@ export const deployContract = async (
       constructorArgs: params.constructorArgs || [],
       sierraFilePath: params.sierraFilePath,
       casmFilePath: params.casmFilePath,
-    });
+    };
   }
 };

@@ -175,11 +175,11 @@ export const batchSwapTokens = async (
   try {
     const swapService = createSwapService(agent, accountAddress);
     const result = await swapService.executeSwapTransaction(params);
-    return JSON.stringify(result);
+    return result;
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

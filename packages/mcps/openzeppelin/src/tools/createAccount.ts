@@ -14,17 +14,17 @@ export const CreateOZAccount = async () => {
     const accountManager = new AccountManager(undefined);
     const accountDetails = await accountManager.createAccount(OZ_CLASSHASH);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       wallet: 'Open Zeppelin',
       publicKey: accountDetails.publicKey,
       privateKey: accountDetails.privateKey,
       contractAddress: accountDetails.contractAddress,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

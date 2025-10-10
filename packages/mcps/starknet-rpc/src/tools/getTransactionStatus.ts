@@ -9,14 +9,14 @@ export const getTransactionStatus = async (
       params.transactionHash
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
-      transactionStatus,
-    });
+      transactionStatus: transactionStatus as any,
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

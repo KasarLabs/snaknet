@@ -12,25 +12,25 @@ import { buildProjectSchema } from '../schemas/index.js';
  */
 export const buildProject = async (
   params: z.infer<typeof buildProjectSchema>
-): Promise<string> => {
+) => {
   try {
     await checkScarbInstalled();
 
     const projectDir = params.path || process.cwd();
     const result = await buildScarbProject(projectDir);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: 'Project built successfully',
       ...JSON.parse(result),
       buildPath: projectDir,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       message: `Build failed: ${error.message}`,
       error: error.message,
-    });
+    };
   }
 };
 

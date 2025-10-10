@@ -24,16 +24,16 @@ export const DeployOZAccount = async (
     const accountManager = new AccountManager(provider);
     const tx = await accountManager.deployAccount(OZ_CLASSHASH, params);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       wallet: 'OpenZeppelin',
       transaction_hash: tx.transactionHash,
       contract_address: tx.contractAddress,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

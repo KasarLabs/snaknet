@@ -7,14 +7,14 @@ export const getBlockStateUpdate = async (
   try {
     const blockStateUpdate = await provider.getStateUpdate(params.blockId);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       blockStateUpdate,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

@@ -49,21 +49,21 @@ import { FACTORY_ADDRESS } from '../lib/constants/index.js';
 export const isMemecoin = async (
   agent: SnakAgentInterface,
   params: ContractAddressParams
-): Promise<string> => {
+) => {
   try {
     const provider = agent.getProvider();
     const contract = new Contract(FACTORY_ABI, FACTORY_ADDRESS, provider);
     const result = await contract.is_memecoin(params.contractAddress);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       isMemecoin: result,
-    });
+    };
   } catch (error) {
     console.error('Error checking memecoin status:', error);
-    return JSON.stringify({
+    return {
       status: 'failed',
       error: error.message,
-    });
+    };
   }
 };

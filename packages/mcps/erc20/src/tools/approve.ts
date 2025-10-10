@@ -21,7 +21,7 @@ import { validToken } from '../lib/types/types.js';
 export const approve = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof approveSchema>
-): Promise<string> => {
+) => {
   try {
     const provider = agent.getProvider();
     const accountCredentials = agent.getAccountCredentials();
@@ -56,18 +56,18 @@ export const approve = async (
       account: account,
     });
 
-    return JSON.stringify({
+    return {
       status: 'success',
       amount: params.amount,
       symbol: token.symbol,
       spender_address: spenderAddress,
       transactionHash: txH,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
       step: 'transfer execution',
-    });
+    };
   }
 };

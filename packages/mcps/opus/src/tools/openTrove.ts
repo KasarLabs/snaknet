@@ -5,20 +5,20 @@ import { createTroveManager } from '../lib/utils/troveManager.js';
 export const openTrove = async (
   agent: SnakAgentInterface,
   params: OpenTroveParams
-): Promise<string> => {
+) => {
   const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
 
   try {
     const troveManager = createTroveManager(agent, accountAddress);
     const result = await troveManager.openTroveTransaction(params, agent);
-    return JSON.stringify({
+    return {
       status: 'success',
       data: result,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'error',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

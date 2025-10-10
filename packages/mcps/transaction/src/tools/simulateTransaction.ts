@@ -49,15 +49,15 @@ export const simulateInvokeTransaction = async (
 
     const transaction_output = TransactionReponseFormat(simulate_transaction);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transaction_output: transaction_output,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -107,15 +107,15 @@ export const simulateDeployAccountTransaction = async (
     );
     const transaction_output = TransactionReponseFormat(simulate_transaction);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transaction_output: transaction_output,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -154,15 +154,15 @@ export const simulateDeployTransaction = async (
 
     const transaction_output = TransactionReponseFormat(simulate_transaction);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transaction_output: transaction_output,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -200,14 +200,14 @@ export const simulateDeclareTransaction = async (
     const simulate_transaction = await account.simulateTransaction(invocations);
     const transaction_output = TransactionReponseFormat(simulate_transaction);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transaction_output: transaction_output,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

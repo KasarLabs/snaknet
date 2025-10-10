@@ -20,7 +20,7 @@ import { getBalanceSchema, getOwnBalanceSchema } from '../schemas/index.js';
 export const getOwnBalance = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof getOwnBalanceSchema>
-): Promise<string> => {
+) => {
   try {
     const provider = agent.getProvider();
     const accountCredentials = agent.getAccountCredentials();
@@ -48,16 +48,16 @@ export const getOwnBalance = async (
 
     const formattedBalance = formatBalance(balanceResponse, token.decimals);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       balance: formattedBalance,
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -71,7 +71,7 @@ export const getOwnBalance = async (
 export const getBalance = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof getBalanceSchema>
-): Promise<string> => {
+) => {
   try {
     if (!params?.accountAddress) {
       throw new Error('Account address are required');
@@ -95,15 +95,15 @@ export const getBalance = async (
 
     const formattedBalance = formatBalance(balanceValue, token.decimals);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       balance: formattedBalance,
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

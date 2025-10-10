@@ -39,7 +39,7 @@ const registerTools = (ArgentToolRegistry: mcpTool[]) => {
       'Creates a new Argent account and return the privateKey/publicKey/contractAddress',
     execute: async () => {
       const response = await CreateArgentAccount();
-      return wrapAccountCreationResponse(response);
+      response;
     },
   });
 

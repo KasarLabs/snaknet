@@ -4,14 +4,14 @@ export const getBlockLatestAccepted = async (provider: RpcProvider) => {
   try {
     const blockHashAndNumber = await provider.getBlockLatestAccepted();
 
-    return JSON.stringify({
+    return {
       status: 'success',
-      blockHashAndNumber,
-    });
+      blockHashAndNumber: blockHashAndNumber as any,
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

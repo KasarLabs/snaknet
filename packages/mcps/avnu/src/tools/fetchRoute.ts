@@ -106,7 +106,7 @@ export class RouteFetchService {
 export const getRoute = async (
   agent: SnakAgentInterface,
   params: RouteSchemaType
-): Promise<string> => {
+) => {
   try {
     const routeService = new RouteFetchService();
     const result = await routeService.fetchRoute(params, agent);
@@ -114,9 +114,9 @@ export const getRoute = async (
       typeof value === 'bigint' ? value.toString() : value
     );
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

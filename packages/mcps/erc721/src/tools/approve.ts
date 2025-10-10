@@ -23,7 +23,7 @@ import { TransactionResult } from '../lib/types/types.js';
 export const approve = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof approveSchema>
-): Promise<string> => {
+) => {
   try {
     if (
       !params?.approvedAddress ||
@@ -70,13 +70,13 @@ export const approve = async (
       transactionHash: txH,
     };
 
-    return JSON.stringify(result);
+    return result;
   } catch (error) {
     const result: TransactionResult = {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
       step: 'approve execution',
     };
-    return JSON.stringify(result);
+    return result;
   }
 };

@@ -79,10 +79,10 @@ export const createMemecoin = async (
 
     await provider.waitForTransaction(transaction_hash);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transactionHash: transaction_hash,
-    });
+    };
   } catch (error) {
     console.error('Error creating memecoin:', error);
     return {

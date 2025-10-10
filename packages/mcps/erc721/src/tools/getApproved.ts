@@ -15,7 +15,7 @@ import { validateAndParseAddress } from 'starknet';
 export const getApproved = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof getApprovedSchema>
-): Promise<string> => {
+) => {
   try {
     if (!params?.tokenId || !params?.contractAddress) {
       throw new Error('Both token ID and contract address are required');
@@ -34,14 +34,14 @@ export const getApproved = async (
 
     const approvedResponse = await contract.getApproved(tokenId);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       approved: approvedResponse.toString(),
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

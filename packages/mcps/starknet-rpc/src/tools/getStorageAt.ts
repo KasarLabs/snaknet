@@ -11,14 +11,14 @@ export const getStorageAt = async (
       params.blockId
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       storageValue,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

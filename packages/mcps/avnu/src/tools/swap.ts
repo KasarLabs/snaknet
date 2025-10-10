@@ -189,9 +189,9 @@ export const swapTokens = async (
     const result = await swapService.executeSwapTransaction(params);
     return JSON.stringify(result);
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

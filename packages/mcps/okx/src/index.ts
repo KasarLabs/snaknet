@@ -40,7 +40,7 @@ const registerTools = (OkxToolRegistry: mcpTool[]) => {
       'Create a new OKX account and return the privateKey/publicKey/contractAddress',
     execute: async () => {
       const response = await CreateOKXAccount();
-      return wrapAccountCreationResponse(response);
+      response;
     },
   });
 

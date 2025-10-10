@@ -19,7 +19,7 @@ import { validateAndParseAddress } from 'starknet';
 export const safeTransferFrom = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof safeTransferFromSchema>
-): Promise<string> => {
+) => {
   try {
     if (
       !params?.fromAddress ||

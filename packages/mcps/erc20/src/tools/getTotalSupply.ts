@@ -20,7 +20,7 @@ import { getTotalSupplySchema } from '../schemas/index.js';
 export const getTotalSupply = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof getTotalSupplySchema>
-): Promise<string> => {
+) => {
   try {
     const provider = agent.getProvider();
 
@@ -38,15 +38,15 @@ export const getTotalSupply = async (
 
     const formattedSupply = formatBalance(totalSupply, token.decimals);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       totalSupply: formattedSupply,
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

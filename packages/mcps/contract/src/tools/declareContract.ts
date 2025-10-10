@@ -15,7 +15,7 @@ import {
  */
 export const declareContract = async (
   params: z.infer<typeof declareContractSchema>
-): Promise<string> => {
+) => {
   try {
     // Validate file paths exist
     await validateFilePaths(params.sierraFilePath, params.casmFilePath);
@@ -51,22 +51,22 @@ export const declareContract = async (
     const { classHash: calculatedClassHash } =
       await contractManagerForHash.isContractDeclared();
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transactionHash: declareResponse.transaction_hash || '',
       classHash: declareResponse.class_hash || calculatedClassHash,
       sierraFilePath: params.sierraFilePath,
       casmFilePath: params.casmFilePath,
       message: 'Contract declared successfully',
-    });
+    };
   } catch (error) {
     const errorMessage = formatContractError(error);
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: errorMessage,
       step: 'contract declaration',
       sierraFilePath: params.sierraFilePath,
       casmFilePath: params.casmFilePath,
-    });
+    };
   }
 };

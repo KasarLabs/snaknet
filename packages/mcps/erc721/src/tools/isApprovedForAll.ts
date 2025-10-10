@@ -14,7 +14,7 @@ import { isApprovedForAllSchema } from '../schemas/index.js';
 export const isApprovedForAll = async (
   agent: SnakAgentInterface,
   params: z.infer<typeof isApprovedForAllSchema>
-): Promise<string> => {
+) => {
   try {
     if (
       !params?.ownerAddress ||
@@ -43,14 +43,14 @@ export const isApprovedForAll = async (
       operatorAddress
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       isApproved: approvedResponse === true,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

@@ -4,14 +4,14 @@ export const getSpecVersion = async (provider: RpcProvider) => {
   try {
     const specVersion = await provider.getSpecVersion();
 
-    return JSON.stringify({
+    return {
       status: 'success',
       specVersion,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

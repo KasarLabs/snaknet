@@ -14,7 +14,7 @@ import { Account, RpcProvider } from 'starknet';
  */
 export const getConstructorParams = async (
   params: z.infer<typeof getConstructorParamsSchema>
-): Promise<string> => {
+) => {
   try {
     // Validate file paths exist
     await validateFilePaths(params.sierraFilePath, params.casmFilePath); // Only need sierra for constructor params
@@ -33,7 +33,7 @@ export const getConstructorParams = async (
 
     const constructorParams = contractManager.extractConstructorParams();
 
-    return JSON.stringify({
+    return {
       status: 'success',
       classHash: params.classHash,
       sierraFilePath: params.sierraFilePath,
@@ -44,16 +44,16 @@ export const getConstructorParams = async (
         name: param.name,
         type: param.type,
       })),
-    });
+    };
   } catch (error) {
     const errorMessage = formatContractError(error);
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: errorMessage,
       step: 'getting constructor parameters',
       classHash: params.classHash,
       sierraFilePath: params.sierraFilePath,
       providedArgs: params.constructorArgs || [],
-    });
+    };
   }
 };
