@@ -8,11 +8,7 @@ import { logger } from '../../utils/logger.js';
 import { MCPEnvironment } from '../mcps/interfaces.js';
 import { createLLM } from '../../utils/llm.js';
 
-
-async function specializedAgent(
-  mcpServerName: string,
-  env: MCPEnvironment
-) {
+async function specializedAgent(mcpServerName: string, env: MCPEnvironment) {
   const client = new MultiServerMCPClient({
     mcpServers: {
       [mcpServerName]: getMCPClientConfig(mcpServerName, env),

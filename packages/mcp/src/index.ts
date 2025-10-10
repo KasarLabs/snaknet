@@ -124,9 +124,10 @@ function validateRequiredEnvironmentVariables(): envInput {
 
   const availableLLMKeys = LLM_API_KEYS.filter((key) => process.env[key]);
   if (availableLLMKeys.length === 0) {
-    missingVars.push('At least one LLM API key (ANTHROPIC_API_KEY, GEMINI_API_KEY, or OPENAI_API_KEY)');
+    missingVars.push(
+      'At least one LLM API key (ANTHROPIC_API_KEY, GEMINI_API_KEY, or OPENAI_API_KEY)'
+    );
   } else {
-
     availableLLMKeys.forEach((key) => {
       env[key] = process.env[key];
     });
@@ -154,8 +155,12 @@ function validateRequiredEnvironmentVariables(): envInput {
       '\nPlease set at least one LLM API key before starting the MCP server.'
     );
     console.error('Example:');
-    console.error('export ANTHROPIC_API_KEY="sk-..." # or GEMINI_API_KEY or OPENAI_API_KEY');
-    console.error('export MODEL_NAME="claude-sonnet-4" # optional, defaults based on API key provider');
+    console.error(
+      'export ANTHROPIC_API_KEY="sk-..." # or GEMINI_API_KEY or OPENAI_API_KEY'
+    );
+    console.error(
+      'export MODEL_NAME="claude-sonnet-4" # optional, defaults based on API key provider'
+    );
     process.exit(1);
   }
 
