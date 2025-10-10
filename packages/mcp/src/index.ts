@@ -6,7 +6,7 @@ dotenv.config({ path: './.env' });
 import { z } from 'zod';
 
 import { graph } from './graph/graph.js';
-import { logger } from './utils/index.js';
+import { logger } from './utils/logger.js';
 import { HumanMessage } from '@langchain/core/messages';
 
 const performStarknetActionsSchema = z.object({

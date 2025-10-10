@@ -11,7 +11,7 @@ import { selectorAgent } from './agents/selector.js';
 import { AgentName } from './mcps/utilities.js';
 import { MCPEnvironment } from './mcps/interfaces.js';
 import { specializedNode } from './agents/specialized.js';
-import { logger } from '../utils/index.js';
+import { logger } from '../utils/logger.js';
 
 export const GraphAnnotation = Annotation.Root({
   messages: Annotation<BaseMessage[]>({
