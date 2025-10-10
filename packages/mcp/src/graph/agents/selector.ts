@@ -1,5 +1,7 @@
 import { END } from '@langchain/langgraph';
 import { ChatAnthropic } from '@langchain/anthropic';
+import { ChatOpenAI } from '@langchain/openai';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { z } from 'zod';
 import {
   BaseChatModel,
@@ -10,11 +12,55 @@ import { GraphAnnotation } from '../graph.js';
 import { AvailableAgents, getMCPDescription } from '../mcps/utilities.js';
 import { logger } from '../../utils/index.js';
 import { AIMessageChunk } from '@langchain/core/messages';
+import { MCPEnvironment } from '../mcps/interfaces.js';
+import { DEFAULT_MODELS } from '../../index.js';
 
 const selectorOutputSchema = z.object({
   selectedAgent: z.enum([END, ...AvailableAgents] as [string, ...string[]]),
   reasoning: z.string().describe('Why this agent was chosen'),
 });
+
+/**
+ * Creates an LLM instance for the selector agent based on available API keys.
+ * Priority: ANTHROPIC_API_KEY > GEMINI_API_KEY > OPENAI_API_KEY
+ */
+function createSelectorLLM(
+  env: MCPEnvironment | undefined
+): BaseChatModel<BaseChatModelCallOptions, AIMessageChunk> {
+  const modelName = env?.MODEL_NAME;
+  const temperature = 0;
+
+  // Try Anthropic first
+  if (env?.ANTHROPIC_API_KEY) {
+    return new ChatAnthropic({
+      model: modelName || DEFAULT_MODELS.ANTHROPIC_API_KEY,
+      temperature,
+      apiKey: env.ANTHROPIC_API_KEY,
+    }) as BaseChatModel<BaseChatModelCallOptions, AIMessageChunk>;
+  }
+
+  // Try Gemini second
+  if (env?.GEMINI_API_KEY) {
+    return new ChatGoogleGenerativeAI({
+      model: modelName || DEFAULT_MODELS.GEMINI_API_KEY,
+      temperature,
+      apiKey: env.GEMINI_API_KEY,
+    }) as BaseChatModel<BaseChatModelCallOptions, AIMessageChunk>;
+  }
+
+  // Try OpenAI third
+  if (env?.OPENAI_API_KEY) {
+    return new ChatOpenAI({
+      model: modelName || DEFAULT_MODELS.OPENAI_API_KEY,
+      temperature,
+      apiKey: env.OPENAI_API_KEY,
+    }) as BaseChatModel<BaseChatModelCallOptions, AIMessageChunk>;
+  }
+
+  throw new Error(
+    'No LLM API key found. Please set one of: ANTHROPIC_API_KEY, GEMINI_API_KEY, or OPENAI_API_KEY'
+  );
+}
 
 export const selectorAgent = async (state: typeof GraphAnnotation.State) => {
   const lastMessage = state.messages[state.messages.length - 1];
@@ -42,12 +88,7 @@ IMPORTANT: Look at the conversation history. If an agent has already successfull
 Respond with the exact name of the chosen agent or "__end__".`;
 
   try {
-    const model = new ChatAnthropic({
-      model: 'claude-3-5-sonnet-latest',
-      temperature: 0,
-      apiKey: state.mcpEnvironment?.ANTHROPIC_API_KEY,
-    }) as BaseChatModel<BaseChatModelCallOptions, AIMessageChunk>;
-
+    const model = createSelectorLLM(state.mcpEnvironment);
     const structuredModel = model.withStructuredOutput(selectorOutputSchema);
     const response = await structuredModel.invoke([
       { role: 'system', content: systemPrompt },

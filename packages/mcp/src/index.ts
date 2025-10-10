@@ -21,8 +21,7 @@ export const performStarknetActions = async (
   env: envInput,
   input: performStarknetActionsInput
 ) => {
-  logger.info('Graph execution started', { userInput: input.userInput, env });
-
+  logger.info('Graph execution started', { userInput: input.userInput });
   try {
     const config = { configurable: { thread_id: `user-${Date.now()}` } };
 
@@ -35,9 +34,6 @@ export const performStarknetActions = async (
     );
 
     const finalMessage = result.messages[result.messages.length - 1];
-
-    logger.error('Graph execution completed!!!!!!!!!!!!!!!!!!');
-
     return {
       status: 'success',
       response: finalMessage.content,
@@ -68,7 +64,7 @@ export const registerTools = (snaknetToolRegistry: SnaknetTool[]) => {
 };
 
 const server = new McpServer({
-  name: 'snakknet',
+  name: 'snaknet',
   version: '1.0.0',
 });
 
@@ -109,30 +105,42 @@ export const RegisterToolInServer = async (env: envInput) => {
   }
 };
 
-// Required environment variables for the main MCP
-const REQUIRED_ENV_VARS = [
-  'STARKNET_RPC_URL',
-  'STARKNET_ACCOUNT_ADDRESS',
-  'STARKNET_PRIVATE_KEY',
+const LLM_API_KEYS = [
   'ANTHROPIC_API_KEY',
+  'GEMINI_API_KEY',
+  'OPENAI_API_KEY',
 ] as const;
+
+// Default models for each LLM provider (centralized)
+export const DEFAULT_MODELS = {
+  ANTHROPIC_API_KEY: 'claude-sonnet-4-20250514',
+  GEMINI_API_KEY: 'gemini-2.5-flash',
+  OPENAI_API_KEY: 'gpt-4o-mini',
+} as const;
 
 function validateRequiredEnvironmentVariables(): envInput {
   const env: envInput = {};
   const missingVars: string[] = [];
 
-  // Check required variables
-  REQUIRED_ENV_VARS.forEach((varName) => {
-    if (process.env[varName]) {
-      env[varName] = process.env[varName];
-    } else {
-      missingVars.push(varName);
-    }
-  });
+  const availableLLMKeys = LLM_API_KEYS.filter((key) => process.env[key]);
+  if (availableLLMKeys.length === 0) {
+    missingVars.push('At least one LLM API key (ANTHROPIC_API_KEY, GEMINI_API_KEY, or OPENAI_API_KEY)');
+  } else {
 
-  // Load additional STARKNET_* variables if they exist
+    availableLLMKeys.forEach((key) => {
+      env[key] = process.env[key];
+    });
+
+    if (process.env.MODEL_NAME) {
+      env.MODEL_NAME = process.env.MODEL_NAME;
+    } else {
+      const primaryKey = availableLLMKeys[0];
+      env.MODEL_NAME = DEFAULT_MODELS[primaryKey];
+    }
+  }
+
   Object.keys(process.env).forEach((key) => {
-    if (key.startsWith('STARKNET_') && process.env[key] && !env[key]) {
+    if (process.env[key] && !env[key]) {
       env[key] = process.env[key];
     }
   });
@@ -143,35 +151,25 @@ function validateRequiredEnvironmentVariables(): envInput {
       console.error(`   - ${varName}`);
     });
     console.error(
-      '\nPlease set these environment variables before starting the MCP server.'
+      '\nPlease set at least one LLM API key before starting the MCP server.'
     );
     console.error('Example:');
-    console.error(
-      'export STARKNET_RPC_URL="https://starknet-mainnet.public.blastapi.io"'
-    );
-    console.error('export STARKNET_ACCOUNT_ADDRESS="0x..."');
-    console.error('export STARKNET_PRIVATE_KEY="0x..."');
-    console.error('export ANTHROPIC_API_KEY="sk-..."');
+    console.error('export ANTHROPIC_API_KEY="sk-..." # or GEMINI_API_KEY or OPENAI_API_KEY');
+    console.error('export MODEL_NAME="claude-sonnet-4" # optional, defaults based on API key provider');
     process.exit(1);
   }
 
-  console.error('✅ All required environment variables are set');
-  console.error(
-    `   - STARKNET_RPC_URL: ${env.STARKNET_RPC_URL?.substring(0, 30)}...`
-  );
-  console.error(
-    `   - STARKNET_ACCOUNT_ADDRESS: ${env.STARKNET_ACCOUNT_ADDRESS?.substring(0, 10)}...`
-  );
-  console.error(`   - STARKNET_PRIVATE_KEY: ***hidden***`);
-  console.error(`   - ANTHROPIC_API_KEY: ***hidden***`);
+  console.error('✅ LLM API key(s) detected');
+  availableLLMKeys.forEach((key) => {
+    console.error(`   - ${key}: ***hidden***`);
+  });
+  console.error(`   - MODEL_NAME: ${env.MODEL_NAME}`);
 
   return env;
 }
 
 async function main() {
   const transport = new StdioServerTransport();
-
-  // Validate and load all required environment variables
   const env = validateRequiredEnvironmentVariables();
 
   await RegisterToolInServer(env);
