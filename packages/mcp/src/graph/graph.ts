@@ -22,9 +22,8 @@ export const GraphAnnotation = Annotation.Root({
     reducer: (x, y) => y ?? x,
     default: () => END as AgentName,
   }),
-  mcpEnvironment: Annotation<MCPEnvironment | undefined>({
-    reducer: (x, y) => y ?? x,
-    default: () => undefined,
+  mcpEnvironment: Annotation<MCPEnvironment>({
+    reducer: (x, y) => y ?? x
   }),
   routingInfo: Annotation<{
     reasoning?: string;

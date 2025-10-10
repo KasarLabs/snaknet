@@ -4,51 +4,34 @@ import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import type { BaseChatModel } from '@langchain/core/language_models/chat_models';
 
 import { MCPEnvironment } from '../graph/mcps/interfaces.js';
-import { DEFAULT_MODELS } from '../index.js';
-import { logger } from './logger.js';
 
 /**
  * Creates an LLM instance based on available API keys in the environment.
  * Priority: ANTHROPIC_API_KEY > GEMINI_API_KEY > OPENAI_API_KEY
  */
-export function createLLM(env: MCPEnvironment | undefined, logModel = false): BaseChatModel {
-  const modelName = env?.MODEL_NAME;
+export function createLLM(env: MCPEnvironment): BaseChatModel {
+  const modelName = env.MODEL_NAME as string;
   const temperature = 0;
 
-  // Try Anthropic first
-  if (env?.ANTHROPIC_API_KEY) {
-    const model = modelName || DEFAULT_MODELS.ANTHROPIC_API_KEY;
-    if (logModel) {
-      logger.error(`Using Anthropic with model: ${model}`, {});
-    }
+  if (env.ANTHROPIC_API_KEY) {
     return new ChatAnthropic({
-      model,
+      model: modelName,
       temperature,
       apiKey: env.ANTHROPIC_API_KEY,
     });
   }
 
-  // Try Gemini second
-  if (env?.GEMINI_API_KEY) {
-    const model = modelName || DEFAULT_MODELS.GEMINI_API_KEY;
-    if (logModel) {
-      logger.error(`Using Gemini with model: ${model}`, {});
-    }
+  if (env.GEMINI_API_KEY) {
     return new ChatGoogleGenerativeAI({
-      model,
+      model: modelName,
       temperature,
       apiKey: env.GEMINI_API_KEY,
     });
   }
 
-  // Try OpenAI third
-  if (env?.OPENAI_API_KEY) {
-    const model = modelName || DEFAULT_MODELS.OPENAI_API_KEY;
-    if (logModel) {
-      logger.error(`Using OpenAI with model: ${model}`, {});
-    }
+  if (env.OPENAI_API_KEY) {
     return new ChatOpenAI({
-      model,
+      model: modelName,
       temperature,
       apiKey: env.OPENAI_API_KEY,
     });

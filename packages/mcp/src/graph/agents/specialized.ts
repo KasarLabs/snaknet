@@ -11,7 +11,7 @@ import { createLLM } from '../../utils/llm.js';
 
 async function specializedAgent(
   mcpServerName: string,
-  env: MCPEnvironment | undefined
+  env: MCPEnvironment
 ) {
   const client = new MultiServerMCPClient({
     mcpServers: {
@@ -27,7 +27,7 @@ async function specializedAgent(
     {}
   );
 
-  const llm = createLLM(env, true);
+  const llm = createLLM(env);
 
   if (!llm.bindTools) {
     throw new Error('The selected LLM model does not support tool binding');

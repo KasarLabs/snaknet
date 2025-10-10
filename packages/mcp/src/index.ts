@@ -112,7 +112,7 @@ const LLM_API_KEYS = [
 ] as const;
 
 // Default models for each LLM provider (centralized)
-export const DEFAULT_MODELS = {
+const DEFAULT_MODELS = {
   ANTHROPIC_API_KEY: 'claude-sonnet-4-20250514',
   GEMINI_API_KEY: 'gemini-2.5-flash',
   OPENAI_API_KEY: 'gpt-4o-mini',
