@@ -36,34 +36,23 @@ IMPORTANT: Look at the conversation history. If an agent has already successfull
 
 Respond with the exact name of the chosen agent or "__end__".`;
 
-  try {
-    const model = createLLM(state.mcpEnvironment);
-    const structuredModel = model.withStructuredOutput(selectorOutputSchema);
-    const response = await structuredModel.invoke([
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: `User's request : "${userInput}"` },
-    ]);
+  const model = createLLM(state.mcpEnvironment);
+  const structuredModel = model.withStructuredOutput(selectorOutputSchema);
+  const response = await structuredModel.invoke([
+    { role: 'system', content: systemPrompt },
+    { role: 'user', content: `User's request : "${userInput}"` },
+  ]);
 
-    logger.error(`Routing decision`, {
-      selectedAgent: response.selectedAgent,
+  logger.error(`Routing decision`, {
+    selectedAgent: response.selectedAgent,
+    reasoning: response.reasoning,
+  });
+
+  return {
+    next: response.selectedAgent,
+    routingInfo: {
       reasoning: response.reasoning,
-    });
-
-    return {
-      next: response.selectedAgent,
-      routingInfo: {
-        reasoning: response.reasoning,
-        timestamp: new Date().toISOString(),
-      },
-    };
-  } catch (error) {
-    console.error('Selector error:', error);
-    return {
-      next: END,
-      routingInfo: {
-        reasoning: 'Technical selector error',
-        timestamp: new Date().toISOString(),
-      },
-    };
-  }
+      timestamp: new Date().toISOString(),
+    },
+  };
 };
