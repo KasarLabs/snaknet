@@ -150,23 +150,25 @@ You can also configure individual MCP servers directly:
 ### DeFi Protocols
 
 - **AVNU** - DEX aggregator and swap functionality
-- **Fibrous** - Cross-chain DEX aggregator
-- **Opus** - Lending and borrowing protocol
-- **Vesu** - Yield farming and staking
+- **Ekubo** - Next-generation AMM with concentrated liquidity
+- **Endurfi** - Liquid staking protocol (xSTRK, xyWBTC)
+- **Fibrous** - Token swap router finding optimal routes
+- **Opus** - Collateralized debt positions (Troves) and CASH borrowing
+- **Vesu** - Lending and earning protocol
 - **Unruggable** - Memecoin creation and launch platform
 
 ### Core Blockchain Operations
 
 - **ERC20** - Token operations (transfer, approve, balance, etc.)
 - **ERC721** - NFT operations (transfer, approve, metadata, etc.)
-- **Contract** - Smart contract deployment and interaction
 - **Transaction** - Transaction management and monitoring
 - **RPC** - Starknet RPC operations and blockchain data
+- **Extended** - Extended Starknet operations
 
 ### Development Tools
 
-- **Scarb** - Cairo development and compilation tools
-- **ArtPeace**
+- **Scarb** - Cairo development, compilation, and proving tools
+- **Contract** - Smart contract declaration and deployment
 
 ## Development
 
@@ -180,19 +182,21 @@ packages/
     ├── argent/      # Argent wallet MCP server
     ├── avnu/        # AVNU DEX MCP server
     ├── braavos/     # Braavos wallet MCP server
-    ├── contract/    # Contract deployment MCP server
+    ├── contract/    # Contract declaration and deployment MCP server
+    ├── ekubo/       # Ekubo AMM MCP server
+    ├── endurfi/     # Endurfi liquid staking MCP server
     ├── erc20/       # ERC20 token MCP server
     ├── erc721/      # ERC721 NFT MCP server
-    ├── fibrous/     # Fibrous DEX MCP server
+    ├── extended/    # Extended Starknet operations MCP server
+    ├── fibrous/     # Fibrous swap router MCP server
     ├── okx/         # OKX wallet MCP server
     ├── openzeppelin/ # OpenZeppelin account MCP server
-    ├── opus/        # Opus lending MCP server
-    ├── scarb/       # Scarb development MCP server
+    ├── opus/        # Opus lending and borrowing MCP server
+    ├── scarb/       # Scarb development tools MCP server
     ├── starknet-rpc/ # Starknet RPC MCP server
     ├── transaction/ # Transaction management MCP server
     ├── unruggable/  # Unruggable memecoin MCP server
-    ├── vesu/        # Vesu yield farming MCP server
-    └── artpeace/    # ArtPeace
+    └── vesu/        # Vesu lending and earning MCP server
 ```
 
 ### Adding New MCP Servers
