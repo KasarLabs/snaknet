@@ -90,7 +90,6 @@
       "tools": [
         "erc721_owner_of",
         "erc721_get_balance",
-        "erc721_get_own_balance",
         "erc721_is_approved_for_all",
         "erc721_get_approved",
         "erc721_transfer_from",
