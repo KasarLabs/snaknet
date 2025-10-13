@@ -1,24 +1,27 @@
 import { RpcProvider } from 'starknet';
+import { SnakAgentInterface } from '../lib/dependances/types.js';
 import { ARGENT_CLASS_HASH } from '../lib/constant/contract.js';
 import { AccountManager } from '../lib/utils/AccountManager.js';
 import { z } from 'zod';
 import { accountDetailsSchema } from '../schemas/schema.js';
-import { onchainRead } from '@snaknet/core';
+
 /**
- * Deploys an Argent account using RPC provider.
+ * Deploys an Argent account using Starknet agent.
  * @async
  * @function DeployArgentAccount
- * @param {onchainRead} env - Environment with RPC provider
+ * @param {SnakAgentInterface} agent - The Starknet agent
  * @param {z.infer<typeof accountDetailsSchema>} params - Account details
  * @returns {Promise<string>} JSON string with deployment result
  * @throws {Error} If deployment fails
  */
 export const DeployArgentAccount = async (
-  env: onchainRead,
+  agent: SnakAgentInterface,
   params: z.infer<typeof accountDetailsSchema>
 ) => {
   try {
-    const accountManager = new AccountManager(env.provider);
+    const provider = agent.getProvider();
+
+    const accountManager = new AccountManager(provider);
     const tx = await accountManager.deployAccount(ARGENT_CLASS_HASH, params);
 
     return {

@@ -1,19 +1,17 @@
 import { RpcProvider } from 'starknet';
 import { ARGENT_CLASS_HASH } from '../lib/constant/contract.js';
 import { AccountManager } from '../lib/utils/AccountManager.js';
-import { onchainRead } from '@snaknet/core';
 
 /**
  * Creates a new Argent account.
  * @async
  * @function CreateArgentAccount
- * @param {envRead} env - Environment with RPC provider
  * @returns {Promise<object>} Object with account details
  * @throws {Error} If account creation fails
  */
-export const CreateArgentAccount = async (env: onchainRead) => {
+export const CreateArgentAccount = async () => {
   try {
-    const accountManager = new AccountManager(env.provider);
+    const accountManager = new AccountManager(undefined);
     const accountDetails =
       await accountManager.createAccount(ARGENT_CLASS_HASH);
 
