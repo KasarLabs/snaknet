@@ -2,7 +2,8 @@ import { ContractAddressParams } from '../schemas/index.js';
 import { Contract } from 'starknet';
 import { FACTORY_ABI } from '../lib/abis/unruggableFactory.js';
 import { FACTORY_ADDRESS } from '../lib/constants/index.js';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
+
 
 type LiquidityType =
   | { type: 'JediERC20'; address: string }
@@ -22,7 +23,7 @@ interface LockedLiquidityInfo {
  * (Jediswap, StarkDeFi, or Ekubo) and returns detailed information about the
  * liquidity lock.
  *
- * @param {SnakAgentInterface} agent - Starknet agent interface
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {ContractAddressParams} params - Object containing the token contract address
  * @returns {Promise<GetLockedLiquiditySuccessResponse | GetLockedLiquidityErrorResponse>}
  *          Detailed information about locked liquidity or error response
@@ -74,11 +75,11 @@ interface LockedLiquidityInfo {
  * - Useful for checking if a token's liquidity is locked
  */
 export const getLockedLiquidity = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: ContractAddressParams
 ) => {
   try {
-    const provider = agent.getProvider();
+    const provider = env.provider;
     const contract = new Contract(FACTORY_ABI, FACTORY_ADDRESS, provider);
 
     const result = await contract.locked_liquidity(params.contractAddress);

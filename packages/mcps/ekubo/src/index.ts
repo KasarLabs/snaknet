@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account, constants } from 'starknet';
 
 import dotenv from 'dotenv';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import { mcpTool, registerToolsWithServer, getOnchainRead, getOnchainWrite } from '@snaknet/core';
 import {
   poolKeySchema,
   getTokenPriceSchema,
@@ -26,7 +25,6 @@ import { createPosition } from './tools/write/createPosition.js';
 import { addLiquidity } from './tools/write/addLiquidity.js';
 import { withdrawLiquidity } from './tools/write/withdrawLiquidity.js';
 import { transferPosition } from './tools/write/transferPosition.js';
-import { envRead, envWrite } from './interfaces/index.js';
 
 dotenv.config();
 
@@ -35,41 +33,6 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-const getEnvRead = (): envRead => {
-  if (!process.env.STARKNET_RPC_URL) {
-    throw new Error('Missing required environment variables: STARKNET_RPC_URL');
-  }
-  return {
-    provider: new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL }),
-  };
-};
-
-const getEnvWrite = (): envWrite => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-
-  if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(
-    provider,
-    accountAddress,
-    privateKey,
-    undefined,
-    constants.TRANSACTION_VERSION.V3
-  );
-
-  return {
-    provider,
-    account,
-  };
-};
-
 const registerTools = (EkuboToolRegistry: mcpTool[]) => {
   EkuboToolRegistry.push({
     name: 'get_pool_info',
@@ -77,8 +40,8 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       'Get comprehensive information about an Ekubo pool including current price, liquidity, and fee data.',
     schema: poolKeySchema,
     execute: async (params: any) => {
-      const envRead = getEnvRead();
-      return await getPoolInfo(envRead, params);
+      const onchainRead = getOnchainRead();
+      return await getPoolInfo(onchainRead, params);
     },
   });
 
@@ -88,8 +51,8 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       'Get the price of a token via Ekubo pools by querying the pool price directly from the Core contract.',
     schema: getTokenPriceSchema,
     execute: async (params: any) => {
-      const envRead = getEnvRead();
-      return await getTokenPrice(envRead, params);
+      const onchainRead = getOnchainRead();
+      return await getTokenPrice(onchainRead, params);
     },
   });
 
@@ -99,8 +62,8 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       'Get the total liquidity available in an Ekubo pool at the current tick.',
     schema: poolKeySchema,
     execute: async (params: any) => {
-      const envRead = getEnvRead();
-      return await getPoolLiquidity(envRead, params);
+      const onchainRead = getOnchainRead();
+      return await getPoolLiquidity(onchainRead, params);
     },
   });
 
@@ -110,8 +73,8 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       'Get the cumulative fees per unit of liquidity for an Ekubo pool (both token0 and token1).',
     schema: poolKeySchema,
     execute: async (params: any) => {
-      const envRead = getEnvRead();
-      return await getPoolFeesPerLiquidity(envRead, params);
+      const onchainRead = getOnchainRead();
+      return await getPoolFeesPerLiquidity(onchainRead, params);
     },
   });
 
@@ -122,8 +85,8 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       'Swap tokens on Ekubo DEX. Supports both exact input (specify input amount) and exact output (specify desired output amount) swaps with configurable slippage tolerance.',
     schema: swapTokensSchema,
     execute: async (params: any) => {
-      const envWrite = getEnvWrite();
-      return await swap(envWrite, params);
+      const onchainWrite = getOnchainWrite();
+      return await swap(onchainWrite, params);
     },
   });
 
@@ -133,8 +96,8 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       'Create a new liquidity position (NFT) in an Ekubo pool within a specified price range (concentrated liquidity). Mints a new NFT position.',
     schema: createPositionSchema,
     execute: async (params: any) => {
-      const envWrite = getEnvWrite();
-      return await createPosition(envWrite, params);
+      const onchainWrite = getOnchainWrite();
+      return await createPosition(onchainWrite, params);
     },
   });
 
@@ -144,8 +107,8 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       'Add liquidity to an existing Ekubo pool position without minting a new NFT. Deposits tokens into the last position.',
     schema: addLiquiditySchema,
     execute: async (params: any) => {
-      const envWrite = getEnvWrite();
-      return await addLiquidity(envWrite, params);
+      const onchainWrite = getOnchainWrite();
+      return await addLiquidity(onchainWrite, params);
     },
   });
 
@@ -155,8 +118,8 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       'Withdraw liquidity from an Ekubo pool position. Can withdraw full position, partial position, or only collect fees.',
     schema: withdrawLiquiditySchema,
     execute: async (params: any) => {
-      const envWrite = getEnvWrite();
-      return await withdrawLiquidity(envWrite, params);
+      const onchainWrite = getOnchainWrite();
+      return await withdrawLiquidity(onchainWrite, params);
     },
   });
 
@@ -166,8 +129,8 @@ const registerTools = (EkuboToolRegistry: mcpTool[]) => {
       'Transfer an Ekubo NFT position to another address. The position NFT represents ownership of the liquidity position.',
     schema: transferPositionSchema,
     execute: async (params: any) => {
-      const envWrite = getEnvWrite();
-      return await transferPosition(envWrite, params);
+      const onchainWrite = getOnchainWrite();
+      return await transferPosition(onchainWrite, params);
     },
   });
 };

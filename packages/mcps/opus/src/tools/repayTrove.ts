@@ -1,16 +1,17 @@
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+
 import { RepayTroveParams } from '../schemas/index.js';
 import { createTroveManager } from '../lib/utils/troveManager.js';
+import { onchainWrite } from '@snaknet/core';
 
 export const repayTrove = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: RepayTroveParams
 ) => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
+  const accountAddress = env.account?.address;
 
   try {
-    const troveManager = createTroveManager(agent, accountAddress);
-    const result = await troveManager.repayTransaction(params, agent);
+    const troveManager = createTroveManager(env, accountAddress);
+    const result = await troveManager.repayTransaction(params, env);
     return {
       status: 'success',
       data: result,

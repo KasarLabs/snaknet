@@ -1,20 +1,21 @@
 import { Account, Contract, constants } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
-import { INTERACT_ERC721_ABI } from '../lib/abis/interact.js';
-import { executeV3Transaction } from '../lib/utils/utils.js';
+
+import { INTERACT_ERC721_ABI } from '../../lib/abis/interact.js';
+import { executeV3Transaction } from '../../lib/utils/utils.js';
 import { z } from 'zod';
-import { setApprovalForAllSchema } from '../schemas/index.js';
-import { TransactionResult } from '../lib/types/types.js';
+import { setApprovalForAllSchema } from '../../schemas/index.js';
+import { TransactionResult } from '../../lib/types/types.js';
 import { validateAndParseAddress } from 'starknet';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Set the approval for all tokens of the contract.
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {z.infer<typeof setApprovalForAllSchema>} params - Approval parameters
  * @returns {Promise<string>} JSON string with transaction result
  */
 export const setApprovalForAll = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof setApprovalForAllSchema>
 ) => {
   try {
@@ -27,19 +28,11 @@ export const setApprovalForAll = async (
         'Operator address, approved status and contract address are required'
       );
     }
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
+    const provider = env.provider;
+    const account = env.account;
 
     const operatorAddress = validateAndParseAddress(params.operatorAddress);
     const contractAddress = validateAndParseAddress(params.contractAddress);
-
-    const account = new Account(
-      provider,
-      accountCredentials.accountPublicKey,
-      accountCredentials.accountPrivateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
 
     const contract = new Contract(
       INTERACT_ERC721_ABI,

@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import { mcpTool, registerToolsWithServer, getOnchainWrite } from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import {
@@ -23,39 +22,14 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-
-  if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(provider, accountAddress, privateKey);
-
-  return {
-    getProvider: () => provider,
-    getAccountCredentials: () => ({
-      accountPublicKey: accountAddress,
-      accountPrivateKey: privateKey,
-    }),
-    getAccount: () => account,
-  };
-};
-
 const registerTools = (UnruggableToolRegistry: mcpTool[]) => {
   UnruggableToolRegistry.push({
     name: 'is_memecoin',
     description: 'Check if address is a memecoin',
     schema: contractAddressSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await isMemecoin(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await isMemecoin(onchainWrite as any, params);
     },
   });
 
@@ -64,9 +38,8 @@ const registerTools = (UnruggableToolRegistry: mcpTool[]) => {
     description: 'Get locked liquidity info for token',
     schema: contractAddressSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      const result = await getLockedLiquidity(mockAgent as any, params);
-      return JSON.stringify(result);
+      const onchainWrite = getOnchainWrite();
+      return await getLockedLiquidity(onchainWrite as any, params);
     },
   });
 
@@ -75,9 +48,8 @@ const registerTools = (UnruggableToolRegistry: mcpTool[]) => {
     description: 'Create a new memecoin using the Unruggable Factory',
     schema: createMemecoinSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      const result = await createMemecoin(mockAgent as any, params);
-      return JSON.stringify(result);
+      const onchainWrite = getOnchainWrite();
+      return await createMemecoin(onchainWrite as any, params);
     },
   });
 
@@ -86,8 +58,8 @@ const registerTools = (UnruggableToolRegistry: mcpTool[]) => {
     description: 'Launch a memecoin on Ekubo DEX with concentrated liquidity',
     schema: launchOnEkuboSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await launchOnEkubo(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await launchOnEkubo(onchainWrite as any, params);
     },
   });
 };

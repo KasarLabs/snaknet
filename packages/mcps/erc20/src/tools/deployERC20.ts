@@ -1,5 +1,5 @@
 import { Account, shortString, cairo } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 import { ContractManager } from '../lib/utils/contractManager.js';
 import { deployERC20Schema } from '../schemas/index.js';
 import {
@@ -14,24 +14,18 @@ import { z } from 'zod';
 
 /**
  * Deploys a new ERC20 token contract on StarkNet
- * @param {SnakAgentInterface} agent - StarkNet agent interface providing access to provider and credentials
+ * @param {onchainWrite} env - The onchain write environment
  * @param {z.infer<typeof deployERC20Schema>} params - ERC20 deployment parameters validated by Zod schema
  * @returns {Promise<string>} JSON stringified response with deployment status and contract details
  * @throws {Error} If deployment fails
  */
 export const deployERC20Contract = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof deployERC20Schema>
 ) => {
   try {
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
-
-    const account = new Account(
-      provider,
-      accountCredentials?.accountPublicKey,
-      accountCredentials?.accountPrivateKey
-    );
+    const provider = env.provider;
+    const account = env.account;
 
     const contractManager = new ContractManager(account);
 
@@ -48,7 +42,7 @@ export const deployERC20Contract = async (
         params.name,
         params.symbol,
         cairo.uint256(params.totalSupply.toString()),
-        accountCredentials?.accountPublicKey,
+        account.address,
       ]
     );
 

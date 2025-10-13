@@ -1,10 +1,10 @@
 import { cairo } from 'starknet';
 import { getContract } from '../../lib/utils/contracts.js';
 import { TransferPositionSchema } from '../../schemas/index.js';
-import { envWrite } from '../../interfaces/index.js';
+import { onchainWrite } from '@snaknet/core';
 
 export const transferPosition = async (
-  env: envWrite,
+  env: onchainWrite,
   params: TransferPositionSchema
 ) => {
   try {

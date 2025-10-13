@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import { mcpTool, registerToolsWithServer, getOnchainWrite, getOnchainRead } from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import {
@@ -19,15 +18,15 @@ import {
   getOwnBalanceSchema,
   transferSchema,
 } from './schemas/index.js';
-import { getOwner } from './tools/ownerOf.js';
-import { transferFrom, transfer } from './tools/transferFrom.js';
-import { getBalance, getOwnBalance } from './tools/balanceOf.js';
-import { approve } from './tools/approve.js';
-import { isApprovedForAll } from './tools/isApprovedForAll.js';
-import { getApproved } from './tools/getApproved.js';
-import { safeTransferFrom } from './tools/safeTransferFrom.js';
-import { setApprovalForAll } from './tools/setApprovalForAll.js';
-import { deployERC721Contract } from './tools/deployERC721.js';
+import { getOwner } from './tools/read/ownerOf.js';
+import { transferFrom, transfer } from './tools/write/transferFrom.js';
+import { getBalance } from './tools/read/balanceOf.js';
+import { approve } from './tools/write/approve.js';
+import { isApprovedForAll } from './tools/read/isApprovedForAll.js';
+import { getApproved } from './tools/read/getApproved.js';
+import { safeTransferFrom } from './tools/write/safeTransferFrom.js';
+import { setApprovalForAll } from './tools/write/setApprovalForAll.js';
+import { deployERC721Contract } from './tools/write/deployERC721.js';
 
 dotenv.config();
 
@@ -36,39 +35,14 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-
-  if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(provider, accountAddress, privateKey);
-
-  return {
-    getProvider: () => provider,
-    getAccountCredentials: () => ({
-      accountPublicKey: accountAddress,
-      accountPrivateKey: privateKey,
-    }),
-    getAccount: () => account,
-  };
-};
-
 const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
   Erc721ToolRegistry.push({
     name: 'erc721_owner_of',
     description: 'Get the owner of a specific NFT',
     schema: ownerOfSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getOwner(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await getOwner(onchainRead as any, params);
     },
   });
 
@@ -77,18 +51,8 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
     description: 'Get the balance of NFTs for a given wallet address',
     schema: getBalanceSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getBalance(mockAgent as any, params);
-    },
-  });
-
-  Erc721ToolRegistry.push({
-    name: 'erc721_get_own_balance',
-    description: 'Get the balance of NFTs in your wallet',
-    schema: getOwnBalanceSchema,
-    execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getOwnBalance(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await getOwner(onchainRead as any, params);
     },
   });
 
@@ -98,8 +62,8 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
       'Check if an operator is approved for all NFTs of a given owner',
     schema: isApprovedForAllSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await isApprovedForAll(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await getOwner(onchainRead as any, params);
     },
   });
 
@@ -108,8 +72,8 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
     description: 'Get the approved address for a specific NFT ERC721',
     schema: getApprovedSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getApproved(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await getOwner(onchainRead as any, params);
     },
   });
 
@@ -118,8 +82,8 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
     description: 'Transfer a NFT from one address to another',
     schema: transferFromSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await transferFrom(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await transferFrom(onchainWrite as any, params);
     },
   });
 
@@ -128,8 +92,8 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
     description: 'Transfer a NFT to a specific address',
     schema: transferSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await transfer(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await transfer(onchainWrite as any, params);
     },
   });
 
@@ -138,8 +102,8 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
     description: 'Approve an address to manage a specific NFT erc721',
     schema: approveSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await approve(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await approve(onchainWrite as any, params);
     },
   });
 
@@ -149,8 +113,8 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
       'Safely transfer an NFT from one address to another with additional data',
     schema: safeTransferFromSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await safeTransferFrom(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await safeTransferFrom(onchainWrite as any, params);
     },
   });
 
@@ -160,8 +124,8 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
       'Set or revoke approval for an operator to manage all NFTs of the caller',
     schema: setApprovalForAllSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await setApprovalForAll(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await setApprovalForAll(onchainWrite as any, params);
     },
   });
 
@@ -171,8 +135,8 @@ const registerTools = (Erc721ToolRegistry: mcpTool[]) => {
       'Create and deploy a new ERC721 contract, returns the address of the deployed contract',
     schema: deployERC721Schema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await deployERC721Contract(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await deployERC721Contract(onchainWrite as any, params);
     },
   });
 };

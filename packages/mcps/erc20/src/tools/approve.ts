@@ -1,5 +1,5 @@
 import { Account, Contract, RpcProvider, constants } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 import {
   validateAndFormatParams,
   executeV3Transaction,
@@ -13,18 +13,18 @@ import { validToken } from '../lib/types/types.js';
 
 /**
  * Approves token spending
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite} env - The onchain write environment
  * @param {ApproveParams} params - Approval parameters
  * @returns {Promise<string>} JSON string with transaction result
  * @throws {Error} If approval fails
  */
 export const approve = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof approveSchema>
 ) => {
   try {
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
+    const provider = env.provider;
+    const account = env.account;
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
@@ -37,14 +37,6 @@ export const approve = async (
     );
 
     const spenderAddress = address;
-
-    const account = new Account(
-      provider,
-      accountCredentials.accountPublicKey,
-      accountCredentials.accountPrivateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
 
     const contract = new Contract(abi, token.address, provider);
     contract.connect(account);

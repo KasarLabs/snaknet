@@ -1,25 +1,24 @@
-import { RpcProvider } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
 import { OKX_CLASSHASH } from '../lib/constant/contract.js';
 import { AccountManager } from '../lib/utils/AccountManager.js';
 import { z } from 'zod';
 import { accountDetailsSchema } from '../schemas/schema.js';
+import { onchainRead, onchainWrite } from '@snaknet/core';
 
 /**
  * Deploys an OKX account using Starknet agent.
  * @async
  * @function DeployOKXAccount
- * @param {SnakAgentInterface} agent - The Starknet agent
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {z.infer<typeof accountDetailsSchema>} params - Account details
  * @returns {Promise<string>} JSON string with deployment result
  * @throws {Error} If deployment fails
  */
 export const DeployOKXAccount = async (
-  agent: SnakAgentInterface,
+  env: onchainRead,
   params: z.infer<typeof accountDetailsSchema>
 ) => {
   try {
-    const provider = agent.getProvider();
+    const provider = env.provider;
 
     const accountManager = new AccountManager(provider);
     const tx = await accountManager.deployAccount(OKX_CLASSHASH, params);

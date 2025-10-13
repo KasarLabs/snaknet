@@ -5,11 +5,11 @@ import {
   getUnderlyingTokenName,
 } from '../../lib/utils/contracts.js';
 import { GetWithdrawRequestInfoSchema } from '../../schemas/index.js';
-import { envRead } from '../../interfaces/index.js';
+import { onchainRead } from '@snaknet/core';
 import { formatUnits } from '../../lib/utils/formatting.js';
 
 export const getWithdrawRequestInfo = async (
-  env: envRead,
+  env: onchainRead,
   params: GetWithdrawRequestInfoSchema
 ) => {
   try {

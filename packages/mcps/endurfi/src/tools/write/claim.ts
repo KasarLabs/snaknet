@@ -3,9 +3,9 @@ import {
   getUnderlyingTokenName,
 } from '../../lib/utils/contracts.js';
 import { ClaimSchema } from '../../schemas/index.js';
-import { envWrite } from '../../interfaces/index.js';
+import { onchainWrite } from '@snaknet/core';
 
-export const claim = async (env: envWrite, params: ClaimSchema) => {
+export const claim = async (env: onchainWrite, params: ClaimSchema) => {
   try {
     const account = env.account;
     const withdrawQueueContract = getWithdrawQueueNFTContract(

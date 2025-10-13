@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import { mcpTool, registerToolsWithServer, getOnchainRead } from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import { wrapAccountCreationResponse } from './lib/utils/AccountManager.js';
@@ -18,29 +17,13 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-
-  if (!rpcUrl) {
-    throw new Error('Missing required environment variables: STARKNET_RPC_URL');
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-
-  return {
-    getProvider: () => provider,
-  };
-};
-
 const registerTools = (BraavosToolRegistry: mcpTool[]) => {
   BraavosToolRegistry.push({
     name: 'create_new_braavos_account',
     description:
       'Create a new Braavos account and return the privateKey/publicKey/contractAddress',
     execute: async () => {
-      const response = await CreateBraavosAccount();
-      response;
+      return await CreateBraavosAccount();
     },
   });
 
@@ -50,8 +33,8 @@ const registerTools = (BraavosToolRegistry: mcpTool[]) => {
       'Deploy an existing Braavos Account return the privateKey/publicKey/contractAddress',
     schema: accountDetailsSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await DeployBraavosAccount(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await DeployBraavosAccount(onchainRead, params);
     },
   });
 };

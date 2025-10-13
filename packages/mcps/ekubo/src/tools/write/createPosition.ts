@@ -8,10 +8,10 @@ import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 import { buildBounds, sortAmounts } from '../../lib/utils/liquidity.js';
 import { extractPositionIdFromReceipt } from '../../lib/utils/events.js';
 import { CreatePositionSchema } from '../../schemas/index.js';
-import { envWrite } from '../../interfaces/index.js';
+import { onchainWrite } from '@snaknet/core';
 
 export const createPosition = async (
-  env: envWrite,
+  env: onchainWrite,
   params: CreatePositionSchema
 ) => {
   try {

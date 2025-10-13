@@ -1,7 +1,7 @@
 import { Account, Call, constants } from 'starknet';
 
 import { ApprovalService } from './approval.js';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+
 import { TokenService } from './fetchTokens.js';
 import { Router as FibrousRouter, RouteSuccess } from 'fibrous-router-sdk';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -9,6 +9,7 @@ import { getV3DetailsPayload } from '../lib/utils/utils.js';
 import { TransactionMonitor } from '../lib/utils/transactionMonitor.js';
 import { BatchSwapParams } from '../lib/types/index.js';
 import { SLIPPAGE_PERCENTAGE } from '../lib/constants/index.js';
+import { onchainWrite } from '@snaknet/core';
 
 export class BatchSwapService {
   private tokenService: TokenService;
@@ -16,7 +17,7 @@ export class BatchSwapService {
   private router: FibrousRouter;
 
   constructor(
-    private agent: SnakAgentInterface,
+    private env: onchainWrite,
     private walletAddress: string,
     routerInstance?: FibrousRouter
   ) {
@@ -59,11 +60,11 @@ export class BatchSwapService {
     try {
       await this.initialize();
 
-      const provider = this.agent.getProvider();
+      const provider = this.env.provider;
       const account = new Account(
         provider,
         this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey,
+        this.env.account.signer,
         undefined,
         constants.TRANSACTION_VERSION.V3
       );
@@ -144,7 +145,7 @@ export class BatchSwapService {
   }
 
   private async monitorSwapStatus(txHash: string) {
-    const transactionMonitor = new TransactionMonitor(this.agent.getProvider());
+    const transactionMonitor = new TransactionMonitor(this.env.provider);
     const receipt = await transactionMonitor.waitForTransaction(
       txHash,
       (status) => console.error('Swap status:', status)
@@ -156,24 +157,24 @@ export class BatchSwapService {
 }
 
 export const createSwapService = (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   walletAddress?: string
 ): BatchSwapService => {
   if (!walletAddress) {
     throw new Error('Wallet address not configured');
   }
 
-  return new BatchSwapService(agent, walletAddress);
+  return new BatchSwapService(env, walletAddress);
 };
 
 export const batchSwapTokens = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: BatchSwapParams
 ) => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
+  const accountAddress = env.account?.address;
 
   try {
-    const swapService = createSwapService(agent, accountAddress);
+    const swapService = createSwapService(env, accountAddress);
     const result = await swapService.executeSwapTransaction(params);
     return result;
   } catch (error) {

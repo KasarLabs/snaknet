@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import { mcpTool, registerToolsWithServer, getOnchainRead } from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import {
@@ -27,37 +26,14 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-
-  if (!rpcUrl || !accountAddress || !privateKey) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_ACCOUNT_ADDRESS, STARKNET_PRIVATE_KEY'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-
-  return {
-    getProvider: () => provider,
-    getAccountCredentials: () => ({
-      accountPublicKey: accountAddress,
-      accountPrivateKey: privateKey,
-    }),
-  };
-};
-
 const registerTools = (TransactionToolRegistry: mcpTool[]) => {
   TransactionToolRegistry.push({
     name: 'simulate_transaction',
     description: 'Simulate a transaction without executing it',
     schema: simulateInvokeTransactionSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await simulateInvokeTransaction(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await simulateInvokeTransaction(onchainRead as any, params);
     },
   });
 
@@ -66,8 +42,8 @@ const registerTools = (TransactionToolRegistry: mcpTool[]) => {
     description: 'Simulate Deploy transaction',
     schema: simulateDeployTransactionSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await simulateDeployTransaction(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await simulateDeployTransaction(onchainRead as any, params);
     },
   });
 
@@ -76,8 +52,8 @@ const registerTools = (TransactionToolRegistry: mcpTool[]) => {
     description: 'Simulate Declare transaction',
     schema: simulateDeclareTransactionSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await simulateDeclareTransaction(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await simulateDeclareTransaction(onchainRead as any, params);
     },
   });
 
@@ -86,8 +62,8 @@ const registerTools = (TransactionToolRegistry: mcpTool[]) => {
     description: 'Simulate Deploy Account transaction',
     schema: simulateDeployAccountTransactionSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await simulateDeployAccountTransaction(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await simulateDeployAccountTransaction(onchainRead as any, params);
     },
   });
 };

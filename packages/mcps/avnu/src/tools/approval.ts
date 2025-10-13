@@ -1,5 +1,5 @@
 import { Account, uint256 } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 import { ERC20_ABI } from '../lib/abis/erc20Abi.js';
 import { ContractInteractor } from '../lib/utils/contractInteractor.js';
 import { TransactionMonitor } from '../lib/utils/transactionMonitor.js';
@@ -11,9 +11,9 @@ import { TransactionMonitor } from '../lib/utils/transactionMonitor.js';
 export class ApprovalService {
   /**
    * Creates an instance of ApprovalService
-   * @param {SnakAgentInterface} agent - The Starknet agent interface for blockchain interactions
+   * @param {onchainWrite} env - The onchain write environment for blockchain interactions
    */
-  constructor(private agent: SnakAgentInterface) {}
+  constructor(private env: onchainWrite) {}
 
   /**
    * Safely stringifies objects containing BigInt values
@@ -46,10 +46,10 @@ export class ApprovalService {
   ): Promise<void> {
     try {
       const contractInteractor = new ContractInteractor(
-        this.agent.getProvider()
+        this.env.provider
       );
       const transactionMonitor = new TransactionMonitor(
-        this.agent.getProvider()
+        this.env.provider
       );
 
       const contract = contractInteractor.createContract(

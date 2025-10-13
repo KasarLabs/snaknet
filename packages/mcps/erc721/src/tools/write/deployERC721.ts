@@ -1,16 +1,17 @@
 import { Account, shortString } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
-import { ContractManager } from '../lib/utils/contractManager.js';
+
+import { ContractManager } from '../../lib/utils/contractManager.js';
 import {
   ERC721_CLASSHASH_SEPOLIA,
   ERC721_CLASSHASH_MAINNET,
-} from '../lib/constant/constant.js';
-import { deployERC721Schema } from '../schemas/index.js';
+} from '../../lib/constant/constant.js';
+import { deployERC721Schema } from '../../schemas/index.js';
 import {
   DEPLOY_ERC721_ABI_SEPOLIA,
   DEPLOY_ERC721_ABI_MAINNET,
-} from '../lib/abis/deploy.js';
+} from '../../lib/abis/deploy.js';
 import { z } from 'zod';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Deploys an ERC721 contract.
@@ -19,18 +20,12 @@ import { z } from 'zod';
  * @returns A stringified JSON object containing the status, transaction hash, and contract address.
  */
 export const deployERC721Contract = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof deployERC721Schema>
 ) => {
   try {
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
-
-    const account = new Account(
-      provider,
-      accountCredentials?.accountPublicKey,
-      accountCredentials?.accountPrivateKey
-    );
+    const provider = env.provider;
+    const account = env.account;
 
     const contractManager = new ContractManager(account);
 
@@ -52,7 +47,7 @@ export const deployERC721Contract = async (
         symbol: params.symbol,
         base_uri: params.baseUri,
         total_supply: params.totalSupply,
-        recipient: accountCredentials?.accountPublicKey,
+        recipient: account.address,
       }
     );
 

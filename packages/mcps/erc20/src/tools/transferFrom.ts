@@ -4,7 +4,7 @@ import {
   validateAndParseAddress,
   constants,
 } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 import {
   validateAndFormatParams,
   executeV3Transaction,
@@ -21,18 +21,18 @@ import { RpcProvider } from 'starknet';
 
 /**
  * Transfers tokens from one address to another using an allowance.
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite} env - The onchain write environment
  * @param {TransferFromParams} params - Transfer parameters
  * @returns {Promise<string>} JSON string with transaction result
  * @throws {Error} If transfer fails
  */
 export const transferFrom = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof transferFromSchema>
 ) => {
   try {
-    const credentials = agent.getAccountCredentials();
-    const provider = agent.getProvider();
+    const account = env.account;
+    const provider = env.provider;
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
@@ -46,14 +46,6 @@ export const transferFrom = async (
 
     const fromAddress = address;
     const toAddress = validateAndParseAddress(params.toAddress);
-
-    const account = new Account(
-      provider,
-      credentials.accountPublicKey,
-      credentials.accountPrivateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
 
     const contract = new Contract(abi, token.address, provider);
 

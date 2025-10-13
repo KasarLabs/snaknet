@@ -1,8 +1,7 @@
 import { executeSwap, fetchQuotes, QuoteRequest, Quote } from '@avnu/avnu-sdk';
-import { Account, constants } from 'starknet';
 
 import { ApprovalService } from './approval.js';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 import { SwapParams, SwapResult } from '../lib/types/index.js';
 import {
   DEFAULT_QUOTE_SIZE,
@@ -22,15 +21,13 @@ export class SwapService {
 
   /**
    * Creates an instance of SwapService
-   * @param {SnakAgentInterface} agent - The Starknet agent for blockchain interactions
-   * @param {string} walletAddress - The wallet address executing the swaps
+   * @param {onchainWrite} env - The onchain write environment for blockchain interactions
    */
   constructor(
-    private agent: SnakAgentInterface,
-    private walletAddress: string
+    private env: onchainWrite
   ) {
     this.tokenService = new TokenService();
-    this.approvalService = new ApprovalService(agent);
+    this.approvalService = new ApprovalService(env);
   }
 
   /**
@@ -59,20 +56,14 @@ export class SwapService {
   /**
    * Executes a token swap transaction
    * @param {SwapParams} params - The swap parameters
-   * @param {SnakAgentInterface} agent - The Starknet agent
    * @returns {Promise<SwapResult>} The result of the swap operation
    */
   async executeSwapTransaction(params: SwapParams): Promise<SwapResult> {
     try {
       await this.initialize();
-      const provider = this.agent.getProvider();
-      const contractInteractor = new ContractInteractor(provider);
+      const contractInteractor = new ContractInteractor(this.env.provider);
 
-      const account = new Account(
-        provider,
-        this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey
-      );
+      const account = this.env.account;
 
       const { sellToken, buyToken } = this.tokenService.validateTokenPair(
         params.sellTokenSymbol,
@@ -149,7 +140,7 @@ export class SwapService {
    * @returns {Promise<{receipt: any, events: any}>} Transaction receipt and events
    */
   private async monitorSwapStatus(txHash: string) {
-    const transactionMonitor = new TransactionMonitor(this.agent.getProvider());
+    const transactionMonitor = new TransactionMonitor(this.env.provider);
     const receipt = await transactionMonitor.waitForTransaction(
       txHash,
       (status) => console.error('Swap status:', status)
@@ -162,30 +153,21 @@ export class SwapService {
 
 /**
  * Creates a new SwapService instance
- * @param {SnakAgentInterface} agent - The Starknet agent
- * @param {string} [walletAddress] - The wallet address
+ * @param {onchainWrite} env - The onchain write environment
  * @returns {SwapService} A new SwapService instance
- * @throws {Error} If wallet address is not provided
  */
 export const createSwapService = (
-  agent: SnakAgentInterface,
-  walletAddress?: string
+  env: onchainWrite
 ): SwapService => {
-  if (!walletAddress) {
-    throw new Error('Wallet address not configured');
-  }
-
-  return new SwapService(agent, walletAddress);
+  return new SwapService(env);
 };
 
 export const swapTokens = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: SwapParams
 ) => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
-
   try {
-    const swapService = createSwapService(agent, accountAddress);
+    const swapService = createSwapService(env);
     const result = await swapService.executeSwapTransaction(params);
     return JSON.stringify(result);
   } catch (error) {

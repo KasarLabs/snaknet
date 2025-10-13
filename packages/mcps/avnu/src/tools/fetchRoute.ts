@@ -1,5 +1,5 @@
 import { fetchQuotes, QuoteRequest } from '@avnu/avnu-sdk';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainRead, onchainWrite } from '@snaknet/core';
 import { TokenService } from './fetchTokens.js';
 import { RouteSchemaType } from '../schemas/index.js';
 import { RouteResult } from '../interfaces/index.js';
@@ -30,15 +30,15 @@ export class RouteFetchService {
   /**
    * Fetches a trading route based on provided parameters
    * @param {RouteSchemaType} params - The route parameters
-   * @param {SnakAgentInterface} agent - The Starknet agent interface
+   * @param {onchainRead} env - The onchain read environment
+   * @param {string} accountAddress - The account address
    * @returns {Promise<RouteResult>} The route fetch result
    */
   async fetchRoute(
     params: RouteSchemaType,
-    agent: SnakAgentInterface
+    env: onchainRead,
+    accountAddress: string
   ): Promise<RouteResult> {
-    const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
-
     try {
       await this.initialize();
 
@@ -47,8 +47,7 @@ export class RouteFetchService {
         params.buyTokenSymbol
       );
 
-      const provider = agent.getProvider();
-      const contractInteractor = new ContractInteractor(provider);
+      const contractInteractor = new ContractInteractor(env.provider);
 
       const formattedAmountStr = contractInteractor.formatTokenAmount(
         params.sellAmount.toString(),
@@ -99,17 +98,18 @@ export class RouteFetchService {
 
 /**
  * Utility function to fetch a trading route
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainRead} env - The onchain read environment
  * @param {RouteSchemaType} params - The route parameters
+ * @param {string} accountAddress - The account address
  * @returns {Promise<RouteResult>} The route fetch result
  */
 export const getRoute = async (
-  agent: SnakAgentInterface,
-  params: RouteSchemaType
+  env: onchainWrite,
+  params: RouteSchemaType,
 ) => {
   try {
     const routeService = new RouteFetchService();
-    const result = await routeService.fetchRoute(params, agent);
+    const result = await routeService.fetchRoute(params, env, env.account.address);
     return JSON.stringify(result, (_, value) =>
       typeof value === 'bigint' ? value.toString() : value
     );

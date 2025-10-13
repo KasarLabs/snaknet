@@ -1,18 +1,19 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
-import { INTERACT_ERC721_ABI } from '../lib/abis/interact.js';
+
+import { INTERACT_ERC721_ABI } from '../../lib/abis/interact.js';
 import { validateAndParseAddress } from 'starknet';
 import { z } from 'zod';
-import { isApprovedForAllSchema } from '../schemas/index.js';
+import { isApprovedForAllSchema } from '../../schemas/index.js';
+import { onchainRead } from '@snaknet/core';
 
 /**
  * Checks if an operator is approved to manage all tokens of an owner.
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {z.infer<typeof isApprovedForAllSchema>} params - Approval check parameters
  * @returns {Promise<string>} JSON string with approval status
  */
 export const isApprovedForAll = async (
-  agent: SnakAgentInterface,
+  env: onchainRead,
   params: z.infer<typeof isApprovedForAllSchema>
 ) => {
   try {
@@ -26,7 +27,7 @@ export const isApprovedForAll = async (
       );
     }
 
-    const provider = agent.getProvider();
+    const provider = env.provider;
 
     const ownerAddress = validateAndParseAddress(params.ownerAddress);
     const operatorAddress = validateAndParseAddress(params.operatorAddress);

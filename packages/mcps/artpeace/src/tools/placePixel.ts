@@ -1,10 +1,11 @@
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+
 import { Account, constants, Contract } from 'starknet';
 import { artpeaceAbi } from '../lib/abis/artpeaceAbi.js';
 import { artpeaceAddr } from '../lib/constants/artpeace.js';
 import { ArtpeaceHelper } from '../lib/utils/helper.js';
 import { placePixelParam } from '../schemas/index.js';
 import { Checker } from '../lib/utils/checker.js';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Places pixels on a Starknet canvas using the Artpeace contract
@@ -13,20 +14,14 @@ import { Checker } from '../lib/utils/checker.js';
  * @returns JSON string with transaction status and hash(es)
  */
 export const placePixel = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   input: { params: placePixelParam[] }
 ) => {
   try {
     const { params } = input;
-    const credentials = agent.getAccountCredentials();
-    const provider = agent.getProvider();
-    const account = new Account(
-      provider,
-      credentials.accountPublicKey,
-      credentials.accountPrivateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
+    const account = env.account;
+    const provider = env.provider;
+
     const artpeaceContract = new Contract(artpeaceAbi, artpeaceAddr, provider);
     const checker = new Checker(params[0].canvasId ?? 0);
     const id = await checker.checkWorld();

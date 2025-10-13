@@ -9,30 +9,23 @@ import {
   SimulateDeclareTransactionAccountParams,
   Invocation_Declare,
 } from '../lib/types/simulateTransactionTypes.js';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+
 import { TransactionReponseFormat } from '../lib/utils/outputSimulateTransaction.js';
 import { DEFAULT_NONCE } from '../lib/constant/index.js';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Simulates invoke transaction
- * @param {SnakAgentInterface} agent - Starknet agent
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {SimulateInvokeTransactionParams} params - Transaction parameters
  * @returns {Promise<string>} JSON string with simulation result
  */
 export const simulateInvokeTransaction = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: SimulateInvokeTransactionParams
 ) => {
   try {
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
-    const accountAddress = accountCredentials?.accountPublicKey;
-    const accountPrivateKey = accountCredentials?.accountPrivateKey;
-    if (!accountAddress || !accountPrivateKey) {
-      throw new Error('Account address or private key not configured');
-    }
-
-    const account = new Account(provider, accountAddress, accountPrivateKey);
+    const account = env.account;
 
     const invocations: Invocation_Invoke[] = params.payloads.map((payload) => {
       return {
@@ -63,27 +56,16 @@ export const simulateInvokeTransaction = async (
 
 /**
  * Simulates deploy account transaction
- * @param {SnakAgentInterface} agent - Starknet agent
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {SimulateDeployTransactionAccountParams} params - Deploy account parameters
  * @returns {Promise<string>} JSON string with simulation result
  */
 export const simulateDeployAccountTransaction = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: SimulateDeployTransactionAccountParams
 ) => {
   try {
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
-    const account = new Account(
-      provider,
-      accountCredentials.accountPublicKey,
-      accountCredentials.accountPrivateKey
-    );
-    const accountAddress = accountCredentials?.accountPublicKey;
-    const accountPrivateKey = accountCredentials?.accountPrivateKey;
-    if (!accountAddress || !accountPrivateKey) {
-      throw new Error('Account address not configured');
-    }
+    const account = env.account;
 
     const invocations: Invocation_Deploy_Account[] = params.payloads.map(
       (payload) => {
@@ -121,22 +103,16 @@ export const simulateDeployAccountTransaction = async (
 
 /**
  * Simulates deploy transaction
- * @param {SnakAgentInterface} agent - Starknet agent
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {SimulateDeployTransactionParams} params - Deploy parameters
  * @returns {Promise<string>} JSON string with simulation result
  */
 export const simulateDeployTransaction = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: SimulateDeployTransactionParams
 ) => {
   try {
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
-    const account = new Account(
-      provider,
-      accountCredentials.accountPublicKey,
-      accountCredentials.accountPrivateKey
-    );
+    const account = env.account;
 
     const invocations: Invocation_Deploy[] = params.payloads.map((payload) => {
       return {
@@ -168,22 +144,16 @@ export const simulateDeployTransaction = async (
 
 /**
  * Simulates declare transaction
- * @param {SnakAgentInterface} agent - Starknet agent
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {SimulateDeclareTransactionAccountParams} params - Declare parameters
  * @returns {Promise<string>} JSON string with simulation result
  */
 export const simulateDeclareTransaction = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: SimulateDeclareTransactionAccountParams
 ) => {
   try {
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
-    const account = new Account(
-      provider,
-      accountCredentials.accountPublicKey,
-      accountCredentials.accountPrivateKey
-    );
+    const account = env.account;
 
     const invocations: Invocation_Declare[] = [
       {

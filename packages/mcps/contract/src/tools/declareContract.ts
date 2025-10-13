@@ -1,8 +1,7 @@
 import { z } from 'zod';
-import { Account, constants, RpcProvider } from 'starknet';
+import { getOnchainWrite } from '@snaknet/core';
 import { declareContractSchema } from '../schemas/index.js';
 import {
-  getStarknetCredentials,
   validateFilePaths,
   formatContractError,
   ContractManager,
@@ -20,18 +19,8 @@ export const declareContract = async (
     // Validate file paths exist
     await validateFilePaths(params.sierraFilePath, params.casmFilePath);
 
-    // Get Starknet credentials
-    const credentials = getStarknetCredentials();
-
     // Setup provider and account
-    const provider = new RpcProvider({ nodeUrl: credentials.rpcUrl });
-    const account = new Account(
-      provider,
-      credentials.accountAddress,
-      credentials.accountPrivateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
+    const { provider, account } = getOnchainWrite();
 
     // Load and declare contract
     const contractManager = new ContractManager(account);

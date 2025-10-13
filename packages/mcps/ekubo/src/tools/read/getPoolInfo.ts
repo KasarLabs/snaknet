@@ -1,4 +1,4 @@
-import { envRead } from '../../interfaces/index.js';
+import { onchainRead } from '@snaknet/core';
 import { PoolKey } from '../../schemas/index.js';
 import {
   calculateTickFromSqrtPrice,
@@ -7,7 +7,7 @@ import {
 import { getContract } from '../../lib/utils/contracts.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 
-export const getPoolInfo = async (env: envRead, params: PoolKey) => {
+export const getPoolInfo = async (env: onchainRead, params: PoolKey) => {
   const provider = env.provider;
   try {
     const contract = await getContract(provider, 'core');

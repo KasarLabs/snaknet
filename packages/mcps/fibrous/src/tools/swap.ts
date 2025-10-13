@@ -1,7 +1,7 @@
 import { Account, Call, constants } from 'starknet';
-
+import { onchainWrite } from '@snaknet/core';
 import { ApprovalService } from './approval.js';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+
 import { SLIPPAGE_PERCENTAGE } from '../lib/constants/index.js';
 import { TokenService } from './fetchTokens.js';
 import { Router as FibrousRouter } from 'fibrous-router-sdk';
@@ -16,7 +16,7 @@ export class SwapService {
   private approvalService: ApprovalService;
 
   constructor(
-    private agent: SnakAgentInterface,
+    private env: onchainWrite,
     private walletAddress: string,
     private router: FibrousRouter
   ) {
@@ -33,12 +33,12 @@ export class SwapService {
     try {
       await this.initialize();
 
-      const provider = this.agent.getProvider();
+      const provider = this.env.provider;
       const contractInteractor = new ContractInteractor(provider);
       const account = new Account(
         provider,
         this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey,
+        this.env.account.signer,
         undefined,
         constants.TRANSACTION_VERSION.V3
       );
@@ -126,7 +126,7 @@ export class SwapService {
   }
 
   private async monitorSwapStatus(txHash: string) {
-    const transactionMonitor = new TransactionMonitor(this.agent.getProvider());
+    const transactionMonitor = new TransactionMonitor(this.env.provider);
     const receipt = await transactionMonitor.waitForTransaction(
       txHash,
       (status) => console.error('Swap status:', status)
@@ -138,24 +138,24 @@ export class SwapService {
 }
 
 export const createSwapService = (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   walletAddress?: string
 ): SwapService => {
   if (!walletAddress) {
     throw new Error('Wallet address not configured');
   }
 
-  return new SwapService(agent, walletAddress, new FibrousRouter());
+  return new SwapService(env, walletAddress, new FibrousRouter());
 };
 
 export const swapTokensFibrous = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: SwapParams
 ) => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
+  const accountAddress = env.account?.address;
 
   try {
-    const swapService = createSwapService(agent, accountAddress);
+    const swapService = createSwapService(env, accountAddress);
     const result = await swapService.executeSwapTransaction(params);
     return result;
   } catch (error) {

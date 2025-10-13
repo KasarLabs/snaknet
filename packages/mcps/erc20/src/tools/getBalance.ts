@@ -1,5 +1,5 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 import { detectAbiType } from '../lib/utils/utils.js';
 import {
   formatBalance,
@@ -12,19 +12,19 @@ import { getBalanceSchema, getOwnBalanceSchema } from '../schemas/index.js';
 
 /**
  * Gets own token balance
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite} env - The onchain write environment
  * @param {OwnBalanceParams} params - Balance parameters
  * @returns {Promise<string>} JSON string with balance amount
  * @throws {Error} If operation fails
  */
 export const getOwnBalance = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof getOwnBalanceSchema>
 ) => {
   try {
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
-    const accountAddress = accountCredentials?.accountPublicKey;
+    const provider = env.provider;
+    const account = env.account;
+    const accountAddress = account.address;
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
@@ -63,20 +63,20 @@ export const getOwnBalance = async (
 
 /**
  * Gets token balance for an address
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite} env - The onchain write environment
  * @param {BalanceParams} params - Balance parameters
  * @returns {Promise<string>} JSON string with balance amount
  * @throws {Error} If operation fails
  */
 export const getBalance = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof getBalanceSchema>
 ) => {
   try {
     if (!params?.accountAddress) {
       throw new Error('Account address are required');
     }
-    const provider = agent.getProvider();
+    const provider = env.provider;
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 

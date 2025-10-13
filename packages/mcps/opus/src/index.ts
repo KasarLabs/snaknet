@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import { mcpTool, registerToolsWithServer, getOnchainWrite } from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import {
@@ -32,39 +31,14 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-
-  if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(provider, accountAddress, privateKey);
-
-  return {
-    getProvider: () => provider,
-    getAccountCredentials: () => ({
-      accountPublicKey: accountAddress,
-      accountPrivateKey: privateKey,
-    }),
-    getAccount: () => account,
-  };
-};
-
 const registerTools = (OpusToolRegistry: mcpTool[]) => {
   OpusToolRegistry.push({
     name: 'open_trove',
     description: 'Open a Trove on Opus',
     schema: openTroveSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await openTrove(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await openTrove(onchainWrite as any, params);
     },
   });
 
@@ -73,8 +47,8 @@ const registerTools = (OpusToolRegistry: mcpTool[]) => {
     description: 'Get trove IDs for an address on Opus',
     schema: getUserTrovesSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getUserTroves(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await getUserTroves(onchainWrite as any, params);
     },
   });
 
@@ -83,8 +57,8 @@ const registerTools = (OpusToolRegistry: mcpTool[]) => {
     description: 'Get the health of a trove on Opus',
     schema: getTroveHealthSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getTroveHealth(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await getTroveHealth(onchainWrite as any, params);
     },
   });
 
@@ -92,8 +66,8 @@ const registerTools = (OpusToolRegistry: mcpTool[]) => {
     name: 'get_borrow_fee',
     description: 'Get the current borrow fee for Opus',
     execute: async () => {
-      const mockAgent = createMockAgent();
-      return await getBorrowFee(mockAgent as any);
+      const onchainWrite = getOnchainWrite();
+      return await getBorrowFee(onchainWrite as any);
     },
   });
 
@@ -102,8 +76,8 @@ const registerTools = (OpusToolRegistry: mcpTool[]) => {
     description: 'Deposit collateral to a Trove on Opus',
     schema: collateralActionSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await depositTrove(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await depositTrove(onchainWrite as any, params);
     },
   });
 
@@ -112,8 +86,8 @@ const registerTools = (OpusToolRegistry: mcpTool[]) => {
     description: 'Withdraw collateral from a Trove on Opus',
     schema: collateralActionSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await withdrawTrove(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await withdrawTrove(onchainWrite as any, params);
     },
   });
 
@@ -122,8 +96,8 @@ const registerTools = (OpusToolRegistry: mcpTool[]) => {
     description: 'Borrow CASH for a Trove on Opus',
     schema: borrowTroveSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await borrowTrove(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await borrowTrove(onchainWrite as any, params);
     },
   });
 
@@ -132,8 +106,8 @@ const registerTools = (OpusToolRegistry: mcpTool[]) => {
     description: 'Repay CASH for a Trove on Opus',
     schema: repayTroveSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await repayTrove(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await repayTrove(onchainWrite as any, params);
     },
   });
 };

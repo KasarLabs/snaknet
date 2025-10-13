@@ -5,12 +5,11 @@ import {
   getUnderlyingTokenName,
 } from '../../lib/utils/contracts.js';
 import { GetUserBalanceSchema } from '../../schemas/index.js';
-import { envRead } from '../../interfaces/index.js';
-import { envWrite } from '../../interfaces/index.js';
+import { onchainRead, onchainWrite } from '@snaknet/core';
 import { formatUnits } from '../../lib/utils/formatting.js';
 
 export const getUserBalance = async (
-  env: envRead | envWrite,
+  env: onchainRead | onchainWrite,
   params: GetUserBalanceSchema
 ) => {
   try {

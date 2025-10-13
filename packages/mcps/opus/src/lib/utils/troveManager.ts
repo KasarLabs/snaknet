@@ -6,7 +6,6 @@ import {
   GetTransactionReceiptResponse,
 } from 'starknet';
 import { formatUnits, parseUnits } from 'ethers';
-import { SnakAgentInterface } from '../dependances/types.js';
 import {
   BorrowTroveResult,
   DepositTroveResult,
@@ -41,6 +40,7 @@ import {
   getShrineContract,
 } from './contracts.js';
 import { tokenAddresses } from '../constant/erc20.js';
+import { onchainWrite } from '@snaknet/core';
 
 const FORGE_FEE_PAID_EVENT_IDENTIFIER =
   'opus::core::shrine::shrine::ForgeFeePaid';
@@ -58,7 +58,7 @@ export class TroveManager {
   yangs: bigint[];
 
   constructor(
-    private agent: SnakAgentInterface,
+    private env: onchainWrite,
     private walletAddress: string
   ) {}
 
@@ -67,7 +67,7 @@ export class TroveManager {
    * @async
    */
   async initialize() {
-    const chainId = await this.agent.getProvider().getChainId();
+    const chainId = await this.env.provider.getChainId();
     this.shrine = getShrineContract(chainId);
     this.abbot = getAbbotContract(chainId);
     this.sentinel = getSentinelContract(chainId);
@@ -301,15 +301,11 @@ export class TroveManager {
    */
   async openTroveTransaction(
     params: OpenTroveParams,
-    agent: SnakAgentInterface
+    env: onchainWrite
   ): Promise<OpenTroveResult> {
     await this.initialize();
     try {
-      const account = new Account(
-        this.agent.getProvider(),
-        this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey
-      );
+      const account = this.env.account;
 
       const [assetBalances, approveAssetsCalls] =
         await this.prepareCollateralDeposits(params.collaterals);
@@ -333,7 +329,7 @@ export class TroveManager {
         },
       ]);
 
-      const provider = agent.getProvider();
+      const provider = env.provider;
       const txReceipt = await provider.waitForTransaction(tx.transaction_hash);
 
       let troveId;
@@ -383,15 +379,11 @@ export class TroveManager {
    */
   async depositTransaction(
     params: DepositTroveParams,
-    agent: SnakAgentInterface
+    env: onchainWrite
   ): Promise<DepositTroveResult> {
     await this.initialize();
     try {
-      const account = new Account(
-        this.agent.getProvider(),
-        this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey
-      );
+      const account = this.env.account;
 
       const [assetBalances, approveAssetsCalls] =
         await this.prepareCollateralDeposits([params.collateral]);
@@ -413,7 +405,7 @@ export class TroveManager {
         },
       ]);
 
-      const provider = agent.getProvider();
+      const provider = this.env.provider;
       const txReceipt = await provider.waitForTransaction(tx.transaction_hash);
 
       let afterHealth;
@@ -457,15 +449,11 @@ export class TroveManager {
    */
   async withdrawTransaction(
     params: WithdrawTroveParams,
-    agent: SnakAgentInterface
+    env: onchainWrite
   ): Promise<WithdrawTroveResult> {
     await this.initialize();
     try {
-      const account = new Account(
-        this.agent.getProvider(),
-        this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey
-      );
+      const account = this.env.account;
 
       const assetBalance = await this.parseAssetBalanceInput(params.collateral);
 
@@ -485,7 +473,7 @@ export class TroveManager {
         },
       ]);
 
-      const provider = agent.getProvider();
+      const provider = env.provider;
       const txReceipt = await provider.waitForTransaction(tx.transaction_hash);
 
       let afterHealth;
@@ -529,16 +517,11 @@ export class TroveManager {
    */
   async borrowTransaction(
     params: BorrowTroveParams,
-    agent: SnakAgentInterface
+    env: onchainWrite
   ): Promise<BorrowTroveResult> {
     await this.initialize();
     try {
-      const account = new Account(
-        this.agent.getProvider(),
-        this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey
-      );
-
+      const account = this.env.account;
       const borrowAmount = parseUnits(params.amount, 18);
       const maxBorrowFeePct = await this.parseMaxBorrowFeePctWithCheck(
         params.maxBorrowFeePct
@@ -560,7 +543,7 @@ export class TroveManager {
         },
       ]);
 
-      const provider = agent.getProvider();
+      const provider = env.provider;
       const txReceipt = await provider.waitForTransaction(tx.transaction_hash);
 
       let afterHealth;
@@ -611,15 +594,11 @@ export class TroveManager {
    */
   async repayTransaction(
     params: RepayTroveParams,
-    agent: SnakAgentInterface
+    env: onchainWrite
   ): Promise<RepayTroveResult> {
     await this.initialize();
     try {
-      const account = new Account(
-        this.agent.getProvider(),
-        this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey
-      );
+      const account = env.account;
 
       const repayAmount = parseUnits(params.amount, 18);
       const repayCall = await this.abbot.populateTransaction.melt(
@@ -638,7 +617,7 @@ export class TroveManager {
         },
       ]);
 
-      const provider = agent.getProvider();
+      const provider = env.provider;
       const txReceipt = await provider.waitForTransaction(tx.transaction_hash);
 
       let afterHealth;
@@ -683,13 +662,13 @@ export class TroveManager {
  * @throws {Error} If wallet address is not provided
  */
 export const createTroveManager = (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   walletAddress?: string
 ): TroveManager => {
   if (!walletAddress) {
     throw new Error('Wallet address not configured');
   }
 
-  const service = new TroveManager(agent, walletAddress);
+  const service = new TroveManager(env, walletAddress);
   return service;
 };

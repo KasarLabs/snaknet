@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import { mcpTool, registerToolsWithServer, getOnchainWrite } from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import { depositEarnSchema, withdrawEarnSchema } from './schemas/index.js';
@@ -17,39 +16,14 @@ const server = new McpServer({
   version: '0.1.0',
 });
 
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-
-  if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(provider, accountAddress, privateKey);
-
-  return {
-    getProvider: () => provider,
-    getAccountCredentials: () => ({
-      accountPublicKey: accountAddress,
-      accountPrivateKey: privateKey,
-    }),
-    getAccount: () => account,
-  };
-};
-
 const registerTools = (VesuToolRegistry: mcpTool[]) => {
   VesuToolRegistry.push({
     name: 'vesu_deposit_earn',
     description: 'Deposit tokens to earn yield on Vesu protocol',
     schema: depositEarnSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await depositEarnPosition(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await depositEarnPosition(onchainWrite as any, params);
     },
   });
 
@@ -58,8 +32,8 @@ const registerTools = (VesuToolRegistry: mcpTool[]) => {
     description: 'Withdraw tokens from earning position on Vesu protocol',
     schema: withdrawEarnSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await withdrawEarnPosition(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await withdrawEarnPosition(onchainWrite as any, params);
     },
   });
 };
