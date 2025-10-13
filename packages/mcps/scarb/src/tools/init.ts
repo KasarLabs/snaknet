@@ -12,25 +12,25 @@ import { initProjectSchema } from '../schemas/index.js';
  */
 export const initProject = async (
   params: z.infer<typeof initProjectSchema>
-): Promise<string> => {
+) => {
   try {
     await checkScarbInstalled();
     const projectDir = params.path || process.cwd();
 
     await initScarbProject({ name: params.projectName, projectDir });
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: `Project '${params.projectName}' initialized successfully`,
       projectName: params.projectName,
       path: projectDir,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       message: `Failed to initialize project: ${error.message}`,
       error: error.message,
-    });
+    };
   }
 };
 

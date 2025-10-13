@@ -1,36 +1,23 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
-
 import dotenv from 'dotenv';
 
-import { wrapAccountCreationResponse } from './lib/utils/AccountManager.js';
 import { CreateArgentAccount } from './tools/createAccount.js';
 import { DeployArgentAccount } from './tools/deployAccount.js';
 import { accountDetailsSchema } from './schemas/schema.js';
-
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import {
+  mcpTool,
+  registerToolsWithServer,
+  getOnchainRead,
+} from '@snaknet/core';
 
 dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-argent',
-  version: '1.0.0',
+  version: '0.1.0',
 });
-
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  if (!rpcUrl) {
-    throw new Error('Missing required environment variables: STARKNET_RPC_URL');
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-
-  return {
-    getProvider: () => provider,
-  };
-};
 
 const registerTools = (ArgentToolRegistry: mcpTool[]) => {
   ArgentToolRegistry.push({
@@ -38,8 +25,8 @@ const registerTools = (ArgentToolRegistry: mcpTool[]) => {
     description:
       'Creates a new Argent account and return the privateKey/publicKey/contractAddress',
     execute: async () => {
-      const response = await CreateArgentAccount();
-      return wrapAccountCreationResponse(response);
+      const onchainRead = getOnchainRead();
+      return await CreateArgentAccount(onchainRead);
     },
   });
 
@@ -49,8 +36,8 @@ const registerTools = (ArgentToolRegistry: mcpTool[]) => {
       'Deploy an existing Argent Account return the privateKey/publicKey/contractAddress',
     schema: accountDetailsSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await DeployArgentAccount(mockAgent as any, params);
+      const onchainRead = getOnchainRead();
+      return await DeployArgentAccount(onchainRead, params);
     },
   });
 };

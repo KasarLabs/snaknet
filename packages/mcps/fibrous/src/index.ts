@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import {
+  mcpTool,
+  registerToolsWithServer,
+  getOnchainWrite,
+} from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import {
@@ -20,33 +23,8 @@ dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-fibrous',
-  version: '1.0.0',
+  version: '0.1.0',
 });
-
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-
-  if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(provider, accountAddress, privateKey);
-
-  return {
-    getProvider: () => provider,
-    getAccountCredentials: () => ({
-      accountPublicKey: accountAddress,
-      accountPrivateKey: privateKey,
-    }),
-    getAccount: () => account,
-  };
-};
 
 const registerTools = (FibrousToolRegistry: mcpTool[]) => {
   FibrousToolRegistry.push({
@@ -54,8 +32,8 @@ const registerTools = (FibrousToolRegistry: mcpTool[]) => {
     description: 'Swap a token for another token',
     schema: swapSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await swapTokensFibrous(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await swapTokensFibrous(onchainWrite as any, params);
     },
   });
 
@@ -64,8 +42,8 @@ const registerTools = (FibrousToolRegistry: mcpTool[]) => {
     description: 'Swap multiple tokens for another token',
     schema: batchSwapSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await batchSwapTokens(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await batchSwapTokens(onchainWrite as any, params);
     },
   });
 
@@ -74,8 +52,7 @@ const registerTools = (FibrousToolRegistry: mcpTool[]) => {
     description: 'Get a specific route for swapping tokens',
     schema: routeSchema,
     execute: async (params: RouteSchemaType) => {
-      const result = await getRouteFibrous(params);
-      return JSON.stringify(result);
+      return await getRouteFibrous(params);
     },
   });
 };

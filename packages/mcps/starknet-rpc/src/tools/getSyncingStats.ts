@@ -4,14 +4,14 @@ export const getSyncingStats = async (provider: RpcProvider) => {
   try {
     const syncingStats = await provider.getSyncingStats();
 
-    return JSON.stringify({
+    return {
       status: 'success',
-      syncingStats,
-    });
+      syncingStats: syncingStats as any,
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

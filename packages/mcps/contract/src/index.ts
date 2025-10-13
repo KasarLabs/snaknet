@@ -17,7 +17,7 @@ dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-contract',
-  version: '1.0.0',
+  version: '0.1.0',
 });
 
 const registerTools = (ContractToolRegistry: mcpTool[]) => {

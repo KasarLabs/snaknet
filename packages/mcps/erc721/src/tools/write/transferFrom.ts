@@ -1,25 +1,26 @@
 import { Account, Contract, constants } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
-import { INTERACT_ERC721_ABI } from '../lib/abis/interact.js';
+
+import { INTERACT_ERC721_ABI } from '../../lib/abis/interact.js';
 import {
   validateAndFormatTokenId,
   executeV3Transaction,
-} from '../lib/utils/utils.js';
+} from '../../lib/utils/utils.js';
 import { validateAndParseAddress } from 'starknet';
 import { z } from 'zod';
-import { transferFromSchema, transferSchema } from '../schemas/index.js';
-import { TransactionResult } from '../lib/types/types.js';
+import { transferFromSchema, transferSchema } from '../../schemas/index.js';
+import { TransactionResult } from '../../lib/types/types.js';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Transfers a token from one address to another.
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {z.infer<typeof transferFromSchema>} params - Transfer parameters
  * @returns {Promise<string>} JSON string with transaction result
  */
 export const transferFrom = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof transferFromSchema>
-): Promise<string> => {
+) => {
   try {
     if (
       !params?.fromAddress ||
@@ -32,21 +33,13 @@ export const transferFrom = async (
       );
     }
 
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
+    const provider = env.provider;
+    const account = env.account;
 
     const fromAddress = validateAndParseAddress(params.fromAddress);
     const toAddress = validateAndParseAddress(params.toAddress);
     const tokenId = validateAndFormatTokenId(params.tokenId);
     const contractAddress = validateAndParseAddress(params.contractAddress);
-
-    const account = new Account(
-      provider,
-      accountCredentials.accountPublicKey,
-      accountCredentials.accountPrivateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
 
     const contract = new Contract(
       INTERACT_ERC721_ABI,
@@ -87,12 +80,12 @@ export const transferFrom = async (
 
 /**
  * Transfers a NFT to another address.
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {z.infer<typeof transferSchema>} params - Transfer parameters
  * @returns {Promise<string>} JSON string with transaction result
  */
 export const transfer = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof transferSchema>
 ): Promise<string> => {
   try {
@@ -100,8 +93,8 @@ export const transfer = async (
       throw new Error('To address, token ID and contract address are required');
     }
 
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
+    const provider = env.provider;
+    const accountCredentials = env.account;
 
     const toAddress = validateAndParseAddress(params.toAddress);
     const tokenId = validateAndFormatTokenId(params.tokenId);
@@ -109,8 +102,8 @@ export const transfer = async (
 
     const account = new Account(
       provider,
-      accountCredentials.accountPublicKey,
-      accountCredentials.accountPrivateKey,
+      accountCredentials.address,
+      accountCredentials.signer,
       undefined,
       constants.TRANSACTION_VERSION.V3
     );
@@ -123,7 +116,7 @@ export const transfer = async (
     contract.connect(account);
 
     const calldata = contract.populate('transfer_from', [
-      accountCredentials.accountPublicKey,
+      accountCredentials.address,
       toAddress,
       tokenId,
     ]);
@@ -136,7 +129,7 @@ export const transfer = async (
     const result: TransactionResult = {
       status: 'success',
       tokenId: params.tokenId,
-      from: accountCredentials.accountPublicKey,
+      from: accountCredentials.address,
       to: toAddress,
       transactionHash: txH,
     };

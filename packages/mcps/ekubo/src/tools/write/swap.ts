@@ -12,9 +12,9 @@ import {
   extractExpectedOutput,
   calculateMinimumOutputU256,
 } from '../../lib/utils/quote.js';
-import { envWrite } from '../../interfaces/index.js';
+import { onchainWrite } from '@snaknet/core';
 
-export const swap = async (env: envWrite, params: SwapTokensSchema) => {
+export const swap = async (env: onchainWrite, params: SwapTokensSchema) => {
   try {
     const account = env.account;
     const routerContract = await getContract(env.provider, 'routerV3');

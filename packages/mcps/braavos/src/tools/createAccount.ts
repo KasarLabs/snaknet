@@ -25,18 +25,18 @@ export const CreateBraavosAccount = async () => {
 
     const accountDetails = await accountManager.createAccount();
 
-    return JSON.stringify({
+    return {
       status: 'success',
       wallet: 'Braavos',
       publicKey: accountDetails.publicKey,
       privateKey: accountDetails.privateKey,
       contractAddress: accountDetails.contractAddress,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -64,7 +64,7 @@ export const CreateBraavosAccountSignature = async () => {
       await accountManager.estimateAccountDeployFee(accountDetails);
     const maxFee = suggestedMaxFee * 2n;
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transaction_type: 'CREATE_ACCOUNT',
       wallet: 'Braavos',
@@ -72,11 +72,11 @@ export const CreateBraavosAccountSignature = async () => {
       privateKey: accountDetails.privateKey,
       contractAddress: accountDetails.contractAddress,
       deployFee: maxFee.toString(),
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

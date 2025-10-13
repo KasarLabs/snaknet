@@ -29,12 +29,12 @@ export const initProject = async (params: {
       { cwd: params.projectDir }
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: `Project ${params.name} initialized successfully`,
       output: stdout,
       errors: stderr || undefined,
-    });
+    };
   } catch (error) {
     throw new Error(`${error.message}`);
   }
@@ -50,12 +50,12 @@ export const buildProject = async (params: { path: string }) => {
     const { stdout, stderr } = await execAsync('scarb build', {
       cwd: params.path,
     });
-    return JSON.stringify({
+    return {
       status: 'success',
       message: 'Project built successfully',
       output: stdout,
       errors: stderr || undefined,
-    });
+    };
   } catch (error) {
     throw error;
   }
@@ -78,14 +78,14 @@ export const cleanProject = async (params: {
       await fs.rm(params.path, { recursive: true, force: true });
     }
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: params.removeDirectory
         ? 'Project cleaned and directory removed successfully'
         : 'Project cleaned successfully',
       output: stdout,
       errors: stderr || undefined,
-    });
+    };
   } catch (error) {
     throw error;
   }
@@ -118,14 +118,14 @@ export const executeProject = async (
     const tracePath =
       mode === 'bootloader' ? getBootloaderTracePath(stdout) : undefined;
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: 'Program executed successfully',
       executionId: executionId,
       tracePath: tracePath,
       output: stdout,
       error: stderr || undefined,
-    });
+    };
   } catch (error) {
     throw error;
   }
@@ -150,13 +150,13 @@ export const proveProject = async (params: ProveProjectParams) => {
       );
     }
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: 'Contract execution proved successfully',
       proofPath: proofPath,
       output: stdout,
       error: stderr || undefined,
-    });
+    };
   } catch (error) {
     throw error;
   }
@@ -174,12 +174,12 @@ export const verifyProject = async (params: VerifyProjectParams) => {
       cwd: params.projectDir,
     });
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: 'Proof verified successfully',
       output: stdout,
       error: stderr || undefined,
-    });
+    };
   } catch (error) {
     throw error;
   }

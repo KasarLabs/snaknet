@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import {
+  mcpTool,
+  registerToolsWithServer,
+  getOnchainRead,
+} from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import { getSpecVersion } from './tools/getSpecVersion.js';
@@ -31,16 +34,8 @@ dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-rpc',
-  version: '1.0.0',
+  version: '0.1.0',
 });
-
-const createProvider = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  if (!rpcUrl) {
-    throw new Error('Missing required environment variable: STARKNET_RPC_URL');
-  }
-  return new RpcProvider({ nodeUrl: rpcUrl });
-};
 
 const registerTools = (RpcToolRegistry: mcpTool[]) => {
   RpcToolRegistry.push({
@@ -48,7 +43,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
     description:
       'Retrieve the unique identifier (chain ID) of the Starknet network',
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getChainId(provider);
     },
   });
@@ -57,7 +53,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
     name: 'get_syncing_status',
     description: 'Retrieve the syncing status of the Starknet node',
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getSyncingStats(provider);
     },
   });
@@ -69,7 +66,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
       'Retrieve the unique class hash for a contract at a specific address',
     schema: getClassHashAtSchema,
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getClassHashAt(provider, params);
     },
   });
@@ -78,7 +76,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
     name: 'get_spec_version',
     description: 'Get the current spec version from the Starknet RPC provider',
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getSpecVersion(provider);
     },
   });
@@ -89,7 +88,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
       'Retrieve the details of a block, including transaction hashes',
     schema: blockIdSchema,
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getBlockWithTxHashes(provider, params);
     },
   });
@@ -99,7 +99,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
     description: 'Fetch block details with transaction receipts',
     schema: blockIdSchema,
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getBlockWithReceipts(provider, params);
     },
   });
@@ -109,7 +110,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
     description: 'Fetch transaction status by hash',
     schema: transactionHashSchema,
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getTransactionStatus(provider, params);
     },
   });
@@ -119,7 +121,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
     name: 'get_block_number',
     description: 'Get the current block number from the Starknet network',
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getBlockNumber(provider);
     },
   });
@@ -129,7 +132,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
     description: 'Get the number of transactions in a specific block',
     schema: blockIdSchema,
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getBlockTransactionCount(provider, params);
     },
   });
@@ -139,7 +143,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
     description: 'Get the storage value at a specific slot for a contract',
     schema: getStorageAtSchema,
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getStorageAt(provider, params);
     },
   });
@@ -151,7 +156,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
       'Retrieve the complete class definition of a contract at a specified address and block',
     schema: blockIdAndContractAddressSchema,
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getClass(provider, params);
     },
   });
@@ -162,7 +168,8 @@ const registerTools = (RpcToolRegistry: mcpTool[]) => {
       'Fetch the class definition of a contract at a specific address in the latest state',
     schema: getClassAtSchema,
     execute: async (params: any) => {
-      const provider = createProvider();
+      const onchainRead = getOnchainRead();
+      const provider = onchainRead.provider;
       return await getClassAt(provider, params);
     },
   });

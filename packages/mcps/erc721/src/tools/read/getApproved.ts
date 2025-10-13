@@ -1,10 +1,11 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
-import { INTERACT_ERC721_ABI } from '../lib/abis/interact.js';
-import { validateAndFormatTokenId } from '../lib/utils/utils.js';
+
+import { INTERACT_ERC721_ABI } from '../../lib/abis/interact.js';
+import { validateAndFormatTokenId } from '../../lib/utils/utils.js';
 import { z } from 'zod';
-import { getApprovedSchema } from '../schemas/index.js';
+import { getApprovedSchema } from '../../schemas/index.js';
 import { validateAndParseAddress } from 'starknet';
+import { onchainRead } from '@snaknet/core';
 
 /**
  * Get the address that has been approved to transfer the token.
@@ -13,15 +14,15 @@ import { validateAndParseAddress } from 'starknet';
  * @returns A stringified JSON object with the status and the approved address.
  */
 export const getApproved = async (
-  agent: SnakAgentInterface,
+  env: onchainRead,
   params: z.infer<typeof getApprovedSchema>
-): Promise<string> => {
+) => {
   try {
     if (!params?.tokenId || !params?.contractAddress) {
       throw new Error('Both token ID and contract address are required');
     }
 
-    const provider = agent.getProvider();
+    const provider = env.provider;
 
     const contractAddress = validateAndParseAddress(params.contractAddress);
     const tokenId = validateAndFormatTokenId(params.tokenId);
@@ -34,14 +35,14 @@ export const getApproved = async (
 
     const approvedResponse = await contract.getApproved(tokenId);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       approved: approvedResponse.toString(),
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

@@ -10,14 +10,14 @@ export const getTransactionByBlockIdAndIndex = async (
       params.index
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
-      transaction,
-    });
+      transaction: transaction as any,
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

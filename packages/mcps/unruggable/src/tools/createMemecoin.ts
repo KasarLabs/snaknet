@@ -1,7 +1,7 @@
 import { CreateMemecoinParams } from '../schemas/index.js';
 import { stark, uint256 } from 'starknet';
 import { execute, decimalsScale } from '../lib/utils/helper.js';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Creates a new memecoin using the Unruggable Factory.
@@ -56,33 +56,28 @@ import { SnakAgentInterface } from '../lib/dependances/types.js';
  * - Name and symbol should follow token naming conventions
  */
 export const createMemecoin = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: CreateMemecoinParams
 ) => {
   try {
-    const provider = agent.getProvider();
+    const provider = env.provider;
     const salt = stark.randomAddress();
-    const { transaction_hash } = await execute(
-      'create_memecoin',
-      agent,
-      [
-        params.owner,
-        params.name,
-        params.symbol,
-        uint256.bnToUint256(
-          BigInt(params.initialSupply) * BigInt(decimalsScale(18))
-        ),
-        salt,
-      ],
-      provider
-    );
+    const { transaction_hash } = await execute('create_memecoin', env, [
+      params.owner,
+      params.name,
+      params.symbol,
+      uint256.bnToUint256(
+        BigInt(params.initialSupply) * BigInt(decimalsScale(18))
+      ),
+      salt,
+    ]);
 
     await provider.waitForTransaction(transaction_hash);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transactionHash: transaction_hash,
-    });
+    };
   } catch (error) {
     console.error('Error creating memecoin:', error);
     return {

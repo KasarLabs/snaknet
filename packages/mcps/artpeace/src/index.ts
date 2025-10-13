@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import {
+  mcpTool,
+  registerToolsWithServer,
+  getOnchainWrite,
+} from '@snaknet/core';
 
 import dotenv from 'dotenv';
 
@@ -17,37 +20,14 @@ const server = new McpServer({
   version: '1.0.0',
 });
 
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-
-  if (!rpcUrl || !accountAddress || !privateKey) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_ACCOUNT_ADDRESS, STARKNET_PRIVATE_KEY'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-
-  return {
-    getProvider: () => provider,
-    getAccountCredentials: () => ({
-      accountPublicKey: accountAddress,
-      accountPrivateKey: privateKey,
-    }),
-  };
-};
-
 const registerTools = (ArtPeaceToolRegistry: mcpTool[]) => {
   ArtPeaceToolRegistry.push({
     name: 'place_pixel',
     description: 'Places a pixel, all parameters are optional',
     schema: placePixelSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await placePixel(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await placePixel(onchainWrite as any, params);
     },
   });
 };

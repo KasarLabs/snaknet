@@ -1,11 +1,12 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
-import { INTERACT_ERC721_ABI } from '../lib/abis/interact.js';
-import { validateAndFormatTokenId } from '../lib/utils/utils.js';
+
+import { INTERACT_ERC721_ABI } from '../../lib/abis/interact.js';
+import { validateAndFormatTokenId } from '../../lib/utils/utils.js';
 import { z } from 'zod';
-import { ownerOfSchema } from '../schemas/index.js';
-import { bigintToHex } from '../lib/utils/utils.js';
+import { ownerOfSchema } from '../../schemas/index.js';
+import { bigintToHex } from '../../lib/utils/utils.js';
 import { validateAndParseAddress } from 'starknet';
+import { onchainRead } from '@snaknet/core';
 
 /**
  * Get the owner of the token.
@@ -14,15 +15,15 @@ import { validateAndParseAddress } from 'starknet';
  * @returns A stringified JSON object with the status and the owner address.
  */
 export const getOwner = async (
-  agent: SnakAgentInterface,
+  env: onchainRead,
   params: z.infer<typeof ownerOfSchema>
-): Promise<string> => {
+) => {
   try {
     if (!params?.tokenId || !params?.contractAddress) {
       throw new Error('Both token ID and contract address are required');
     }
 
-    const provider = agent.getProvider();
+    const provider = env.provider;
 
     const contractAddress = validateAndParseAddress(params.contractAddress);
     const tokenId = validateAndFormatTokenId(params.tokenId);
@@ -35,14 +36,14 @@ export const getOwner = async (
 
     const ownerResponse = await contract.ownerOf(tokenId);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       owner: bigintToHex(BigInt(ownerResponse)),
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

@@ -9,14 +9,14 @@ export const getBlockWithTxHashes = async (
       params.blockId
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
-      blockWithTxHashes,
-    });
+      blockWithTxHashes: blockWithTxHashes as any,
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

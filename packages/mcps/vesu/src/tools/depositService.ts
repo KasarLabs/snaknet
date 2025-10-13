@@ -1,5 +1,4 @@
 import { Account, Call } from 'starknet';
-import { logger, SnakAgentInterface } from '../lib/dependances/types.js';
 import { z } from 'zod';
 import { parseUnits } from 'ethers';
 import {
@@ -23,6 +22,7 @@ import {
   getExtensionContract,
   getVTokenContract,
 } from '../lib/utils/contracts.js';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Service for managing deposit operations and earning positions
@@ -31,11 +31,11 @@ import {
 export class DepositEarnService {
   /**
    * Creates an instance of DepositEarnService
-   * @param {SnakAgentInterface} agent - The Starknet agent for blockchain interactions
+   * @param {onchainWrite | onchainRead} env - The onchain environment
    * @param {string} walletAddress - The wallet address executing the deposits
    */
   constructor(
-    private agent: SnakAgentInterface,
+    private env: onchainWrite,
     private walletAddress: string
   ) {}
 
@@ -141,18 +141,18 @@ export class DepositEarnService {
   /**
    * Executes a deposit transaction
    * @param {DepositParams} params - Deposit parameters
-   * @param {SnakAgentInterface} agent - Starknet agent
+   * @param {onchainWrite | onchainRead} env - The onchain environment
    * @returns {Promise<DepositResult>} Result of the deposit operation
    */
   async depositEarnTransaction(
     params: DepositParams,
-    agent: SnakAgentInterface
+    env: onchainWrite
   ): Promise<DepositResult> {
     try {
       const account = new Account(
-        this.agent.getProvider(),
+        this.env.provider,
         this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey
+        this.env.account.signer
       );
       const pool = await this.getPool(GENESIS_POOLID);
 
@@ -188,7 +188,7 @@ export class DepositEarnService {
           account.address
         );
 
-      const provider = agent.getProvider();
+      const provider = env.provider;
 
       const tx = await account.execute([
         {
@@ -231,40 +231,37 @@ export class DepositEarnService {
 
 /**
  * Creates a new DepositEarnService instance
- * @param {SnakAgentInterface} agent - The Starknet agent
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {string} [walletAddress] - The wallet address
  * @returns {DepositEarnService} A new DepositEarnService instance
  * @throws {Error} If wallet address is not provided
  */
 export const createDepositEarnService = (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   walletAddress?: string
 ): DepositEarnService => {
   if (!walletAddress) {
     throw new Error('Wallet address not configured');
   }
 
-  return new DepositEarnService(agent, walletAddress);
+  return new DepositEarnService(env, walletAddress);
 };
 
 /**
  * Utility function to execute a deposit operation
- * @param {SnakAgentInterface} agent - The Starknet agent
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {DepositParams} params - The deposit parameters
  * @returns {Promise<string>} JSON string containing the deposit result
  */
 export const depositEarnPosition = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: DepositParams
 ) => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
+  const accountAddress = env.account?.address;
   try {
-    const depositEarnService = createDepositEarnService(agent, accountAddress);
-    const result = await depositEarnService.depositEarnTransaction(
-      params,
-      agent
-    );
-    return JSON.stringify(result);
+    const depositEarnService = createDepositEarnService(env, accountAddress);
+    const result = await depositEarnService.depositEarnTransaction(params, env);
+    return result;
   } catch (error) {
     // console.error('Detailed deposit error:', error);
     if (error instanceof Error) {
@@ -272,9 +269,9 @@ export const depositEarnPosition = async (
       // console.error('Error message:', error.message);
       // console.error('Error stack:', error.stack);
     }
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

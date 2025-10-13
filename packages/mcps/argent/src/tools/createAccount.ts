@@ -1,32 +1,34 @@
 import { RpcProvider } from 'starknet';
 import { ARGENT_CLASS_HASH } from '../lib/constant/contract.js';
 import { AccountManager } from '../lib/utils/AccountManager.js';
+import { onchainRead } from '@snaknet/core';
 
 /**
  * Creates a new Argent account.
  * @async
  * @function CreateArgentAccount
- * @returns {Promise<string>} JSON string with account details
+ * @param {envRead} env - Environment with RPC provider
+ * @returns {Promise<object>} Object with account details
  * @throws {Error} If account creation fails
  */
-export const CreateArgentAccount = async () => {
+export const CreateArgentAccount = async (env: onchainRead) => {
   try {
-    const accountManager = new AccountManager(undefined);
+    const accountManager = new AccountManager(env.provider);
     const accountDetails =
       await accountManager.createAccount(ARGENT_CLASS_HASH);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       wallet: 'AX',
       publicKey: accountDetails.publicKey,
       privateKey: accountDetails.privateKey,
       contractAddress: accountDetails.contractAddress,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -34,7 +36,7 @@ export const CreateArgentAccount = async () => {
  * Creates an Argent account with deployment fee estimation.
  * @async
  * @function CreateArgentAccountSignature
- * @returns {Promise<string>} JSON string with account and fee details
+ * @returns {Promise<object>} Object with account and fee details
  * @throws {Error} If creation or fee estimation fails
  */
 export const CreateArgentAccountSignature = async () => {
@@ -50,7 +52,7 @@ export const CreateArgentAccountSignature = async () => {
     );
     const maxFee = suggestedMaxFee.suggestedMaxFee * 2n;
 
-    return JSON.stringify({
+    return {
       status: 'success',
       transaction_type: 'CREATE_ACCOUNT',
       wallet: 'AX',
@@ -58,11 +60,11 @@ export const CreateArgentAccountSignature = async () => {
       privateKey: accountDetails.privateKey,
       contractAddress: accountDetails.contractAddress,
       deployFee: maxFee.toString(),
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

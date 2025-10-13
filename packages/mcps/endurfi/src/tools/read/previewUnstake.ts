@@ -5,11 +5,11 @@ import {
   getUnderlyingTokenName,
 } from '../../lib/utils/contracts.js';
 import { PreviewUnstakeSchema } from '../../schemas/index.js';
-import { envRead } from '../../interfaces/index.js';
+import { onchainRead } from '@snaknet/core';
 import { formatUnits } from '../../lib/utils/formatting.js';
 
 export const previewUnstake = async (
-  env: envRead,
+  env: onchainRead,
   params: PreviewUnstakeSchema
 ) => {
   try {

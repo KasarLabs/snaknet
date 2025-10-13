@@ -30,15 +30,15 @@ export const yourAction = async (
     // Your logic here
     const result = await doSomething(params);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       data: result,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 ```

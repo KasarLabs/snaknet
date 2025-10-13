@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import {
+  mcpTool,
+  registerToolsWithServer,
+  getOnchainWrite,
+} from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import { routeSchema, swapSchema } from './schemas/index.js';
@@ -14,33 +17,8 @@ dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-avnu',
-  version: '1.0.0',
+  version: '0.1.0',
 });
-
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-
-  if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(provider, accountAddress, privateKey);
-
-  return {
-    getProvider: () => provider,
-    getAccountCredentials: () => ({
-      accountPublicKey: accountAddress,
-      accountPrivateKey: privateKey,
-    }),
-    getAccount: () => account,
-  };
-};
 
 const registerTools = (AvnuToolRegistry: mcpTool[]) => {
   AvnuToolRegistry.push({
@@ -48,8 +26,8 @@ const registerTools = (AvnuToolRegistry: mcpTool[]) => {
     description: 'Swap a specified amount of one token for another token',
     schema: swapSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await swapTokens(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await swapTokens(onchainWrite as any, params);
     },
   });
 
@@ -58,8 +36,8 @@ const registerTools = (AvnuToolRegistry: mcpTool[]) => {
     description: 'Get a specific route',
     schema: routeSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getRoute(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await getRoute(onchainWrite as any, params);
     },
   });
 };

@@ -6,11 +6,11 @@ import {
   getUnderlyingTokenName,
 } from '../../lib/utils/contracts.js';
 import { UnstakeSchema } from '../../schemas/index.js';
-import { envWrite } from '../../interfaces/index.js';
+import { onchainWrite } from '@snaknet/core';
 import { formatUnits } from '../../lib/utils/formatting.js';
 import { extractWithdrawRequestIdFromReceipt } from '../../lib/utils/events.js';
 
-export const unstake = async (env: envWrite, params: UnstakeSchema) => {
+export const unstake = async (env: onchainWrite, params: UnstakeSchema) => {
   try {
     const account = env.account;
     const liquidTokenContract = getLiquidTokenContract(

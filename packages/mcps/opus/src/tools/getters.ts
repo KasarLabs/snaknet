@@ -1,65 +1,63 @@
-import { SnakAgentInterface } from '../lib/dependances/types.js';
 import { GetTroveHealthParams, GetUserTrovesParams } from '../schemas/index.js';
 import { createTroveManager } from '../lib/utils/troveManager.js';
+import { onchainWrite } from '@snaknet/core';
 
 export const getUserTroves = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: GetUserTrovesParams
-): Promise<string> => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
+) => {
+  const accountAddress = env.account?.address;
 
   try {
-    const TroveManager = createTroveManager(agent, accountAddress);
+    const TroveManager = createTroveManager(env, accountAddress);
     const result = await TroveManager.getUserTroves(params);
-    return JSON.stringify({
+    return {
       status: 'success',
       data: result,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'error',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
 export const getTroveHealth = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: GetTroveHealthParams
-): Promise<string> => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
+) => {
+  const accountAddress = env.account?.address;
 
   try {
-    const troveManager = createTroveManager(agent, accountAddress);
+    const troveManager = createTroveManager(env, accountAddress);
     const result = await troveManager.getTroveHealth(params);
-    return JSON.stringify({
+    return {
       status: 'success',
       data: result,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'error',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
-export const getBorrowFee = async (
-  agent: SnakAgentInterface
-): Promise<string> => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
+export const getBorrowFee = async (env: onchainWrite) => {
+  const accountAddress = env.account?.address;
 
   try {
-    const TroveManager = createTroveManager(agent, accountAddress);
+    const TroveManager = createTroveManager(env, accountAddress);
     const result = await TroveManager.getBorrowFee();
-    return JSON.stringify({
+    return {
       status: 'success',
       data: result,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'error',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

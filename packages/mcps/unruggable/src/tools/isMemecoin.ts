@@ -1,8 +1,9 @@
 import { ContractAddressParams } from '../schemas/index.js';
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+
 import { FACTORY_ABI } from '../lib/abis/unruggableFactory.js';
 import { FACTORY_ADDRESS } from '../lib/constants/index.js';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Checks if a given contract address is a memecoin created by the Unruggable Factory.
@@ -10,7 +11,7 @@ import { FACTORY_ADDRESS } from '../lib/constants/index.js';
  * This function verifies whether a contract at the specified address was deployed
  * through the Unruggable Factory and implements the required memecoin interface.
  *
- * @param {SnakAgentInterface} agent - Starknet agent interface
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {ContractAddressParams} params - Object containing the contract address to check
  * @returns {Promise<string>} JSON string containing either success response with boolean result
  *                           or error response with error message
@@ -47,23 +48,23 @@ import { FACTORY_ADDRESS } from '../lib/constants/index.js';
  * - Can be used to verify token authenticity before trading
  */
 export const isMemecoin = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: ContractAddressParams
-): Promise<string> => {
+) => {
   try {
-    const provider = agent.getProvider();
+    const provider = env.provider;
     const contract = new Contract(FACTORY_ABI, FACTORY_ADDRESS, provider);
     const result = await contract.is_memecoin(params.contractAddress);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       isMemecoin: result,
-    });
+    };
   } catch (error) {
     console.error('Error checking memecoin status:', error);
-    return JSON.stringify({
+    return {
       status: 'failed',
       error: error.message,
-    });
+    };
   }
 };

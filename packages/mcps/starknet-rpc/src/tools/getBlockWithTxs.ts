@@ -7,14 +7,14 @@ export const getBlockWithTxs = async (
   try {
     const blockWithTxs = await provider.getBlockWithTxs(params.blockId);
 
-    return JSON.stringify({
+    return {
       status: 'success',
-      blockWithTxs,
-    });
+      blockWithTxs: blockWithTxs as any,
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

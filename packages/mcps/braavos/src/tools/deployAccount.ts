@@ -1,5 +1,5 @@
 import { RpcProvider } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainRead } from '@snaknet/core';
 import { AccountManager } from '../lib/utils/AccountManager.js';
 import { z } from 'zod';
 import { accountDetailsSchema } from '../schemas/index.js';
@@ -10,20 +10,20 @@ import {
 } from '../lib/constants/contract.js';
 
 /**
- * Deploys a Braavos account using a Starknet agent.
+ * Deploys a Braavos account using onchain read environment.
  * @async
  * @function DeployBraavosAccount
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainRead} env - The onchain read environment
  * @param {z.infer<typeof accountDetailsSchema>} params - Account details
  * @returns {Promise<string>} JSON string with deployment status and transaction details
  * @throws {Error} If deployment fails
  */
 export const DeployBraavosAccount = async (
-  agent: SnakAgentInterface,
+  env: onchainRead,
   params: z.infer<typeof accountDetailsSchema>
 ) => {
   try {
-    const provider = agent.getProvider();
+    const provider = env.provider;
 
     const accountManager = new AccountManager(
       provider,
@@ -34,17 +34,17 @@ export const DeployBraavosAccount = async (
 
     const tx = await accountManager.deployAccount(params);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       wallet: 'Braavos',
       transaction_hash: tx.transactionHash,
       contract_address: tx.contractAddress,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
@@ -71,16 +71,16 @@ export const DeployBraavosAccountSignature = async (
 
     const tx = await accountManager.deployAccount(params);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       wallet: 'Braavos',
       transaction_hash: tx.transactionHash,
       contract_address: tx.contractAddress,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

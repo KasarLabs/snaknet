@@ -1,4 +1,5 @@
-import { mcpTool } from '../interfaces/index.js';
+import { mcpTool, onchainRead, onchainWrite } from '../interfaces/index.js';
+import { Account, RpcProvider, constants } from 'starknet';
 
 /**
  * Register MCP tools with a server instance
@@ -41,4 +42,39 @@ export const registerToolsWithServer = async (
       );
     }
   }
+};
+
+export const getOnchainRead = (): onchainRead => {
+  if (!process.env.STARKNET_RPC_URL) {
+    throw new Error('Missing required environment variables: STARKNET_RPC_URL');
+  }
+  return {
+    provider: new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL }),
+  };
+};
+
+export const getOnchainWrite = (): onchainWrite => {
+  const rpcUrl = process.env.STARKNET_RPC_URL;
+  const privateKey = process.env.STARKNET_PRIVATE_KEY;
+  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
+
+  if (!rpcUrl || !privateKey || !accountAddress) {
+    throw new Error(
+      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
+    );
+  }
+
+  const provider = new RpcProvider({ nodeUrl: rpcUrl });
+  const account = new Account(
+    provider,
+    accountAddress,
+    privateKey,
+    undefined,
+    constants.TRANSACTION_VERSION.V3
+  );
+
+  return {
+    provider,
+    account,
+  };
 };

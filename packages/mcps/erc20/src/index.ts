@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { RpcProvider, Account } from 'starknet';
 
-import { mcpTool, registerToolsWithServer } from '@snaknet/core';
+import {
+  mcpTool,
+  registerToolsWithServer,
+  getOnchainWrite,
+} from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import {
@@ -33,33 +36,8 @@ dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-erc20',
-  version: '1.0.0',
+  version: '0.1.0',
 });
-
-// Mock agent interface for MCP compatibility
-const createMockAgent = () => {
-  const rpcUrl = process.env.STARKNET_RPC_URL;
-  const privateKey = process.env.STARKNET_PRIVATE_KEY;
-  const accountAddress = process.env.STARKNET_ACCOUNT_ADDRESS;
-
-  if (!rpcUrl || !privateKey || !accountAddress) {
-    throw new Error(
-      'Missing required environment variables: STARKNET_RPC_URL, STARKNET_PRIVATE_KEY, STARKNET_ACCOUNT_ADDRESS'
-    );
-  }
-
-  const provider = new RpcProvider({ nodeUrl: rpcUrl });
-  const account = new Account(provider, accountAddress, privateKey);
-
-  return {
-    getProvider: () => provider,
-    getAccountCredentials: () => ({
-      accountPublicKey: accountAddress,
-      accountPrivateKey: privateKey,
-    }),
-    getAccount: () => account,
-  };
-};
 
 const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
   Erc20ToolRegistry.push({
@@ -68,8 +46,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
       'Get the amount of tokens that a spender is allowed to spend on behalf of an owner. Requires the token symbol (e.g., ETH, USDC), the owner address and the spender address.',
     schema: getAllowanceSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getAllowance(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await getAllowance(onchainWrite as any, params);
     },
   });
 
@@ -79,8 +57,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
       'Get the amount of tokens that a spender is allowed to spend on your behalf. Requires the token symbol (e.g., ETH, USDC) and the spender address.',
     schema: getMyGivenAllowanceSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getMyGivenAllowance(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await getMyGivenAllowance(onchainWrite as any, params);
     },
   });
 
@@ -90,8 +68,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
       'Get the amount of tokens that a you are allowed to spend on the behalf of an owner. Requires the token symbol (e.g., ETH, USDC) and the owner address.',
     schema: getAllowanceGivenToMeSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getAllowanceGivenToMe(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await getAllowanceGivenToMe(onchainWrite as any, params);
     },
   });
 
@@ -100,8 +78,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
     description: 'Get the total supply of an token token',
     schema: getTotalSupplySchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getTotalSupply(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await getTotalSupply(onchainWrite as any, params);
     },
   });
 
@@ -111,8 +89,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
       'Transfer tokens from one address to another using an allowance',
     schema: transferFromSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await transferFrom(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await transferFrom(onchainWrite as any, params);
     },
   });
 
@@ -121,8 +99,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
     description: 'Get the balance of an asset for a given wallet address',
     schema: getBalanceSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getBalance(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await getBalance(onchainWrite as any, params);
     },
   });
 
@@ -131,8 +109,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
     description: 'Get the balance of an asset in your wallet',
     schema: getOwnBalanceSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await getOwnBalance(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await getOwnBalance(onchainWrite as any, params);
     },
   });
 
@@ -141,8 +119,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
     description: 'Approve a spender to spend tokens on your behalf',
     schema: approveSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await approve(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await approve(onchainWrite as any, params);
     },
   });
 
@@ -151,8 +129,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
     description: 'Transfer ERC20 tokens to a specific address',
     schema: transferSchema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await transfer(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await transfer(onchainWrite as any, params);
     },
   });
 
@@ -162,8 +140,8 @@ const registerTools = (Erc20ToolRegistry: mcpTool[]) => {
       'Create and deploy a new ERC20 contract, returns the address of the deployed contract',
     schema: deployERC20Schema,
     execute: async (params: any) => {
-      const mockAgent = createMockAgent();
-      return await deployERC20Contract(mockAgent as any, params);
+      const onchainWrite = getOnchainWrite();
+      return await deployERC20Contract(onchainWrite as any, params);
     },
   });
 };

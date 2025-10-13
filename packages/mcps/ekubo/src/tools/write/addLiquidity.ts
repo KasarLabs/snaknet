@@ -3,10 +3,10 @@ import { getContract } from '../../lib/utils/contracts.js';
 import { AddLiquiditySchema } from '../../schemas/index.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 import { buildBounds, sortAmounts } from '../../lib/utils/liquidity.js';
-import { envWrite } from '../../interfaces/index.js';
+import { onchainWrite } from '@snaknet/core';
 
 export const addLiquidity = async (
-  env: envWrite,
+  env: onchainWrite,
   params: AddLiquiditySchema
 ) => {
   try {

@@ -12,30 +12,27 @@ import { verifyProgramSchema } from '../schemas/index.js';
  */
 export const verifyProgram = async (
   params: z.infer<typeof verifyProgramSchema>
-): Promise<string> => {
+) => {
   try {
     await checkScarbInstalled();
 
-    const { stdout, stderr } = JSON.parse(
-      await verifyProject({
-        projectDir: params.path || (process.cwd() as string),
-        proofPath: params.proofFile as string,
-      })
-    );
+    const result = await verifyProject({
+      projectDir: params.path || (process.cwd() as string),
+      proofPath: params.proofFile as string,
+    });
 
-    return JSON.stringify({
+    return {
       status: 'success',
       message: 'Program verification completed',
-      output: stdout,
-      warnings: stderr || undefined,
+      result: result,
       projectPath: params.path,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       message: `Verification failed: ${error.message}`,
       error: error.message,
-    });
+    };
   }
 };
 

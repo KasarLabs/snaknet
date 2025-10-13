@@ -1,5 +1,5 @@
 import { Account, constants, Contract } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 import {
   validateAndFormatParams,
   executeV3Transaction,
@@ -15,18 +15,18 @@ import { RpcProvider } from 'starknet';
 
 /**
  * Transfers ERC20 tokens on Starknet
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite} env - The onchain write environment
  * @param {TransferParams} params - Transfer parameters
  * @returns {Promise<string>} JSON string with transaction result
  * @throws {Error} If transfer fails
  */
 export const transfer = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof transferSchema>
-): Promise<string> => {
+) => {
   try {
-    const provider = agent.getProvider();
-    const credentials = agent.getAccountCredentials();
+    const provider = env.provider;
+    const account = env.account;
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
@@ -44,21 +44,13 @@ export const transfer = async (
 
     const recipientAddress = address;
 
-    const account = new Account(
-      provider,
-      credentials.accountPublicKey, // This is actually the account address, not public key
-      credentials.accountPrivateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
-
     // Check if account exists, if not throw a clearer error
     try {
       const nonce = await account.getNonce();
       console.error(`Account nonce: ${nonce}`);
     } catch (error) {
       throw new Error(
-        `Account not found on this network. Please verify your account address and network. Account: ${credentials.accountPublicKey}. Error: ${error.message}`
+        `Account not found on this network. Please verify your account address and network. Account: ${account.address}. Error: ${error.message}`
       );
     }
 
@@ -75,13 +67,13 @@ export const transfer = async (
       account: account,
     });
 
-    return JSON.stringify({
+    return {
       status: 'success',
       amount: params.amount,
       symbol: token.symbol,
       recipients_address: recipientAddress,
       transaction_hash: txH,
-    });
+    };
   } catch (error) {
     const transferResult: TransferResult = {
       status: 'failure',

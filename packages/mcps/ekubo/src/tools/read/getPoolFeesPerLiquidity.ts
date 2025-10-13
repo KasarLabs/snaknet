@@ -1,10 +1,10 @@
-import { envRead } from '../../interfaces/index.js';
+import { onchainRead } from '@snaknet/core';
 import { PoolKey } from '../../schemas/index.js';
 import { getContract } from '../../lib/utils/contracts.js';
 import { preparePoolKeyFromParams } from '../../lib/utils/pools.js';
 
 export const getPoolFeesPerLiquidity = async (
-  env: envRead,
+  env: onchainRead,
   params: PoolKey
 ) => {
   const provider = env.provider;

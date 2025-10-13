@@ -1,25 +1,26 @@
 import { Account, Contract, constants } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
-import { INTERACT_ERC721_ABI } from '../lib/abis/interact.js';
+
+import { INTERACT_ERC721_ABI } from '../../lib/abis/interact.js';
 import {
   validateAndFormatTokenId,
   executeV3Transaction,
-} from '../lib/utils/utils.js';
+} from '../../lib/utils/utils.js';
 import { z } from 'zod';
-import { safeTransferFromSchema } from '../schemas/index.js';
-import { TransactionResult } from '../lib/types/types.js';
+import { safeTransferFromSchema } from '../../schemas/index.js';
+import { TransactionResult } from '../../lib/types/types.js';
 import { validateAndParseAddress } from 'starknet';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Safely transfers a token from one address to another.
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {z.infer<typeof safeTransferFromSchema>} params - Safe transfer parameters
  * @returns {Promise<string>} JSON string with transaction result
  */
 export const safeTransferFrom = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof safeTransferFromSchema>
-): Promise<string> => {
+) => {
   try {
     if (
       !params?.fromAddress ||
@@ -31,22 +32,14 @@ export const safeTransferFrom = async (
         'From address, to address, token ID and contract address are required'
       );
     }
-    const provider = agent.getProvider();
-    const accountCredentials = agent.getAccountCredentials();
+    const provider = env.provider;
+    const account = env.account;
 
     const fromAddress = validateAndParseAddress(params.fromAddress);
     const toAddress = validateAndParseAddress(params.toAddress);
     const tokenId = validateAndFormatTokenId(params.tokenId);
     const contractAddress = validateAndParseAddress(params.contractAddress);
     const data = ['0x0'];
-
-    const account = new Account(
-      provider,
-      accountCredentials.accountPublicKey,
-      accountCredentials.accountPrivateKey,
-      undefined,
-      constants.TRANSACTION_VERSION.V3
-    );
 
     const contract = new Contract(
       INTERACT_ERC721_ABI,

@@ -1,5 +1,5 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 import {
   formatBalance,
   validateToken,
@@ -15,17 +15,17 @@ import {
 
 /**
  * Gets the amount of tokens that a spender is allowed to spend on behalf of an owner.
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite} env - The onchain write environment
  * @param {AllowanceParams} params - The owner, spender and token addresses
  * @returns {Promise<string>} JSON string with allowance amount
  * @throws {Error} If operation fails
  */
 export const getAllowance = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof getAllowanceSchema>
-): Promise<string> => {
+) => {
   try {
-    const provider = agent.getProvider();
+    const provider = env.provider;
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
@@ -43,35 +43,35 @@ export const getAllowance = async (
       params.spenderAddress
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       owner: params.ownerAddress,
       spender: params.spenderAddress,
       allowance: formatBalance(allowanceResponse, token.decimals),
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
 /**
  * Gets allowances granted by the current user
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite} env - The onchain write environment
  * @param {MyGivenAllowanceParams} params - The spender and token addresses
  * @returns {Promise<string>} JSON string with allowance amount
  * @throws {Error} If operation fails
  */
 export const getMyGivenAllowance = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof getMyGivenAllowanceSchema>
-): Promise<string> => {
+) => {
   try {
-    const provider = agent.getProvider();
-    const ownerAddress = agent.getAccountCredentials().accountPublicKey;
+    const provider = env.provider;
+    const ownerAddress = env.account.address;
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
@@ -89,35 +89,35 @@ export const getMyGivenAllowance = async (
       params.spenderAddress
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       owner: ownerAddress,
       spender: params.spenderAddress,
       allowance: formatBalance(allowanceResponse, token.decimals),
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
 
 /**
  * Gets allowances granted to the current user
- * @param {SnakAgentInterface} agent - The Starknet agent interface
+ * @param {onchainWrite} env - The onchain write environment
  * @param {AllowanceGivenToMeParams} params - The owner and token addresses
  * @returns {Promise<string>} JSON string with allowance amount
  * @throws {Error} If operation fails
  */
 export const getAllowanceGivenToMe = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof getAllowanceGivenToMeSchema>
-): Promise<string> => {
+) => {
   try {
-    const provider = agent.getProvider();
-    const spenderAddress = agent.getAccountCredentials().accountPublicKey;
+    const provider = env.provider;
+    const spenderAddress = env.account.address;
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
@@ -135,17 +135,17 @@ export const getAllowanceGivenToMe = async (
       spenderAddress
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       owner: params.ownerAddress,
       spender: spenderAddress,
       allowance: formatBalance(allowanceResponse, token.decimals),
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

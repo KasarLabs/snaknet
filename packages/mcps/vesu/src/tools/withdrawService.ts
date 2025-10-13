@@ -22,6 +22,7 @@ import {
   getExtensionContract,
   getVTokenContract,
 } from '../lib/utils/contracts.js';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Service for managing withdrawal operations from earning positions
@@ -30,11 +31,11 @@ import {
 export class WithdrawEarnService {
   /**
    * Creates an instance of WithdrawEarnService
-   * @param {SnakAgentInterface} agent - The Starknet agent for blockchain interactions
+   * @param {onchainWrite | onchainRead} env - The onchain environment
    * @param {string} walletAddress - The wallet address executing the withdrawals
    */
   constructor(
-    private agent: SnakAgentInterface,
+    private env: onchainWrite,
     private walletAddress: string
   ) {}
 
@@ -163,18 +164,18 @@ export class WithdrawEarnService {
   /**
    * Executes a withdrawal transaction
    * @param {WithdrawParams} params - Withdrawal parameters
-   * @param {SnakAgentInterface} agent - Starknet agent
+   * @param {onchainWrite | onchainRead} env - The onchain environment
    * @returns {Promise<WithdrawResult>} Result of the withdrawal operation
    */
   async withdrawEarnTransaction(
     params: WithdrawParams,
-    agent: SnakAgentInterface
+    env: onchainWrite
   ): Promise<WithdrawResult> {
     try {
       const account = new Account(
-        this.agent.getProvider(),
+        this.env.provider,
         this.walletAddress,
-        this.agent.getAccountCredentials().accountPrivateKey
+        this.env.account.signer
       );
       const pool = await this.getPool(GENESIS_POOLID);
 
@@ -201,14 +202,10 @@ export class WithdrawEarnService {
         account.address as Hex
       );
 
-      const credentials = agent.getAccountCredentials();
-      const provider = agent.getProvider();
+      const credentials = env.account;
+      const provider = env.provider;
 
-      const wallet = new Account(
-        provider,
-        credentials.accountPublicKey,
-        credentials.accountPrivateKey
-      );
+      const wallet = env.account;
 
       const redeemVTokenCall = await vtokenContract.populateTransaction.redeem(
         toU256(vTokenShares),
@@ -252,37 +249,37 @@ export class WithdrawEarnService {
 
 /**
  * Creates a new WithdrawEarnService instance
- * @param {SnakAgentInterface} agent - The Starknet agent
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {string} [walletAddress] - The wallet address
  * @returns {WithdrawEarnService} A new WithdrawEarnService instance
  * @throws {Error} If wallet address is not provided
  */
 export const withdrawService = (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   walletAddress?: string
 ): WithdrawEarnService => {
   if (!walletAddress) {
     throw new Error('Wallet address not configured');
   }
 
-  return new WithdrawEarnService(agent, walletAddress);
+  return new WithdrawEarnService(env, walletAddress);
 };
 
 /**
  * Utility function to execute a withdrawal operation
- * @param {SnakAgentInterface} agent - The Starknet agent
+ * @param {onchainWrite | onchainRead} env - The onchain environment
  * @param {WithdrawParams} params - The withdrawal parameters
  * @returns {Promise<string>} JSON string containing the withdrawal result
  */
 export const withdrawEarnPosition = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: WithdrawParams
 ) => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
+  const accountAddress = env.account?.address;
   try {
-    const withdrawEarn = withdrawService(agent, accountAddress);
-    const result = await withdrawEarn.withdrawEarnTransaction(params, agent);
-    return JSON.stringify(result);
+    const withdrawEarn = withdrawService(env, accountAddress);
+    const result = await withdrawEarn.withdrawEarnTransaction(params, env);
+    return result;
   } catch (error) {
     // console.error('Detailed withdraw error:', error);
     if (error instanceof Error) {
@@ -290,9 +287,9 @@ export const withdrawEarnPosition = async (
       // console.error('Error message:', error.message);
       // console.error('Error stack:', error.stack);
     }
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

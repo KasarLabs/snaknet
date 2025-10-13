@@ -10,14 +10,14 @@ export const getClassHashAt = async (
       params.blockId
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
       classHash,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

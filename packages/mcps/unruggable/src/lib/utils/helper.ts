@@ -2,6 +2,7 @@ import { Account, CallData, Uint256 } from 'starknet';
 import { FACTORY_ADDRESS } from '../constants/index.js';
 import { SnakAgentInterface } from '../dependances/types.js';
 import { RpcProvider } from 'starknet';
+import { onchainWrite } from '@snaknet/core';
 
 /**
  * Execute a contract function transaction.
@@ -27,17 +28,10 @@ import { RpcProvider } from 'starknet';
  */
 export const execute = async (
   method: string,
-  agent: SnakAgentInterface,
-  calldata: (string | Uint256)[],
-  provider: RpcProvider
+  env: onchainWrite,
+  calldata: (string | Uint256)[]
 ) => {
-  const accountCredentials = agent.getAccountCredentials();
-  const account = new Account(
-    provider,
-    accountCredentials.accountPublicKey,
-    accountCredentials.accountPrivateKey
-  );
-
+  const account = env.account;
   return await account.execute({
     contractAddress: FACTORY_ADDRESS,
     entrypoint: method,

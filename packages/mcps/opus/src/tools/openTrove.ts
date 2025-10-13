@@ -1,24 +1,21 @@
-import { SnakAgentInterface } from '../lib/dependances/types.js';
 import { OpenTroveParams } from '../schemas/index.js';
 import { createTroveManager } from '../lib/utils/troveManager.js';
+import { onchainWrite } from '@snaknet/core';
 
-export const openTrove = async (
-  agent: SnakAgentInterface,
-  params: OpenTroveParams
-): Promise<string> => {
-  const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
+export const openTrove = async (env: onchainWrite, params: OpenTroveParams) => {
+  const accountAddress = env.account?.address;
 
   try {
-    const troveManager = createTroveManager(agent, accountAddress);
-    const result = await troveManager.openTroveTransaction(params, agent);
-    return JSON.stringify({
+    const troveManager = createTroveManager(env, accountAddress);
+    const result = await troveManager.openTroveTransaction(params, env);
+    return {
       status: 'success',
       data: result,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'error',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

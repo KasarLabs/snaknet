@@ -1,5 +1,5 @@
 import { Contract } from 'starknet';
-import { SnakAgentInterface } from '../lib/dependances/types.js';
+import { onchainWrite } from '@snaknet/core';
 import {
   validateToken,
   formatBalance,
@@ -18,11 +18,11 @@ import { getTotalSupplySchema } from '../schemas/index.js';
  * @throws {Error} If operation fails
  */
 export const getTotalSupply = async (
-  agent: SnakAgentInterface,
+  env: onchainWrite,
   params: z.infer<typeof getTotalSupplySchema>
-): Promise<string> => {
+) => {
   try {
-    const provider = agent.getProvider();
+    const provider = env.provider;
 
     const { assetSymbol, assetAddress } = extractAssetInfo(params.asset);
 
@@ -38,15 +38,15 @@ export const getTotalSupply = async (
 
     const formattedSupply = formatBalance(totalSupply, token.decimals);
 
-    return JSON.stringify({
+    return {
       status: 'success',
       totalSupply: formattedSupply,
       symbol: token.symbol,
-    });
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };

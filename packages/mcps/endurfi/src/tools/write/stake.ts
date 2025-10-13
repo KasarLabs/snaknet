@@ -6,10 +6,10 @@ import {
   getUnderlyingTokenName,
 } from '../../lib/utils/contracts.js';
 import { StakeSchema } from '../../schemas/index.js';
-import { envWrite } from '../../interfaces/index.js';
+import { onchainWrite } from '@snaknet/core';
 import { formatUnits } from '../../lib/utils/formatting.js';
 
-export const stake = async (env: envWrite, params: StakeSchema) => {
+export const stake = async (env: onchainWrite, params: StakeSchema) => {
   try {
     const account = env.account;
     const liquidTokenContract = getLiquidTokenContract(

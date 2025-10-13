@@ -9,14 +9,14 @@ export const getBlockWithReceipts = async (
       params.blockId
     );
 
-    return JSON.stringify({
+    return {
       status: 'success',
-      blockWithReceipts,
-    });
+      blockWithReceipts: blockWithReceipts as any,
+    };
   } catch (error) {
-    return JSON.stringify({
+    return {
       status: 'failure',
       error: error instanceof Error ? error.message : 'Unknown error',
-    });
+    };
   }
 };
