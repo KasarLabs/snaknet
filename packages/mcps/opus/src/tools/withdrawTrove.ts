@@ -5,7 +5,7 @@ import { createTroveManager } from '../lib/utils/troveManager.js';
 export const withdrawTrove = async (
   agent: SnakAgentInterface,
   params: WithdrawTroveParams
-)=> {
+) => {
   const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
 
   try {

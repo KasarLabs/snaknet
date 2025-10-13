@@ -16,12 +16,14 @@ Ekubo is Starknet's leading AMM, commanding 60% of the total AMM TVL and the maj
 This MCP adds the following tools:
 
 ### Read Operations
+
 - **get_pool_info**: Get comprehensive information about an Ekubo pool including current price, liquidity, and fee data.
 - **get_token_price**: Get the price of a token via Ekubo pools by querying the pool price directly from the Core contract.
 - **get_pool_liquidity**: Get the total liquidity available in an Ekubo pool at the current tick.
 - **get_pool_fees_per_liquidity**: Get the cumulative fees per unit of liquidity for an Ekubo pool (both token0 and token1).
 
 ### Write Operations
+
 - **swap**: Swap tokens on Ekubo DEX. Supports both exact input and exact output swaps with configurable slippage tolerance.
 - **create_position**: Create a new liquidity position (NFT) in an Ekubo pool within a specified price range (concentrated liquidity).
 - **add_liquidity**: Add liquidity to an existing Ekubo pool position without minting a new NFT.

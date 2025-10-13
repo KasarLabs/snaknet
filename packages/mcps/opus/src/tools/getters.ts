@@ -26,7 +26,7 @@ export const getUserTroves = async (
 export const getTroveHealth = async (
   agent: SnakAgentInterface,
   params: GetTroveHealthParams
-)=> {
+) => {
   const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
 
   try {
@@ -44,9 +44,7 @@ export const getTroveHealth = async (
   }
 };
 
-export const getBorrowFee = async (
-  agent: SnakAgentInterface
-) => {
+export const getBorrowFee = async (agent: SnakAgentInterface) => {
   const accountAddress = agent.getAccountCredentials()?.accountPublicKey;
 
   try {

@@ -17,6 +17,7 @@ Endur is a liquid staking platform offering xSTRK, a tradeable Liquid Staking To
 This MCP adds the following tools:
 
 ### Read Operations
+
 - **preview_stake**: Preview how much liquid staking token (xSTRK, xyWBTC, etc.) will be received for staking a given amount of underlying token (STRK, WBTC, tBTC, LBTC).
 - **preview_unstake**: Preview how much underlying token (STRK, WBTC, tBTC, LBTC) will be received for unstaking a given amount of liquid staking token (xSTRK, xyWBTC, etc.).
 - **get_user_balance**: Get user liquid staking token balance (xSTRK, xyWBTC, etc.) and its underlying token equivalent value for any token type.
@@ -24,6 +25,7 @@ This MCP adds the following tools:
 - **get_withdraw_request_info**: Get information about a withdraw request NFT including status, amount, and claimability for any token type.
 
 ### Write Operations
+
 - **stake**: Stake tokens (STRK, WBTC, tBTC, LBTC) to receive liquid staking tokens (xSTRK, xyWBTC, etc.). No fees on staking. Rewards auto-compound.
 - **unstake**: Unstake liquid staking tokens (xSTRK, xyWBTC, etc.) via the withdraw queue. Creates a withdraw request NFT. Wait 1-2 days before claiming. No slippage.
 - **claim**: Claim underlying tokens (STRK, WBTC, tBTC, LBTC) from a withdraw request NFT after the waiting period (1-2 days).

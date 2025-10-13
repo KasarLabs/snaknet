@@ -25,11 +25,10 @@ export const proveProgram = async (
   try {
     await checkScarbInstalled();
 
-    const result =
-      await proveProject({
-        projectDir: params.path || process.cwd(),
-        executionId: params.executionId.toString(),
-      })
+    const result = await proveProject({
+      projectDir: params.path || process.cwd(),
+      executionId: params.executionId.toString(),
+    });
 
     const fullPath = path.join(projectDir, result.proofPath);
 

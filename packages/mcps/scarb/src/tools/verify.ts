@@ -16,11 +16,10 @@ export const verifyProgram = async (
   try {
     await checkScarbInstalled();
 
-    const result = 
-      await verifyProject({
-        projectDir: params.path || (process.cwd() as string),
-        proofPath: params.proofFile as string,
-      })
+    const result = await verifyProject({
+      projectDir: params.path || (process.cwd() as string),
+      proofPath: params.proofFile as string,
+    });
 
     return {
       status: 'success',
