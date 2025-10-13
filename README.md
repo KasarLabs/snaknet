@@ -29,6 +29,7 @@ A comprehensive collection of Model Context Protocol (MCP) servers for Starknet 
 
 - [What is MCP?](#what-is-mcp)
 - [Quick Start](#quick-start)
+- [Environment Configuration](#environment-configuration)
 - [Usage](#usage)
 - [Available MCP Servers](#available-mcp-servers)
 - [Development](#development)
@@ -54,6 +55,33 @@ cd snaknet
 pnpm install
 pnpm build
 ```
+
+## Environment Configuration
+
+### Required Environment Variables
+
+The Snaknet MCP requires **at least one LLM API key** to function:
+
+```bash
+# At least one of these is required
+export ANTHROPIC_API_KEY="sk-..."     # For Claude models (recommended)
+export GEMINI_API_KEY="..."           # For Google Gemini models
+export OPENAI_API_KEY="sk-..."        # For OpenAI models
+
+# Optional: specify model name (defaults based on API key provider)
+export MODEL_NAME="claude-sonnet-4-20250514"
+```
+
+### Optional Environment Variables
+
+Depending on which Starknet operations you want to perform, you may need additional environment variables. The router **dynamically loads all environment variables** and passes them to the appropriate MCPs as needed.
+
+For example:
+- `STARKNET_RPC_URL` - For interacting with Starknet blockchain
+- `STARKNET_ACCOUNT_ADDRESS` - For transaction signing
+- `STARKNET_PRIVATE_KEY` - For account operations
+
+Simply add any environment variables required by the MCPs you want to use, and they will be automatically available to the router.
 
 ## Usage
 
