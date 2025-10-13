@@ -16,13 +16,17 @@ Endur is a liquid staking platform offering xSTRK, a tradeable Liquid Staking To
 
 This MCP adds the following tools:
 
-- **endurfi_stake_strk**: Stake STRK tokens and receive xSTRK liquid staking tokens.
-- **endurfi_unstake_xstrk**: Unstake xSTRK tokens to receive STRK tokens.
-- **endurfi_get_staking_info**: Get current staking rates, APY, and protocol information.
-- **endurfi_get_balance**: Check your xSTRK and STRK balances.
-- **endurfi_get_rewards**: View accumulated staking rewards.
-- **endurfi_estimate_returns**: Estimate potential staking returns over time.
-- **endurfi_get_validator_info**: Get information about validators in the protocol.
+### Read Operations
+- **preview_stake**: Preview how much liquid staking token (xSTRK, xyWBTC, etc.) will be received for staking a given amount of underlying token (STRK, WBTC, tBTC, LBTC).
+- **preview_unstake**: Preview how much underlying token (STRK, WBTC, tBTC, LBTC) will be received for unstaking a given amount of liquid staking token (xSTRK, xyWBTC, etc.).
+- **get_user_balance**: Get user liquid staking token balance (xSTRK, xyWBTC, etc.) and its underlying token equivalent value for any token type.
+- **get_total_staked**: Get total amount of underlying token (STRK, WBTC, tBTC, LBTC) staked on Endur.fi (TVL) for a specific token type.
+- **get_withdraw_request_info**: Get information about a withdraw request NFT including status, amount, and claimability for any token type.
+
+### Write Operations
+- **stake**: Stake tokens (STRK, WBTC, tBTC, LBTC) to receive liquid staking tokens (xSTRK, xyWBTC, etc.). No fees on staking. Rewards auto-compound.
+- **unstake**: Unstake liquid staking tokens (xSTRK, xyWBTC, etc.) via the withdraw queue. Creates a withdraw request NFT. Wait 1-2 days before claiming. No slippage.
+- **claim**: Claim underlying tokens (STRK, WBTC, tBTC, LBTC) from a withdraw request NFT after the waiting period (1-2 days).
 
 ## Usage
 
@@ -33,13 +37,14 @@ The Endurfi MCP is used by Claude Code and compatible MCP clients. Configure it 
 When asking the agent to perform Endur-related tasks, it will use the appropriate tool from this MCP:
 
 ```
-"Stake 100 STRK tokens on Endur"  // Uses endurfi_stake_strk
-"Unstake 50 xSTRK tokens"  // Uses endurfi_unstake_xstrk
-"What's the current staking APY on Endur?"  // Uses endurfi_get_staking_info
-"Check my xSTRK balance"  // Uses endurfi_get_balance
-"Show my staking rewards"  // Uses endurfi_get_rewards
-"Estimate returns for staking 1000 STRK"  // Uses endurfi_estimate_returns
-"Show validator information"  // Uses endurfi_get_validator_info
+"How much xSTRK will I get for staking 100 STRK?"  // Uses preview_stake
+"How much STRK will I get for unstaking 50 xSTRK?"  // Uses preview_unstake
+"Check my xSTRK balance"  // Uses get_user_balance
+"What's the total STRK staked on Endur?"  // Uses get_total_staked
+"Stake 100 STRK tokens on Endur"  // Uses stake
+"Unstake 50 xSTRK tokens"  // Uses unstake
+"Claim my tokens from withdraw request"  // Uses claim
+"Check status of my withdraw request"  // Uses get_withdraw_request_info
 ```
 
 ## Development

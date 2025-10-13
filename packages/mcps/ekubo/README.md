@@ -15,13 +15,18 @@ Ekubo is Starknet's leading AMM, commanding 60% of the total AMM TVL and the maj
 
 This MCP adds the following tools:
 
-- **ekubo_get_pools**: Get available liquidity pools and their information.
-- **ekubo_swap_tokens**: Execute token swaps through Ekubo's concentrated liquidity.
-- **ekubo_get_quote**: Get swap quotes and price information.
-- **ekubo_add_liquidity**: Add concentrated liquidity to specific price ranges.
-- **ekubo_remove_liquidity**: Remove liquidity positions from pools.
-- **ekubo_get_position**: Get information about your liquidity positions.
-- **ekubo_get_pool_stats**: Get detailed pool statistics and metrics.
+### Read Operations
+- **get_pool_info**: Get comprehensive information about an Ekubo pool including current price, liquidity, and fee data.
+- **get_token_price**: Get the price of a token via Ekubo pools by querying the pool price directly from the Core contract.
+- **get_pool_liquidity**: Get the total liquidity available in an Ekubo pool at the current tick.
+- **get_pool_fees_per_liquidity**: Get the cumulative fees per unit of liquidity for an Ekubo pool (both token0 and token1).
+
+### Write Operations
+- **swap**: Swap tokens on Ekubo DEX. Supports both exact input and exact output swaps with configurable slippage tolerance.
+- **create_position**: Create a new liquidity position (NFT) in an Ekubo pool within a specified price range (concentrated liquidity).
+- **add_liquidity**: Add liquidity to an existing Ekubo pool position without minting a new NFT.
+- **withdraw_liquidity**: Withdraw liquidity from an Ekubo pool position. Can withdraw full position, partial position, or only collect fees.
+- **transfer_position**: Transfer an Ekubo NFT position to another address.
 
 ## Usage
 
@@ -32,12 +37,14 @@ The Ekubo MCP is used by Claude Code and compatible MCP clients. Configure it in
 When asking the agent to perform Ekubo-related tasks, it will use the appropriate tool from this MCP:
 
 ```
-"Show me ETH/USDC pools on Ekubo"  // Uses ekubo_get_pools
-"Swap 0.1 ETH for USDC on Ekubo"  // Uses ekubo_swap_tokens
-"Quote 100 USDC to ETH"  // Uses ekubo_get_quote
-"Add liquidity to ETH/USDC pool at current price"  // Uses ekubo_add_liquidity
-"Show my liquidity positions on Ekubo"  // Uses ekubo_get_position
-"Get pool statistics for ETH/USDC"  // Uses ekubo_get_pool_stats
+"Get info about the ETH/USDC pool on Ekubo"  // Uses get_pool_info
+"What's the price of STRK on Ekubo?"  // Uses get_token_price
+"How much liquidity is in the ETH/USDC pool?"  // Uses get_pool_liquidity
+"Swap 0.1 ETH for USDC on Ekubo"  // Uses swap
+"Create a liquidity position for ETH/USDC"  // Uses create_position
+"Add liquidity to my existing position"  // Uses add_liquidity
+"Withdraw liquidity from my position"  // Uses withdraw_liquidity
+"Transfer my position NFT to another address"  // Uses transfer_position
 ```
 
 ## Development
