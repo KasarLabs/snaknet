@@ -6,7 +6,11 @@ import dotenv from 'dotenv';
 import { CreateArgentAccount } from './tools/createAccount.js';
 import { DeployArgentAccount } from './tools/deployAccount.js';
 import { accountDetailsSchema } from './schemas/schema.js';
-import { mcpTool, registerToolsWithServer, getOnchainRead } from '@snaknet/core';
+import {
+  mcpTool,
+  registerToolsWithServer,
+  getOnchainRead,
+} from '@snaknet/core';
 
 dotenv.config();
 

@@ -23,9 +23,7 @@ export class SwapService {
    * Creates an instance of SwapService
    * @param {onchainWrite} env - The onchain write environment for blockchain interactions
    */
-  constructor(
-    private env: onchainWrite
-  ) {
+  constructor(private env: onchainWrite) {
     this.tokenService = new TokenService();
     this.approvalService = new ApprovalService(env);
   }
@@ -156,16 +154,11 @@ export class SwapService {
  * @param {onchainWrite} env - The onchain write environment
  * @returns {SwapService} A new SwapService instance
  */
-export const createSwapService = (
-  env: onchainWrite
-): SwapService => {
+export const createSwapService = (env: onchainWrite): SwapService => {
   return new SwapService(env);
 };
 
-export const swapTokens = async (
-  env: onchainWrite,
-  params: SwapParams
-) => {
+export const swapTokens = async (env: onchainWrite, params: SwapParams) => {
   try {
     const swapService = createSwapService(env);
     const result = await swapService.executeSwapTransaction(params);

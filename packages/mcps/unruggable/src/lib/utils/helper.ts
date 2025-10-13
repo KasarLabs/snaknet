@@ -29,9 +29,9 @@ import { onchainWrite } from '@snaknet/core';
 export const execute = async (
   method: string,
   env: onchainWrite,
-  calldata: (string | Uint256)[],
+  calldata: (string | Uint256)[]
 ) => {
-  const account = env.account
+  const account = env.account;
   return await account.execute({
     contractAddress: FACTORY_ADDRESS,
     entrypoint: method,

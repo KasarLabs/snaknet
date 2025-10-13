@@ -45,12 +45,8 @@ export class ApprovalService {
     amount: string
   ): Promise<void> {
     try {
-      const contractInteractor = new ContractInteractor(
-        this.env.provider
-      );
-      const transactionMonitor = new TransactionMonitor(
-        this.env.provider
-      );
+      const contractInteractor = new ContractInteractor(this.env.provider);
+      const transactionMonitor = new TransactionMonitor(this.env.provider);
 
       const contract = contractInteractor.createContract(
         ERC20_ABI,

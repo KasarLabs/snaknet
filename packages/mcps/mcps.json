@@ -35,7 +35,6 @@
         "erc20_get_total_supply",
         "erc20_transfer_from",
         "erc20_get_balance",
-        "erc20_get_own_balance",
         "erc20_approve",
         "erc20_transfer",
         "erc20_deploy_new_contract"

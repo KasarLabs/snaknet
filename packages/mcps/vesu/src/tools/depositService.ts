@@ -260,10 +260,7 @@ export const depositEarnPosition = async (
   const accountAddress = env.account?.address;
   try {
     const depositEarnService = createDepositEarnService(env, accountAddress);
-    const result = await depositEarnService.depositEarnTransaction(
-      params,
-      env
-    );
+    const result = await depositEarnService.depositEarnTransaction(params, env);
     return result;
   } catch (error) {
     // console.error('Detailed deposit error:', error);

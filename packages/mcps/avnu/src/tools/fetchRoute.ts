@@ -103,13 +103,14 @@ export class RouteFetchService {
  * @param {string} accountAddress - The account address
  * @returns {Promise<RouteResult>} The route fetch result
  */
-export const getRoute = async (
-  env: onchainWrite,
-  params: RouteSchemaType,
-) => {
+export const getRoute = async (env: onchainWrite, params: RouteSchemaType) => {
   try {
     const routeService = new RouteFetchService();
-    const result = await routeService.fetchRoute(params, env, env.account.address);
+    const result = await routeService.fetchRoute(
+      params,
+      env,
+      env.account.address
+    );
     return JSON.stringify(result, (_, value) =>
       typeof value === 'bigint' ? value.toString() : value
     );

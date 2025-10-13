@@ -4,7 +4,12 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 
 import dotenv from 'dotenv';
 
-import { mcpTool, registerToolsWithServer, getOnchainRead, getOnchainWrite } from '@snaknet/core';
+import {
+  mcpTool,
+  registerToolsWithServer,
+  getOnchainRead,
+  getOnchainWrite,
+} from '@snaknet/core';
 import {
   poolKeySchema,
   getTokenPriceSchema,

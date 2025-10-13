@@ -4,7 +4,6 @@ import { FACTORY_ADDRESS } from '../lib/constants/index.js';
 import { Contract } from 'starknet';
 import { onchainWrite } from '@snaknet/core';
 
-
 /**
  * Launches a memecoin on the Ekubo DEX with concentrated liquidity.
  *

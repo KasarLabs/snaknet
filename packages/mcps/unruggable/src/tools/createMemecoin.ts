@@ -3,7 +3,6 @@ import { stark, uint256 } from 'starknet';
 import { execute, decimalsScale } from '../lib/utils/helper.js';
 import { onchainWrite } from '@snaknet/core';
 
-
 /**
  * Creates a new memecoin using the Unruggable Factory.
  *
@@ -63,19 +62,15 @@ export const createMemecoin = async (
   try {
     const provider = env.provider;
     const salt = stark.randomAddress();
-    const { transaction_hash } = await execute(
-      'create_memecoin',
-      env,
-      [
-        params.owner,
-        params.name,
-        params.symbol,
-        uint256.bnToUint256(
-          BigInt(params.initialSupply) * BigInt(decimalsScale(18))
-        ),
-        salt,
-      ],
-    );
+    const { transaction_hash } = await execute('create_memecoin', env, [
+      params.owner,
+      params.name,
+      params.symbol,
+      uint256.bnToUint256(
+        BigInt(params.initialSupply) * BigInt(decimalsScale(18))
+      ),
+      salt,
+    ]);
 
     await provider.waitForTransaction(transaction_hash);
 

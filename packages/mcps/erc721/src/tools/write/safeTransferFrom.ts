@@ -41,7 +41,6 @@ export const safeTransferFrom = async (
     const contractAddress = validateAndParseAddress(params.contractAddress);
     const data = ['0x0'];
 
-
     const contract = new Contract(
       INTERACT_ERC721_ABI,
       contractAddress,

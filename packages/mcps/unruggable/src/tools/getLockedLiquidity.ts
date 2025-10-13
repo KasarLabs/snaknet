@@ -4,7 +4,6 @@ import { FACTORY_ABI } from '../lib/abis/unruggableFactory.js';
 import { FACTORY_ADDRESS } from '../lib/constants/index.js';
 import { onchainWrite } from '@snaknet/core';
 
-
 type LiquidityType =
   | { type: 'JediERC20'; address: string }
   | { type: 'StarkDeFiERC20'; address: string }

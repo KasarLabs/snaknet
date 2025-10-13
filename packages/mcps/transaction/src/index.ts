@@ -2,7 +2,11 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 
-import { mcpTool, registerToolsWithServer, getOnchainRead } from '@snaknet/core';
+import {
+  mcpTool,
+  registerToolsWithServer,
+  getOnchainRead,
+} from '@snaknet/core';
 import dotenv from 'dotenv';
 
 import {

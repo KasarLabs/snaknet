@@ -1,4 +1,3 @@
-
 import { Account, constants, Contract } from 'starknet';
 import { artpeaceAbi } from '../lib/abis/artpeaceAbi.js';
 import { artpeaceAddr } from '../lib/constants/artpeace.js';
