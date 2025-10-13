@@ -77,6 +77,7 @@ export MODEL_NAME="claude-sonnet-4-20250514"
 Depending on which Starknet operations you want to perform, you may need additional environment variables. The router **dynamically loads all environment variables** and passes them to the appropriate MCPs as needed.
 
 For example:
+
 - `STARKNET_RPC_URL` - For interacting with Starknet blockchain
 - `STARKNET_ACCOUNT_ADDRESS` - For transaction signing
 - `STARKNET_PRIVATE_KEY` - For account operations
