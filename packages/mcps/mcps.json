@@ -399,10 +399,10 @@
         "CAIRO_CODER_API_KEY": ""
       }
     },
-    "description": "AI-powered Cairo and Starknet development assistance via Cairo Coder API",
+    "description": "AI-powered Cairo code assistance and Starknet general knowledge via Cairo Coder API",
     "promptInfo": {
-      "expertise": "Cairo smart contract development, Starknet best practices, and ecosystem guidance",
-      "tools": ["assist_with_cairo"]
+      "expertise": "Cairo smart contract development, Starknet technical documentation, ecosystem knowledge, and recent Starknet news",
+      "tools": ["assist_with_cairo", "starknet_general_knowledge"]
     }
   }
 }
