@@ -20,7 +20,7 @@ export const assistWithCairoSchema = z.object({
     .array(z.string())
     .optional()
     .describe(
-      "Optional: The preceding conversation history. This can help the tool understand the context of the discussion and provide more accurate answers."
+      'Optional: The preceding conversation history. This can help the tool understand the context of the discussion and provide more accurate answers.'
     ),
 });
 
@@ -40,8 +40,10 @@ export const starknetGeneralKnowledgeSchema = z.object({
     .array(z.string())
     .optional()
     .describe(
-      "Optional: The preceding conversation history. This can help the tool understand the context of the discussion and provide more accurate answers."
+      'Optional: The preceding conversation history. This can help the tool understand the context of the discussion and provide more accurate answers.'
     ),
 });
 
-export type StarknetGeneralKnowledgeInput = z.infer<typeof starknetGeneralKnowledgeSchema>;
+export type StarknetGeneralKnowledgeInput = z.infer<
+  typeof starknetGeneralKnowledgeSchema
+>;

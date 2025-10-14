@@ -1,11 +1,11 @@
 module.exports = {
   root: true,
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
-  extends: ["eslint:recommended", "@typescript-eslint/recommended"],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  extends: ['eslint:recommended', '@typescript-eslint/recommended'],
   parserOptions: {
     ecmaVersion: 2020,
-    sourceType: "module",
+    sourceType: 'module',
   },
   env: {
     node: true,
@@ -13,11 +13,11 @@ module.exports = {
   },
   rules: {
     // Personnalisez vos règles ici
-    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "warn",
-    "prefer-const": "error",
-    "no-var": "error",
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    'prefer-const': 'error',
+    'no-var': 'error',
   },
-  ignorePatterns: ["dist/", "node_modules/", "*.js"],
+  ignorePatterns: ['dist/', 'node_modules/', '*.js'],
 };
