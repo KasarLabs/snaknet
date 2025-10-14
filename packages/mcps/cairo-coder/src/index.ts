@@ -1,16 +1,10 @@
 #!/usr/bin/env node
 
 import "dotenv/config";
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-  type Tool
-} from "@modelcontextprotocol/sdk/types.js";
-import fetch from "node-fetch";
+import { assistWithCairoSchema, type AssistWithCairoInput } from "./schemas.js";
 
-// ... reste du code inchangé
 /**
  * Represents a message in the Cairo Coder conversation
  */
@@ -43,7 +37,7 @@ interface CairoCoderResponse {
  * Provides AI-powered assistance for Cairo and Starknet development
  */
 class CairoCoderMCPServer {
-  private server: Server;
+  private server: McpServer;
   private apiKey: string;
   private apiUrl: string;
   private isLocalMode: boolean;
@@ -53,12 +47,9 @@ class CairoCoderMCPServer {
    * @throws {Error} If CAIRO_CODER_API_KEY environment variable is not set when using public API
    */
   constructor() {
-    this.server = new Server({
+    this.server = new McpServer({
       name: "cairo-coder-mcp",
       version: "1.0.0",
-      capabilities: {
-        tools: {},
-      },
     });
 
     // Check if local endpoint is specified
@@ -88,7 +79,6 @@ class CairoCoderMCPServer {
     }
 
     this.setupToolHandlers();
-    this.setupErrorHandling();
   }
 
   /**
@@ -96,65 +86,20 @@ class CairoCoderMCPServer {
    * Configures the assist_with_cairo tool for Cairo/Starknet development assistance
    */
   private setupToolHandlers(): void {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => {
-      return {
-        tools: [
-          {
-            name: "assist_with_cairo",
-            description: `Provides assistance with Cairo and Starknet development tasks through AI-powered analysis.
-  
-  Call this tool when the user's request involves **writing, refactoring, implementing from scratch, or completing specific parts (like TODOs)** of Cairo code or smart contracts.
-  
-  The tool analyzes the query and context against Cairo/Starknet best practices and documentation, returning helpful information to generate accurate code or explanations.
-  
-  This tool should also be called to get a better understanding of Starknet's ecosystem, features, and capacities.`,
-            inputSchema: {
-              type: "object",
-              properties: {
-                query: {
-                  type: "string",
-                  description:
-                    "The user's question regarding Cairo and Starknet development. Try to be as specific as possible for better results (e.g., 'Using OpenZeppelin to build an ERC20' rather than just 'ERC20').",
-                },
-                codeSnippets: {
-                  type: "array",
-                  items: {
-                    type: "string",
-                  },
-                  description:
-                    "Optional: Code snippets for context. This will help the tool understand the user's intent and provide more accurate answers. Provide as much relevant code as possible to fit the user's request.",
-                },
-                history: {
-                  type: "array",
-                  items: {
-                    type: "string",
-                  },
-                  description:
-                    "Optional: The preceding conversation history. This can help the tool understand the context of the discussion and provide more accurate answers.",
-                },
-              },
-              required: ["query"],
-            },
-          } as Tool,
-        ],
-      };
-    });
+    this.server.tool(
+      "assist_with_cairo",
+      `Provides assistance with Cairo and Starknet development tasks through AI-powered analysis.
 
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      const { name, arguments: args } = request.params;
+Call this tool when the user's request involves **writing, refactoring, implementing from scratch, or completing specific parts (like TODOs)** of Cairo code or smart contracts.
 
-      if (name === "assist_with_cairo") {
-        return await this.handleCairoAssistance(
-          args as {
-            query: string;
-            codeSnippets?: string[];
-            history?: string[];
-          },
-        );
+The tool analyzes the query and context against Cairo/Starknet best practices and documentation, returning helpful information to generate accurate code or explanations.
+
+This tool should also be called to get a better understanding of Starknet's ecosystem, features, and capacities.`,
+      assistWithCairoSchema.shape,
+      async (args: AssistWithCairoInput) => {
+        return await this.handleCairoAssistance(args);
       }
-
-      throw new Error(`Unknown tool: ${name}`);
-    });
+    );
   }
 
   /**
@@ -162,11 +107,7 @@ class CairoCoderMCPServer {
    * @param args - The arguments containing query, optional code snippets, and conversation history
    * @returns The response from the Cairo Coder API or an error message
    */
-  private async handleCairoAssistance(args: {
-    query: string;
-    codeSnippets?: string[];
-    history?: string[];
-  }) {
+  private async handleCairoAssistance(args: AssistWithCairoInput) {
     try {
       const { query, codeSnippets, history } = args;
 
@@ -228,7 +169,7 @@ class CairoCoderMCPServer {
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: assistantResponse,
           },
         ],
@@ -240,28 +181,13 @@ class CairoCoderMCPServer {
       return {
         content: [
           {
-            type: "text",
+            type: "text" as const,
             text: `Error: ${errorMessage}`,
           },
         ],
         isError: true,
       };
     }
-  }
-
-  /**
-   * Sets up error handling for the server
-   * Configures error logging and graceful shutdown on SIGINT
-   */
-  private setupErrorHandling(): void {
-    this.server.onerror = (error) => {
-      console.error("[MCP Error]", error);
-    };
-
-    process.on("SIGINT", async () => {
-      await this.server.close();
-      process.exit(0);
-    });
   }
 
   /**
@@ -272,6 +198,12 @@ class CairoCoderMCPServer {
     const transport = new StdioServerTransport();
     console.error("Cairo Coder MCP server running on stdio");
     await this.server.connect(transport);
+
+    // Handle graceful shutdown
+    process.on("SIGINT", async () => {
+      await this.server.close();
+      process.exit(0);
+    });
   }
 }
 
