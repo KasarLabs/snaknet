@@ -54,7 +54,7 @@ class CairoCoderMCPServer {
   constructor() {
     this.server = new McpServer({
       name: 'cairo-coder-mcp',
-      version: '1.0.0',
+      version: '0.2.0',
     });
 
     // Check if local endpoint is specified
