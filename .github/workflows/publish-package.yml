@@ -1,0 +1,126 @@
+name: Publish Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: 'Package to publish'
+        required: true
+        type: choice
+        options:
+          - snaknet
+          - cairo-coder
+          - argent
+          - avnu
+          - braavos
+          - erc20
+          - erc721
+          - transaction
+          - artpeace
+          - contract
+          - fibrous
+          - okx
+          - openzeppelin
+          - opus
+          - starknet-rpc
+          - scarb
+          - unruggable
+          - vesu
+          - ekubo
+          - extended
+          - endurfi
+      version:
+        description: 'Version type'
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Install dependencies
+        run: pnpm install
+      
+      - name: Build all packages
+        run: pnpm build
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Determine package path
+        id: path
+        run: |
+          if [ "${{ github.event.inputs.package }}" = "snaknet" ]; then
+            echo "package_path=packages/mcp" >> $GITHUB_OUTPUT
+            echo "package_name=@snaknet/snaknet" >> $GITHUB_OUTPUT
+            echo "tag_prefix=snaknet" >> $GITHUB_OUTPUT
+          else
+            echo "package_path=packages/mcps/${{ github.event.inputs.package }}" >> $GITHUB_OUTPUT
+            echo "package_name=@snaknet/${{ github.event.inputs.package }}" >> $GITHUB_OUTPUT
+            echo "tag_prefix=${{ github.event.inputs.package }}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Bump version
+        id: version
+        run: |
+          cd ${{ steps.path.outputs.package_path }}
+          NEW_VERSION=$(npm version ${{ github.event.inputs.version }} --no-git-tag-version | sed 's/v//')
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "Version bumped to $NEW_VERSION"
+      
+      - name: Commit version change
+        run: |
+          git add ${{ steps.path.outputs.package_path }}/package.json
+          git commit -m "chore(${{ github.event.inputs.package }}): release v${{ steps.version.outputs.new_version }}"
+          git push
+      
+      - name: Create and push tag
+        run: |
+          git tag ${{ steps.path.outputs.tag_prefix }}-v${{ steps.version.outputs.new_version }}
+          git push origin ${{ steps.path.outputs.tag_prefix }}-v${{ steps.version.outputs.new_version }}
+      
+      - name: Publish to npm
+        run: |
+          cd ${{ steps.path.outputs.package_path }}
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.path.outputs.tag_prefix }}-v${{ steps.version.outputs.new_version }}
+          name: ${{ steps.path.outputs.package_name }} v${{ steps.version.outputs.new_version }}
+          body: |
+            Release of ${{ steps.path.outputs.package_name }} v${{ steps.version.outputs.new_version }}
+            
+            Package: `${{ github.event.inputs.package }}`
+          draft: false
+          prerelease: false
