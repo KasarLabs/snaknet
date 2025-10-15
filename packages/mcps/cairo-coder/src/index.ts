@@ -121,7 +121,7 @@ This tool has access to Cairo documentation, code examples, corelib references, 
 Call this tool when the user needs to:
 - **Understand Starknet concepts** (account abstraction, sequencers, STARK proofs, etc.)
 - **Discover ecosystem projects** and integrations
-- **Get information from the Starknet blog** (2025+)
+- **Get information from the Starknet blog**
 - **Understand high-level architecture** and design decisions
 
 This tool has access to Starknet blog posts, conceptual documentation, and ecosystem information.

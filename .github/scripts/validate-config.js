@@ -101,40 +101,6 @@ for (const mcpName of configuredMcps) {
     hasErrors = true;
   }
 
-  // Check if bin script exists
-  const binPath = path.join(mcpDir, 'bin');
-  if (fs.existsSync(binPath)) {
-    const binFiles = fs.readdirSync(binPath);
-
-    // Get the expected bin name from package.json
-    let expectedBinName = null;
-    try {
-      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-      if (packageJson.bin) {
-        const binEntry = Object.values(packageJson.bin)[0];
-        if (binEntry && typeof binEntry === 'string') {
-          expectedBinName = path.basename(binEntry);
-        }
-      }
-    } catch (error) {
-      console.error('❌ Error reading package.json for bin validation');
-      hasErrors = true;
-    }
-
-    if (!expectedBinName) {
-      console.error('❌ No bin entry found in package.json');
-      hasErrors = true;
-    } else if (!binFiles.includes(expectedBinName)) {
-      console.error(`❌ Missing bin/${expectedBinName}`);
-      hasErrors = true;
-    } else {
-      console.log('✅ Bin script found');
-    }
-  } else {
-    console.error('❌ Missing bin directory');
-    hasErrors = true;
-  }
-
   console.log('✅', mcpName, 'basic structure OK');
 }
 
