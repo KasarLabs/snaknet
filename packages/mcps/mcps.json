@@ -389,5 +389,20 @@
         "claim"
       ]
     }
+  },
+  "cairo-coder": {
+    "client": {
+      "command": "node",
+      "args": ["build/index.js"],
+      "transport": "stdio",
+      "env": {
+        "CAIRO_CODER_API_KEY": ""
+      }
+    },
+    "description": "AI-powered Cairo code assistance and Starknet general knowledge via Cairo Coder API",
+    "promptInfo": {
+      "expertise": "Cairo smart contract development, Starknet technical documentation, ecosystem knowledge, and recent Starknet news",
+      "tools": ["assist_with_cairo", "starknet_general_knowledge"]
+    }
   }
 }
