@@ -1,15 +1,15 @@
 {
   "name": "@kasarlabs/test-mcp",
   "version": "0.0.1",
-  "main": "build/src/index.js",
+  "main": "build/index.js",
   "type": "module",
   "bin": {
     "starknet-test-mcp": "bin/starknet-test-mcp.js"
   },
   "scripts": {
-    "build": "tsc && chmod 755 build/src/index.js",
+    "build": "tsc && chmod 755 build/index.js",
     "clean": "rm -rf build",
-    "start": "node build/src/index.js"
+    "start": "node build/index.js"
   },
   "files": [
     "build"
