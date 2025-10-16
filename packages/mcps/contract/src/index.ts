@@ -13,11 +13,13 @@ import {
   getConstructorParamsSchema,
 } from './schemas/index.js';
 
+import packageJson from '../package.json' with { type: 'json' };
+
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-contract',
-  version: '0.1.0',
+  name: 'starknet-contract-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (ContractToolRegistry: mcpTool[]) => {

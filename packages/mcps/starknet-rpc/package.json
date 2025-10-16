@@ -1,5 +1,5 @@
 {
-  "name": "@snaknet/starknet-rpc-mcp",
+  "name": "@kasarlabs/starknet-rpc-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",

@@ -1,5 +1,5 @@
 {
-  "name": "@snaknet/openzeppelin-mcp",
+  "name": "@kasarlabs/openzeppelin-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",

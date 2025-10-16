@@ -14,11 +14,13 @@ import { accountDetailsSchema } from './schemas/schema.js';
 import { DeployOKXAccount } from './tools/deployAccount.js';
 import { CreateOKXAccount } from './tools/createAccount.js';
 
+import packageJson from '../package.json' with { type: 'json' };
+
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-okx',
-  version: '0.1.0',
+  name: 'starknet-okx-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (OkxToolRegistry: mcpTool[]) => {

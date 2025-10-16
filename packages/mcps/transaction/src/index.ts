@@ -23,11 +23,13 @@ import {
   simulateDeclareTransactionSchema,
 } from './schemas/index.js';
 
+import packageJson from '../package.json' with { type: 'json' };
+
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-transaction',
-  version: '0.1.0',
+  name: 'starknet-transaction-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (TransactionToolRegistry: mcpTool[]) => {

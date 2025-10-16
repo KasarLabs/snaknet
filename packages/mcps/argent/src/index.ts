@@ -11,12 +11,13 @@ import {
   registerToolsWithServer,
   getOnchainRead,
 } from '@snaknet/core';
+import packageJson from '../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-argent',
-  version: '0.1.0',
+  name: 'starknet-argent-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (ArgentToolRegistry: mcpTool[]) => {

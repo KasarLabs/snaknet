@@ -31,11 +31,13 @@ import { addLiquidity } from './tools/write/addLiquidity.js';
 import { withdrawLiquidity } from './tools/write/withdrawLiquidity.js';
 import { transferPosition } from './tools/write/transferPosition.js';
 
+import packageJson from '../package.json' with { type: 'json' };
+
 dotenv.config();
 
 const server = new McpServer({
   name: 'ekubo-mcp',
-  version: '0.1.0',
+  version: packageJson.version,
 });
 
 const registerTools = (EkuboToolRegistry: mcpTool[]) => {

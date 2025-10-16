@@ -1,5 +1,5 @@
 {
-  "name": "@snaknet/ekubo-mcp",
+  "name": "@kasarlabs/ekubo-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",

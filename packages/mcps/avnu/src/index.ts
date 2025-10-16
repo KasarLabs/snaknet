@@ -12,12 +12,13 @@ import dotenv from 'dotenv';
 import { routeSchema, swapSchema } from './schemas/index.js';
 import { swapTokens } from './tools/swap.js';
 import { getRoute } from './tools/fetchRoute.js';
+import packageJson from '../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-avnu',
-  version: '0.1.0',
+  name: 'starknet-avnu-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (AvnuToolRegistry: mcpTool[]) => {

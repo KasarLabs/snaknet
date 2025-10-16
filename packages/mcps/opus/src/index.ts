@@ -28,11 +28,13 @@ import { withdrawTrove } from './tools/withdrawTrove.js';
 import { borrowTrove } from './tools/borrowTrove.js';
 import { repayTrove } from './tools/repayTrove.js';
 
+import packageJson from '../package.json' with { type: 'json' };
+
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-opus',
-  version: '0.1.0',
+  name: 'starknet-opus-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (OpusToolRegistry: mcpTool[]) => {

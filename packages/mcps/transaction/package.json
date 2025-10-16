@@ -1,5 +1,5 @@
 {
-  "name": "@snaknet/transaction-mcp",
+  "name": "@kasarlabs/transaction-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",

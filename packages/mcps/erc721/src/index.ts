@@ -33,11 +33,13 @@ import { safeTransferFrom } from './tools/write/safeTransferFrom.js';
 import { setApprovalForAll } from './tools/write/setApprovalForAll.js';
 import { deployERC721Contract } from './tools/write/deployERC721.js';
 
+import packageJson from '../package.json' with { type: 'json' };
+
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-erc721',
-  version: '0.1.0',
+  name: 'starknet-erc721-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (Erc721ToolRegistry: mcpTool[]) => {

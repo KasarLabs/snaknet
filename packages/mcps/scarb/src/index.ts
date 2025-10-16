@@ -19,11 +19,13 @@ import {
   verifyProgramSchema,
 } from './schemas/index.js';
 
+import packageJson from '../package.json' with { type: 'json' };
+
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-scarb',
-  version: '0.1.0',
+  name: 'starknet-scarb-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (ScarbToolRegistry: mcpTool[]) => {

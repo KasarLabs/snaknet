@@ -31,12 +31,13 @@ import { transfer } from './tools/transfer.js';
 import { getMyGivenAllowance } from './tools/getAllowance.js';
 import { getAllowanceGivenToMe } from './tools/getAllowance.js';
 import { deployERC20Contract } from './tools/deployERC20.js';
+import packageJson from '../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-erc20',
-  version: '0.1.0',
+  name: 'starknet-erc20-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (Erc20ToolRegistry: mcpTool[]) => {

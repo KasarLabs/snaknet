@@ -13,11 +13,13 @@ import { depositEarnSchema, withdrawEarnSchema } from './schemas/index.js';
 import { depositEarnPosition } from './tools/depositService.js';
 import { withdrawEarnPosition } from './tools/withdrawService.js';
 
+import packageJson from '../package.json' with { type: 'json' };
+
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-vesu',
-  version: '0.1.0',
+  name: 'starknet-vesu-mcp',
+  version: packageJson.version,
 });
 
 const registerTools = (VesuToolRegistry: mcpTool[]) => {

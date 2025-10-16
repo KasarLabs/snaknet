@@ -1,5 +1,5 @@
 {
-  "name": "@snaknet/endurfi-mcp",
+  "name": "@kasarlabs/endurfi-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",
