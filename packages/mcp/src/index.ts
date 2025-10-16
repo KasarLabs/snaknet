@@ -64,9 +64,8 @@ export const registerTools = (snaknetToolRegistry: SnaknetTool[]) => {
   });
 };
 
-
 const server = new McpServer({
-  name: 'ask-starknet',
+  name: 'ask-starknet-mcp',
   version: packageJson.version,
 });
 
