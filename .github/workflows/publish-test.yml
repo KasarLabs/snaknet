@@ -1,6 +1,10 @@
 name: Publish Package
 
 on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
   workflow_dispatch:
     inputs:
       package:
@@ -8,6 +12,7 @@ on:
         required: true
         type: choice
         options:
+          - test-mcp
           - ask-starknet
           - cairo-coder
           - argent
@@ -95,6 +100,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
       
+      - name: Set default package and version
+        id: defaults
+        run: |
+          echo "package=test-mcp" >> $GITHUB_OUTPUT
+          echo "version=patch" >> $GITHUB_OUTPUT
+
       - name: Determine package path
         id: path
         run: |
@@ -130,7 +141,7 @@ jobs:
       - name: Publish to npm
         run: |
           cd ${{ steps.path.outputs.package_path }}
-          npm publish --access public
+          npm publish --access public --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
