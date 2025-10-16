@@ -1,4 +1,4 @@
-name: Publish Package
+name: TEST Publish Package
 
 on:
   push:
@@ -130,12 +130,12 @@ jobs:
         run: |
           git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
           git checkout ${{ github.head_ref }}
-          
+
       - name: Commit version change
         run: |
           git add ${{ steps.path.outputs.package_path }}/package.json
           git commit -m "chore(${{ steps.defaults.outputs.package }}): release v${{ steps.version.outputs.new_version }}"
-          git push
+          git push --set-upstream origin feat/add-mcp-release-workflow
       
       - name: Create and push tag
         run: |
