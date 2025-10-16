@@ -100,6 +100,23 @@ pnpm start
 node build/index.js
 ```
 
+### Testing
+
+The Extended MCP includes comprehensive E2E tests:
+
+```bash
+# Test all READ tools (safe, no modifications)
+pnpm test:read
+
+# Test cancel order (⚠️ cancels real orders)
+pnpm test:cancel
+
+# Test update leverage (⚠️ modifies account settings)
+pnpm test:leverage
+```
+
+See [__tests__/README.md](__tests__/README.md) for detailed testing documentation.
+
 ## Architecture
 
 ```
