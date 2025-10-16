@@ -1,10 +1,10 @@
-name: Publish Package
+name: Publish MCP
 
 on:
   workflow_dispatch:
     inputs:
       package:
-        description: 'Package to publish'
+        description: 'MCP to publish'
         required: true
         type: choice
         options:
