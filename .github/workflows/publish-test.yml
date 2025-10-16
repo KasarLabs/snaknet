@@ -56,7 +56,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -126,7 +125,12 @@ jobs:
           NEW_VERSION=$(npm version ${{ steps.defaults.outputs.version }} --no-git-tag-version | sed 's/v//')
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "Version bumped to $NEW_VERSION"
-      
+
+      - name: Checkout branch for commit
+        run: |
+          git fetch origin ${{ github.head_ref }}:${{ github.head_ref }}
+          git checkout ${{ github.head_ref }}
+          
       - name: Commit version change
         run: |
           git add ${{ steps.path.outputs.package_path }}/package.json
