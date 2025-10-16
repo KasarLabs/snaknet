@@ -8,7 +8,7 @@ on:
         required: true
         type: choice
         options:
-          - snaknet
+          - ask-starknet
           - cairo-coder
           - argent
           - avnu
@@ -77,14 +77,14 @@ jobs:
       - name: Determine package path
         id: path
         run: |
-          if [ "${{ github.event.inputs.package }}" = "snaknet" ]; then
+          if [ "${{ github.event.inputs.package }}" = "ask-starknet" ]; then
             echo "package_path=packages/mcp" >> $GITHUB_OUTPUT
-            echo "package_name=@snaknet/snaknet" >> $GITHUB_OUTPUT
-            echo "tag_prefix=snaknet" >> $GITHUB_OUTPUT
+            echo "package_name=@kasarlabs/ask-starknet-mcp" >> $GITHUB_OUTPUT
+            echo "tag_prefix=ask-starknet-mcp" >> $GITHUB_OUTPUT
           else
             echo "package_path=packages/mcps/${{ github.event.inputs.package }}" >> $GITHUB_OUTPUT
-            echo "package_name=@snaknet/${{ github.event.inputs.package }}" >> $GITHUB_OUTPUT
-            echo "tag_prefix=${{ github.event.inputs.package }}" >> $GITHUB_OUTPUT
+            echo "package_name=@kasarlabs/${{ github.event.inputs.package }}-mcp" >> $GITHUB_OUTPUT
+            echo "tag_prefix=${{ github.event.inputs.package }}-mcp" >> $GITHUB_OUTPUT
           fi
       
       - name: Bump version
@@ -120,7 +120,7 @@ jobs:
           name: ${{ steps.path.outputs.package_name }} v${{ steps.version.outputs.new_version }}
           body: |
             Release of ${{ steps.path.outputs.package_name }} v${{ steps.version.outputs.new_version }}
-            
+      
             Package: `${{ github.event.inputs.package }}`
           draft: false
           prerelease: false
