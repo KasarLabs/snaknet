@@ -1,5 +1,5 @@
 {
-  "name": "@snaknet/erc20-mcp",
+  "name": "@kasarlabs/erc20-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",

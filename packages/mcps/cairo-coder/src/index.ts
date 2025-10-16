@@ -3,6 +3,7 @@
 import 'dotenv/config';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import packageJson from '../package.json' with { type: 'json' };
 import {
   assistWithCairoSchema,
   type AssistWithCairoInput,
@@ -54,7 +55,7 @@ class CairoCoderMCPServer {
   constructor() {
     this.server = new McpServer({
       name: 'cairo-coder-mcp',
-      version: '0.2.0',
+      version: packageJson.version,
     });
 
     // Check if local endpoint is specified

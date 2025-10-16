@@ -17,8 +17,8 @@ import { CreateOZAccount } from './tools/createAccount.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-openzeppelin',
-  version: '0.1.0',
+  name: 'starknet-openzeppelin-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (OpenZeppelinToolRegistry: mcpTool[]) => {

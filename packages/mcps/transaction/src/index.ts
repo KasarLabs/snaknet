@@ -26,8 +26,8 @@ import {
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-transaction',
-  version: '0.1.0',
+  name: 'starknet-transaction-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (TransactionToolRegistry: mcpTool[]) => {

@@ -35,8 +35,8 @@ import { deployERC20Contract } from './tools/deployERC20.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-erc20',
-  version: '0.1.0',
+  name: 'starknet-erc20-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (Erc20ToolRegistry: mcpTool[]) => {

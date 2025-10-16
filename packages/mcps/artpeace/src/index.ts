@@ -16,8 +16,8 @@ import { placePixelSchema } from './schemas/index.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-artpeace',
-  version: '1.0.0',
+  name: 'starknet-artpeace-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (ArtPeaceToolRegistry: mcpTool[]) => {

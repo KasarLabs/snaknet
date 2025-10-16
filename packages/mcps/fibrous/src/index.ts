@@ -22,8 +22,8 @@ import { getRouteFibrous } from './tools/fetchRoute.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-fibrous',
-  version: '0.1.0',
+  name: 'starknet-fibrous-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (FibrousToolRegistry: mcpTool[]) => {

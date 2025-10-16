@@ -22,8 +22,8 @@ import { launchOnEkubo } from './tools/launchOnEkubo.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-unruggable',
-  version: '0.1.0',
+  name: 'starknet-unruggable-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (UnruggableToolRegistry: mcpTool[]) => {
