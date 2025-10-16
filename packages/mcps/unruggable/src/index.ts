@@ -19,7 +19,6 @@ import { isMemecoin } from './tools/isMemecoin.js';
 import { createMemecoin } from './tools/createMemecoin.js';
 import { launchOnEkubo } from './tools/launchOnEkubo.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

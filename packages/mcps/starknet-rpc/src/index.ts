@@ -30,7 +30,6 @@ import {
   transactionHashSchema,
 } from './schemas/index.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

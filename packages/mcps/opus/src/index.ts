@@ -28,7 +28,6 @@ import { withdrawTrove } from './tools/withdrawTrove.js';
 import { borrowTrove } from './tools/borrowTrove.js';
 import { repayTrove } from './tools/repayTrove.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

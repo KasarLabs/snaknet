@@ -14,7 +14,6 @@ import { accountDetailsSchema } from './schemas/schema.js';
 import { DeployOKXAccount } from './tools/deployAccount.js';
 import { CreateOKXAccount } from './tools/createAccount.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

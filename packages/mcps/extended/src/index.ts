@@ -7,7 +7,6 @@ import dotenv from 'dotenv';
 
 import { mcpTool, registerToolsWithServer } from '@snaknet/core';
 
-
 dotenv.config();
 
 const server = new McpServer({

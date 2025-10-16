@@ -31,7 +31,6 @@ import { addLiquidity } from './tools/write/addLiquidity.js';
 import { withdrawLiquidity } from './tools/write/withdrawLiquidity.js';
 import { transferPosition } from './tools/write/transferPosition.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

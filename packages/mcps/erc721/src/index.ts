@@ -33,7 +33,6 @@ import { safeTransferFrom } from './tools/write/safeTransferFrom.js';
 import { setApprovalForAll } from './tools/write/setApprovalForAll.js';
 import { deployERC721Contract } from './tools/write/deployERC721.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

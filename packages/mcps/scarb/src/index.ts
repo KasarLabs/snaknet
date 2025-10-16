@@ -23,7 +23,7 @@ dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-scarb-mcp',
-  version: "0.0.1",
+  version: '0.0.1',
 });
 
 const registerTools = (ScarbToolRegistry: mcpTool[]) => {

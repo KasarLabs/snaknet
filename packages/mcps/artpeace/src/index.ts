@@ -13,7 +13,6 @@ import dotenv from 'dotenv';
 import { placePixel } from './tools/placePixel.js';
 import { placePixelSchema } from './schemas/index.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

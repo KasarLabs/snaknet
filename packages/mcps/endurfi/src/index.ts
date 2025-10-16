@@ -30,7 +30,6 @@ import { getUserBalance } from './tools/read/getUserBalance.js';
 import { getTotalStaked } from './tools/read/getTotalStaked.js';
 import { getWithdrawRequestInfo } from './tools/read/getWithdrawRequestInfo.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

@@ -23,7 +23,6 @@ import {
   simulateDeclareTransactionSchema,
 } from './schemas/index.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

@@ -13,7 +13,6 @@ import { depositEarnSchema, withdrawEarnSchema } from './schemas/index.js';
 import { depositEarnPosition } from './tools/depositService.js';
 import { withdrawEarnPosition } from './tools/withdrawService.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

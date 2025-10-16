@@ -14,7 +14,6 @@ import { accountDetailsSchema } from './schemas/index.js';
 import { DeployOZAccount } from './tools/deployAccount.js';
 import { CreateOZAccount } from './tools/createAccount.js';
 
-
 dotenv.config();
 
 const server = new McpServer({

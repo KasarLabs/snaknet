@@ -19,7 +19,6 @@ import { swapTokensFibrous } from './tools/swap.js';
 import { batchSwapTokens } from './tools/batchSwap.js';
 import { getRouteFibrous } from './tools/fetchRoute.js';
 
-
 dotenv.config();
 
 const server = new McpServer({
