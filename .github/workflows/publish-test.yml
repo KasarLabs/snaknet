@@ -109,28 +109,28 @@ jobs:
       - name: Determine package path
         id: path
         run: |
-          if [ "${{ github.event.inputs.package }}" = "ask-starknet" ]; then
+          if [ "${{ steps.defaults.outputs.package }}" = "ask-starknet" ]; then
             echo "package_path=packages/mcp" >> $GITHUB_OUTPUT
             echo "package_name=@kasarlabs/ask-starknet-mcp" >> $GITHUB_OUTPUT
             echo "tag_prefix=ask-starknet-mcp" >> $GITHUB_OUTPUT
           else
-            echo "package_path=packages/mcps/${{ github.event.inputs.package }}" >> $GITHUB_OUTPUT
-            echo "package_name=@kasarlabs/${{ github.event.inputs.package }}-mcp" >> $GITHUB_OUTPUT
-            echo "tag_prefix=${{ github.event.inputs.package }}-mcp" >> $GITHUB_OUTPUT
+            echo "package_path=packages/mcps/${{ steps.defaults.outputs.package }}" >> $GITHUB_OUTPUT
+            echo "package_name=@kasarlabs/${{ steps.defaults.outputs.package }}-mcp" >> $GITHUB_OUTPUT
+            echo "tag_prefix=${{ steps.defaults.outputs.package }}-mcp" >> $GITHUB_OUTPUT
           fi
       
       - name: Bump version
         id: version
         run: |
           cd ${{ steps.path.outputs.package_path }}
-          NEW_VERSION=$(npm version ${{ github.event.inputs.version }} --no-git-tag-version | sed 's/v//')
+          NEW_VERSION=$(npm version ${{ steps.defaults.outputs.version }} --no-git-tag-version | sed 's/v//')
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "Version bumped to $NEW_VERSION"
       
       - name: Commit version change
         run: |
           git add ${{ steps.path.outputs.package_path }}/package.json
-          git commit -m "chore(${{ github.event.inputs.package }}): release v${{ steps.version.outputs.new_version }}"
+          git commit -m "chore(${{ steps.defaults.outputs.package }}): release v${{ steps.version.outputs.new_version }}"
           git push
       
       - name: Create and push tag
@@ -153,6 +153,6 @@ jobs:
           body: |
             Release of ${{ steps.path.outputs.package_name }} v${{ steps.version.outputs.new_version }}
       
-            Package: `${{ github.event.inputs.package }}`
+            Package: `${{ steps.defaults.outputs.package }}`
           draft: false
           prerelease: false
