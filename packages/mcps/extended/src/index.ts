@@ -7,13 +7,12 @@ import dotenv from 'dotenv';
 
 import { mcpTool, registerToolsWithServer } from '@snaknet/core';
 
-import packageJson from '../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const server = new McpServer({
   name: 'extended-mcp',
-  version: packageJson.version,
+  version: '0.0.1',
 });
 
 const registerTools = (ExtendedToolRegistry: mcpTool[]) => {

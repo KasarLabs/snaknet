@@ -13,13 +13,12 @@ import dotenv from 'dotenv';
 import { placePixel } from './tools/placePixel.js';
 import { placePixelSchema } from './schemas/index.js';
 
-import packageJson from '../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-artpeace-mcp',
-  version: packageJson.version,
+  version: '0.0.1',
 });
 
 const registerTools = (ArtPeaceToolRegistry: mcpTool[]) => {

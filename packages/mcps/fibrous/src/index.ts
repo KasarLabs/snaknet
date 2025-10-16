@@ -19,13 +19,12 @@ import { swapTokensFibrous } from './tools/swap.js';
 import { batchSwapTokens } from './tools/batchSwap.js';
 import { getRouteFibrous } from './tools/fetchRoute.js';
 
-import packageJson from '../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-fibrous-mcp',
-  version: packageJson.version,
+  version: '0.0.1',
 });
 
 const registerTools = (FibrousToolRegistry: mcpTool[]) => {

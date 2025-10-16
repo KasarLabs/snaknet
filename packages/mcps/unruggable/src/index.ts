@@ -19,13 +19,12 @@ import { isMemecoin } from './tools/isMemecoin.js';
 import { createMemecoin } from './tools/createMemecoin.js';
 import { launchOnEkubo } from './tools/launchOnEkubo.js';
 
-import packageJson from '../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-unruggable-mcp',
-  version: packageJson.version,
+  version: '0.0.1',
 });
 
 const registerTools = (UnruggableToolRegistry: mcpTool[]) => {

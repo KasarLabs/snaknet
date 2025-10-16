@@ -13,13 +13,12 @@ import { wrapAccountCreationResponse } from './lib/utils/AccountManager.js';
 import { accountDetailsSchema } from './schemas/index.js';
 import { DeployBraavosAccount } from './tools/deployAccount.js';
 import { CreateBraavosAccount } from './tools/createAccount.js';
-import packageJson from '../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-braavos-mcp',
-  version: packageJson.version,
+  version: '0.0.1',
 });
 
 const registerTools = (BraavosToolRegistry: mcpTool[]) => {

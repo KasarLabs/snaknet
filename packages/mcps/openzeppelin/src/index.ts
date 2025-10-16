@@ -14,13 +14,12 @@ import { accountDetailsSchema } from './schemas/index.js';
 import { DeployOZAccount } from './tools/deployAccount.js';
 import { CreateOZAccount } from './tools/createAccount.js';
 
-import packageJson from '../package.json' with { type: 'json' };
 
 dotenv.config();
 
 const server = new McpServer({
   name: 'starknet-openzeppelin-mcp',
-  version: packageJson.version,
+  version: '0.0.1',
 });
 
 const registerTools = (OpenZeppelinToolRegistry: mcpTool[]) => {
