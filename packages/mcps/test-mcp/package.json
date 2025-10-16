@@ -1,0 +1,35 @@
+{
+  "name": "@kasarlabs/test-mcp",
+  "version": "0.0.1",
+  "main": "build/src/index.js",
+  "type": "module",
+  "bin": {
+    "starknet-test-mcp": "bin/starknet-test-mcp.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/src/index.js",
+    "clean": "rm -rf build",
+    "start": "node build/src/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.2",
+    "@snaknet/core": "workspace:*",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  },
+  "keywords": [
+    "mcp",
+    "starknet",
+    "test"
+  ],
+  "author": "kasarlabs",
+  "license": "MIT",
+  "description": "Test MCP server for workflow validation"
+}
