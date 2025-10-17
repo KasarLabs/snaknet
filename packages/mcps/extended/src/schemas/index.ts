@@ -11,6 +11,12 @@ export const GetBalanceSchema = z.object({});
 export type GetBalanceSchema = z.infer<typeof GetBalanceSchema>;
 
 /**
+ * Schema for getting account balance
+ */
+export const GetUserAccountInfoSchema = z.object({});
+export type GetUserAccountInfoSchema = z.infer<typeof GetUserAccountInfoSchema>;
+
+/**
  * Schema for getting open positions
  */
 export const GetPositionsSchema = z.object({});

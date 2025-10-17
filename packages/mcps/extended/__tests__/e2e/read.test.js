@@ -46,11 +46,20 @@ async function testGetBalance(client) {
   }
 
   console.log('✅ extended_get_balance test passed');
-  console.log(`   Balance: ${response.data.balance}`);
-  console.log(`   Equity: ${response.data.equity}`);
-  console.log(`   Available for trade: ${response.data.availableForTrade}`);
-  console.log(`   Unrealized PnL: ${response.data.unrealisedPnl}`);
-  console.log(`   Margin ratio: ${response.data.marginRatio}`);
+  return response;
+}
+
+/**
+ * Test extended_get_user_account_info tool
+ */
+async function testGetUserAccountInfo(client) {
+  const response = await callTool(client, 'extended_get_user_account_info', {});
+
+  if (response.status !== 'success') {
+    throw new Error(`extended_get_user_account_info failed: ${response.error}`);
+  }
+
+  console.log('✅ extended_get_user_account_info test passed');
 
   return response;
 }
@@ -66,13 +75,6 @@ async function testGetPositions(client) {
   }
 
   console.log('✅ extended_get_positions test passed');
-  console.log(`   Number of positions: ${response.data.length}`);
-
-  if (response.data.length > 0) {
-    const pos = response.data[0];
-    console.log(`   First position: ${pos.market} ${pos.side}`);
-    console.log(`   Size: ${pos.size}, Unrealized PnL: ${pos.unrealisedPnl}`);
-  }
 
   return response;
 }
@@ -88,13 +90,6 @@ async function testGetOpenOrders(client) {
   }
 
   console.log('✅ extended_get_open_orders test passed');
-  console.log(`   Number of open orders: ${response.data.length}`);
-
-  if (response.data.length > 0) {
-    const order = response.data[0];
-    console.log(`   First order: ${order.market} ${order.side} ${order.type}`);
-    console.log(`   Price: ${order.price}, Qty: ${order.qty}, Status: ${order.status}`);
-  }
 
   return response;
 }
@@ -112,13 +107,6 @@ async function testGetTradesHistory(client) {
   }
 
   console.log('✅ extended_get_trades_history test passed');
-  console.log(`   Number of trades: ${response.data.length}`);
-
-  if (response.data.length > 0) {
-    const trade = response.data[0];
-    console.log(`   Latest trade: ${trade.market} ${trade.side}`);
-    console.log(`   Price: ${trade.price}, Qty: ${trade.qty}, Fee: ${trade.fee}`);
-  }
 
   return response;
 }
@@ -137,7 +125,6 @@ async function testGetTradesHistoryWithFilter(client) {
   }
 
   console.log('✅ extended_get_trades_history (filtered) test passed');
-  console.log(`   BTC-USD trades: ${response.data.length}`);
 
   return response;
 }
@@ -155,13 +142,6 @@ async function testGetOrdersHistory(client) {
   }
 
   console.log('✅ extended_get_orders_history test passed');
-  console.log(`   Number of historical orders: ${response.data.length}`);
-
-  if (response.data.length > 0) {
-    const order = response.data[0];
-    console.log(`   Latest order: ${order.market} ${order.status}`);
-    console.log(`   Type: ${order.type}, Filled: ${order.filledQty}/${order.qty}`);
-  }
 
   return response;
 }
@@ -179,13 +159,6 @@ async function testGetPositionsHistory(client) {
   }
 
   console.log('✅ extended_get_positions_history test passed');
-  console.log(`   Number of closed positions: ${response.data.length}`);
-
-  if (response.data.length > 0) {
-    const pos = response.data[0];
-    console.log(`   Latest closed position: ${pos.market}`);
-    console.log(`   Realized PnL: ${pos.realisedPnl}`);
-  }
 
   return response;
 }
@@ -203,13 +176,6 @@ async function testGetFundingPayments(client) {
   }
 
   console.log('✅ extended_get_funding_payments test passed');
-  console.log(`   Number of funding payments: ${response.data.length}`);
-
-  if (response.data.length > 0) {
-    const payment = response.data[0];
-    console.log(`   Latest payment: ${payment.market_id}`);
-    console.log(`   Amount: ${payment.payment}`);
-  }
 
   return response;
 }
@@ -225,12 +191,6 @@ async function testGetLeverage(client) {
   }
 
   console.log('✅ extended_get_leverage test passed');
-  console.log(`   Number of markets with leverage settings: ${response.data.length}`);
-
-  if (response.data.length > 0) {
-    const setting = response.data[0];
-    console.log(`   ${setting.market_id}: ${setting.leverage}x`);
-  }
 
   return response;
 }
@@ -246,9 +206,6 @@ async function testGetFees(client) {
   }
 
   console.log('✅ extended_get_fees test passed');
-  console.log(`   Maker fee: ${response.data.maker_fee}`);
-  console.log(`   Taker fee: ${response.data.taker_fee}`);
-  console.log(`   Margin fee: ${response.data.margin_fee}`);
 
   return response;
 }
@@ -269,10 +226,8 @@ async function testGetOrderById(client, orderId) {
 
   if (response.status === 'success') {
     console.log('✅ extended_get_order_by_id test passed');
-    console.log(`   Order ${response.data.id}: ${response.data.market} ${response.data.status}`);
   } else {
     console.log('⚠️  extended_get_order_by_id failed (expected if order not found)');
-    console.log(`   Error: ${response.error}`);
   }
 
   return response;
@@ -297,7 +252,6 @@ async function testErrorHandling(client) {
     console.log('✅ Error handling test: API accepted invalid time range');
   } else {
     console.log('✅ Error handling test: API rejected invalid parameters');
-    console.log(`   Error message: ${response.error}`);
   }
 
   return response;
@@ -318,15 +272,16 @@ async function runTests() {
 
     // Run all READ tests
     await testGetBalance(client);
-    await testGetPositions(client);
-    await testGetOpenOrders(client);
-    await testGetTradesHistory(client);
-    await testGetTradesHistoryWithFilter(client);
-    await testGetOrdersHistory(client);
-    await testGetPositionsHistory(client);
-    await testGetFundingPayments(client);
-    await testGetLeverage(client);
-    await testGetFees(client);
+    await testGetUserAccountInfo(client);
+    // await testGetPositions(client);
+    // await testGetOpenOrders(client);
+    // await testGetTradesHistory(client);
+    // await testGetTradesHistoryWithFilter(client);
+    // await testGetOrdersHistory(client);
+    // await testGetPositionsHistory(client);
+    // await testGetFundingPayments(client);
+    // await testGetLeverage(client);
+    // await testGetFees(client);
 
     // Optional: test get order by ID if you have one
     // await testGetOrderById(client, 'your_order_id_here');

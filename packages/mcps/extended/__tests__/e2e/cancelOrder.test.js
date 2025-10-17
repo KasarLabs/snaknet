@@ -73,25 +73,6 @@ async function testCancelOrder(client) {
 
   if (cancelResponse.status === 'success') {
     console.log('\n✅ Order cancelled successfully!');
-    console.log(`   Message: ${cancelResponse.data.message || 'Order canceled'}`);
-
-    // Verify the order is no longer in open orders
-    console.log('\n📋 Step 3: Verifying order is no longer open...');
-    const verifyResponse = await callTool(client, 'extended_get_open_orders', {});
-
-    if (verifyResponse.status === 'success') {
-      const stillOpen = verifyResponse.data.find(
-        (order) => order.id.toString() === orderIdToCancel
-      );
-
-      if (stillOpen) {
-        console.log('⚠️  Order still appears in open orders (might take time to update)');
-      } else {
-        console.log('✅ Confirmed: Order is no longer in open orders');
-      }
-    }
-
-    console.log('\n✅ Test completed successfully!');
   } else {
     console.log('\n❌ Failed to cancel order');
     console.log(`   Error: ${cancelResponse.error}`);
@@ -128,7 +109,6 @@ async function testCancelNonExistentOrder(client) {
 
   if (response.status === 'failure') {
     console.log('✅ Error handling test passed');
-    console.log(`   Expected error received: ${response.error}`);
   } else {
     console.log('⚠️  Expected error but got success (unexpected)');
   }

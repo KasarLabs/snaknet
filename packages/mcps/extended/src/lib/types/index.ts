@@ -116,3 +116,13 @@ export interface FeeSchedule {
   taker_fee: string;
   margin_fee: string;
 }
+
+// Account info types
+export interface AccountInfo {
+  status: string;
+  l2Key: string;
+  l2Vault: string;
+  accountId: string;
+  description: string;
+  bridgeStarknetAddress: string;
+}

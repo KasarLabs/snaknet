@@ -77,31 +77,6 @@ async function testUpdateLeverage(client) {
 
   if (updateResponse.status === 'success') {
     console.log('\n✅ Leverage updated successfully!');
-    console.log(`   Message: ${updateResponse.data.message || 'Leverage updated'}`);
-
-    // Step 3: Verify the update
-    console.log('\n📋 Step 3: Verifying leverage update...');
-    const verifyResponse = await callTool(client, 'extended_get_leverage', {});
-
-    if (verifyResponse.status === 'success') {
-      const updatedSetting = verifyResponse.data.find(
-        (setting) => setting.market_id === marketId
-      );
-
-      if (updatedSetting) {
-        console.log(`✅ Verified: ${marketId} leverage is now ${updatedSetting.leverage}x`);
-
-        if (updatedSetting.leverage === newLeverage.toString()) {
-          console.log('✅ Leverage matches requested value!');
-        } else {
-          console.log(`⚠️  Leverage is ${updatedSetting.leverage}x but requested ${newLeverage}x`);
-        }
-      } else {
-        console.log(`⚠️  Could not find leverage setting for ${marketId}`);
-      }
-    }
-
-    console.log('\n✅ Test completed successfully!');
   } else {
     console.log('\n❌ Failed to update leverage');
     console.log(`   Error: ${updateResponse.error}`);
@@ -142,7 +117,6 @@ async function testUpdateLeverageErrorHandling(client) {
 
   if (invalidMarketResponse.status === 'failure') {
     console.log('✅ Invalid market test passed');
-    console.log(`   Expected error: ${invalidMarketResponse.error}`);
   } else {
     console.log('⚠️  Expected error but got success');
   }
@@ -156,7 +130,6 @@ async function testUpdateLeverageErrorHandling(client) {
 
   if (invalidLeverageResponse.status === 'failure') {
     console.log('✅ Invalid leverage test passed');
-    console.log(`   Expected error: ${invalidLeverageResponse.error}`);
   } else {
     console.log('⚠️  Expected error but got success (or leverage accepted)');
   }

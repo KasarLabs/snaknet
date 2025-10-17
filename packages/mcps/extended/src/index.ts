@@ -9,6 +9,7 @@ import { ExtendedApiEnv } from './lib/types/index.js';
 
 // Import READ tools (Account Management)
 import { getBalance } from './tools/read/getBalance.js';
+import { getUserAccountInfo } from './tools/read/getUserAccountInfo.js';
 import { getPositions } from './tools/read/getPositions.js';
 import { getOpenOrders } from './tools/read/getOpenOrders.js';
 import { getOrderById } from './tools/read/getOrderById.js';
@@ -28,6 +29,7 @@ import { updateLeverage } from './tools/write/updateLeverage.js';
 // Import schemas
 import {
   GetBalanceSchema,
+  GetUserAccountInfoSchema,
   GetPositionsSchema,
   GetOpenOrdersSchema,
   GetOrderByIdSchema,
@@ -76,6 +78,15 @@ const registerTools = (env: ExtendedApiEnv, tools: mcpTool[]) => {
     schema: GetBalanceSchema,
     execute: async (params) => {
       return await getBalance(env, params);
+    },
+  });
+
+  tools.push({
+    name: 'extended_get_user_account_info',
+    description: 'Get the current account details including status, account ID, L2 keys, vault information, and Starknet bridge address',
+    schema: GetUserAccountInfoSchema,
+    execute: async (params) => {
+      return await getUserAccountInfo(env, params);
     },
   });
 
