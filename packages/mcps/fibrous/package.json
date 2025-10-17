@@ -1,5 +1,5 @@
 {
-  "name": "@snaknet/fibrous-mcp",
+  "name": "@kasarlabs/fibrous-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",

@@ -36,11 +36,26 @@ IMPORTANT: Look at the conversation history. If an agent has already successfull
 
 Respond with the exact name of the chosen agent or "__end__".`;
 
+  // Build conversation history for context
+  const conversationHistory = state.messages
+    .map((msg, idx) => {
+      const role = msg.name || (idx === 0 ? 'user' : 'assistant');
+      const content =
+        typeof msg.content === 'string'
+          ? msg.content.substring(0, 500) // Limit to avoid token overflow
+          : JSON.stringify(msg.content).substring(0, 500);
+      return `[${role}]: ${content}`;
+    })
+    .join('\n\n');
+
   const model = createLLM(state.mcpEnvironment);
   const structuredModel = model.withStructuredOutput(selectorOutputSchema);
   const response = await structuredModel.invoke([
     { role: 'system', content: systemPrompt },
-    { role: 'user', content: `User's request : "${userInput}"` },
+    {
+      role: 'user',
+      content: `Conversation history:\n${conversationHistory}\n\nOriginal user request: "${state.messages[0].content}"\n\nCurrent message: "${userInput}"\n\nHas the original request been completed? If yes, choose "__end__".`,
+    },
   ]);
 
   logger.error(`Routing decision`, {

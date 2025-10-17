@@ -36,8 +36,8 @@ import { deployERC721Contract } from './tools/write/deployERC721.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-erc721',
-  version: '0.1.0',
+  name: 'starknet-erc721-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (Erc721ToolRegistry: mcpTool[]) => {

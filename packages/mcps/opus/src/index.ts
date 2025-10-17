@@ -31,8 +31,8 @@ import { repayTrove } from './tools/repayTrove.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-opus',
-  version: '0.1.0',
+  name: 'starknet-opus-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (OpusToolRegistry: mcpTool[]) => {

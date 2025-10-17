@@ -4,6 +4,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 import { z } from 'zod';
+import packageJson from '../package.json' with { type: 'json' };
 
 import { graph } from './graph/graph.js';
 import { logger } from './utils/logger.js';
@@ -56,16 +57,16 @@ interface SnaknetTool<P = any> {
 
 export const registerTools = (snaknetToolRegistry: SnaknetTool[]) => {
   snaknetToolRegistry.push({
-    name: 'perform_starknet_actions',
-    description: 'Call snaknet agent to perform starknet actions',
+    name: 'ask_starknet',
+    description: 'Call ask-starknet agent to perform starknet actions',
     schema: performStarknetActionsSchema,
     execute: performStarknetActions,
   });
 };
 
 const server = new McpServer({
-  name: 'snaknet',
-  version: '1.0.0',
+  name: 'ask-starknet-mcp',
+  version: packageJson.version,
 });
 
 export const RegisterToolInServer = async (env: envInput) => {
@@ -179,7 +180,7 @@ async function main() {
 
   await RegisterToolInServer(env);
   await server.connect(transport);
-  console.error('Starknet Argent MCP Server running on stdio');
+  console.error('Ask-starknet MCP Server running on stdio');
 }
 
 main().catch((error) => {

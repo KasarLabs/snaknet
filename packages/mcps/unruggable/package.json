@@ -1,5 +1,5 @@
 {
-  "name": "@snaknet/unruggable-mcp",
+  "name": "@kasarlabs/unruggable-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",

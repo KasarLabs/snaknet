@@ -17,8 +17,8 @@ import { CreateBraavosAccount } from './tools/createAccount.js';
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-braavos',
-  version: '0.1.0',
+  name: 'starknet-braavos-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (BraavosToolRegistry: mcpTool[]) => {

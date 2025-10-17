@@ -1,10 +1,10 @@
 {
-  "name": "@snaknet/snaknet",
+  "name": "@kasarlabs/ask-starknet-mcp",
   "version": "0.0.1",
   "main": "index.js",
   "type": "module",
   "bin": {
-    "snaknet": "./bin/snaknet.js"
+    "ask-starknet-mcp": "./bin/ask-starknet-mcp.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js",

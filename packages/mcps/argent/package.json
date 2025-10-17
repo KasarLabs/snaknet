@@ -1,5 +1,5 @@
 {
-  "name": "@snaknet/argent-mcp",
+  "name": "@kasarlabs/argent-mcp",
   "version": "0.1.0",
   "main": "index.js",
   "type": "module",

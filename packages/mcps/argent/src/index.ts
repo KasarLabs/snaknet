@@ -15,8 +15,8 @@ import {
 dotenv.config();
 
 const server = new McpServer({
-  name: 'starknet-argent',
-  version: '0.1.0',
+  name: 'starknet-argent-mcp',
+  version: '0.0.1',
 });
 
 const registerTools = (ArgentToolRegistry: mcpTool[]) => {
