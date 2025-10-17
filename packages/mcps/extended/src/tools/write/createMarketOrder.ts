@@ -1,34 +1,41 @@
 import { ExtendedApiEnv, ExtendedApiResponse, Order } from '../../lib/types/index.js';
 import { apiPost } from '../../lib/utils/api.js';
 import { CreateMarketOrderSchema } from '../../schemas/index.js';
+import { signOrderMessage, createOrderMessageHash } from '../../lib/utils/signature.js';
 
-/**
- * Creates a market order on Extended
- *
- * NOTE: This implementation requires Stark signature generation to be implemented.
- * The settlement object with starkKey, signature (r, s), and nonce must be provided
- * for the order to be accepted by the Extended API.
- */
 export const createMarketOrder = async (
   env: ExtendedApiEnv,
   params: CreateMarketOrderSchema
 ): Promise<ExtendedApiResponse<Order>> => {
   try {
-    // TODO: Implement Stark signature generation
-    // This requires:
-    // 1. Stark key pair from private key
-    // 2. Message hash generation from order parameters
-    // 3. Signature generation using Stark curve
+    if (!env.STARKNET_PRIVATE_KEY) {
+      throw new Error('STARKNET_PRIVATE_KEY is required for order creation');
+    }
 
-    // For now, this will fail without proper signature implementation
-    throw new Error(
-      'Stark signature generation not yet implemented. ' +
-      'Please implement the settlement object with starkKey, signature.r, signature.s, and nonce. ' +
-      'See Extended API documentation for details on Stark signature requirements.'
-    );
+    // Generate nonce (must be >= 1 and <= 2^31)
+    const nonce = params.nonce || Math.floor(Math.random() * Math.pow(2, 31)) + 1;
 
-    // Example structure (when signature is implemented):
-    /*
+    // Market orders still need an expiry (default to 1 hour from now)
+    const expiryEpochMillis = Date.now() + (60 * 60 * 1000);
+
+    // Market orders need a price for signature (use a very high buy or very low sell price)
+    // This follows the Extended API convention for market orders
+    const signaturePrice = params.side === 'BUY' ? '999999999' : '0.00000001';
+
+    // Create message hash for signing
+    const messageHash = createOrderMessageHash({
+      market: params.market,
+      side: params.side,
+      price: signaturePrice,
+      quantity: params.qty,
+      nonce,
+      expiryEpochMillis,
+    });
+
+    // Sign the order
+    const signature = signOrderMessage(env.STARKNET_PRIVATE_KEY, messageHash);
+
+    // Build order payload (market orders don't include price in API payload)
     const orderPayload = {
       id: params.external_id,
       market: params.market,
@@ -38,13 +45,13 @@ export const createMarketOrder = async (
       reduceOnly: params.reduce_only || false,
       selfTradeProtectionLevel: 'ACCOUNT',
       settlement: {
-        starkKey: '0x...', // Derived from wallet
+        starkKey: signature.starkKey,
         signature: {
-          r: '0x...', // Generated signature
-          s: '0x...'  // Generated signature
+          r: signature.r,
+          s: signature.s,
         },
-        nonce: 0 // Account nonce
-      }
+        nonce,
+      },
     };
 
     const response = await apiPost<{ data: Order }>(
@@ -57,7 +64,6 @@ export const createMarketOrder = async (
       status: 'success',
       data: response.data,
     };
-    */
   } catch (error: any) {
     console.error('Error creating market order:', error);
     return {

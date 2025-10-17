@@ -25,6 +25,9 @@ import { createLimitOrder } from './tools/write/createLimitOrder.js';
 import { createMarketOrder } from './tools/write/createMarketOrder.js';
 import { cancelOrder } from './tools/write/cancelOrder.js';
 import { updateLeverage } from './tools/write/updateLeverage.js';
+import { massCancelOrders } from './tools/write/massCancelOrders.js';
+import { cancelOrderByExternalId } from './tools/write/cancelOrderByExternalId.js';
+import { deadManSwitch } from './tools/write/deadManSwitch.js';
 
 // Import schemas
 import {
@@ -43,6 +46,9 @@ import {
   CreateMarketOrderSchema,
   CancelOrderSchema,
   UpdateLeverageSchema,
+  MassCancelOrdersSchema,
+  CancelOrderByExternalIdSchema,
+  DeadManSwitchSchema,
 } from './schemas/index.js';
 
 dotenv.config();
@@ -56,6 +62,7 @@ const server = new McpServer({
 const createApiEnv = (): ExtendedApiEnv => {
   const apiKey = process.env.EXTENDED_API_KEY;
   const apiUrl = process.env.EXTENDED_API_URL || 'https://api.starknet.extended.exchange';
+  const privateKey = process.env.STARKNET_PRIVATE_KEY;
 
   if (!apiKey) {
     throw new Error('EXTENDED_API_KEY environment variable is required');
@@ -64,6 +71,7 @@ const createApiEnv = (): ExtendedApiEnv => {
   return {
     apiKey,
     apiUrl,
+    STARKNET_PRIVATE_KEY: privateKey,
   };
 };
 
@@ -177,7 +185,7 @@ const registerTools = (env: ExtendedApiEnv, tools: mcpTool[]) => {
 
   tools.push({
     name: 'extended_create_limit_order',
-    description: 'Create a new limit order. NOTE: Requires Stark signature implementation - currently returns an error. Must implement settlement object with starkKey, signature, and nonce.',
+    description: 'Create a new limit order with Starknet signature. Requires STARKNET_PRIVATE_KEY to be set. The order will be signed using Stark curve cryptography.',
     schema: CreateLimitOrderSchema,
     execute: async (params) => {
       return await createLimitOrder(env, params);
@@ -186,7 +194,7 @@ const registerTools = (env: ExtendedApiEnv, tools: mcpTool[]) => {
 
   tools.push({
     name: 'extended_create_market_order',
-    description: 'Create a new market order. NOTE: Requires Stark signature implementation - currently returns an error. Must implement settlement object with starkKey, signature, and nonce.',
+    description: 'Create a new market order with Starknet signature. Requires STARKNET_PRIVATE_KEY to be set. The order will be signed using Stark curve cryptography.',
     schema: CreateMarketOrderSchema,
     execute: async (params) => {
       return await createMarketOrder(env, params);
@@ -208,6 +216,33 @@ const registerTools = (env: ExtendedApiEnv, tools: mcpTool[]) => {
     schema: UpdateLeverageSchema,
     execute: async (params) => {
       return await updateLeverage(env, params);
+    },
+  });
+
+  tools.push({
+    name: 'extended_mass_cancel_orders',
+    description: 'Cancel multiple orders at once by order IDs, external IDs, markets, or cancel all open orders',
+    schema: MassCancelOrdersSchema,
+    execute: async (params) => {
+      return await massCancelOrders(env, params);
+    },
+  });
+
+  tools.push({
+    name: 'extended_cancel_order_by_external_id',
+    description: 'Cancel an existing open order by its external ID (the ID you provided when creating the order)',
+    schema: CancelOrderByExternalIdSchema,
+    execute: async (params) => {
+      return await cancelOrderByExternalId(env, params);
+    },
+  });
+
+  tools.push({
+    name: 'extended_dead_man_switch',
+    description: 'Set or disable a dead man switch countdown timer that automatically cancels all orders after the specified time. Set countdown_time to 0 to disable.',
+    schema: DeadManSwitchSchema,
+    execute: async (params) => {
+      return await deadManSwitch(env, params);
     },
   });
 };

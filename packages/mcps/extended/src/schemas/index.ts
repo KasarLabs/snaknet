@@ -121,6 +121,7 @@ export const CreateLimitOrderSchema = z.object({
   reduce_only: z.boolean().optional().default(false).describe('If true, order will only reduce existing position'),
   time_in_force: z.enum(['GTC', 'IOC', 'FOK', 'GTT']).optional().default('GTC').describe('Time in force: GTC (Good Till Cancel), IOC (Immediate or Cancel), FOK (Fill or Kill), GTT (Good Till Time)'),
   expiry_epoch_millis: z.number().optional().describe('Expiry time for GTT orders (Unix timestamp in milliseconds)'),
+  nonce: z.number().optional().describe('Order nonce for signature (auto-generated if not provided, must be ≥1 and ≤2^31)'),
 });
 export type CreateLimitOrderSchema = z.infer<typeof CreateLimitOrderSchema>;
 
@@ -133,6 +134,7 @@ export const CreateMarketOrderSchema = z.object({
   side: z.enum(['BUY', 'SELL']).describe('Order side'),
   qty: z.string().describe('Order quantity'),
   reduce_only: z.boolean().optional().default(false).describe('If true, order will only reduce existing position'),
+  nonce: z.number().optional().describe('Order nonce for signature (auto-generated if not provided, must be ≥1 and ≤2^31)'),
 });
 export type CreateMarketOrderSchema = z.infer<typeof CreateMarketOrderSchema>;
 
@@ -152,3 +154,30 @@ export const UpdateLeverageSchema = z.object({
   leverage: z.number().describe('The new leverage multiplier (e.g., 10 for 10x)'),
 });
 export type UpdateLeverageSchema = z.infer<typeof UpdateLeverageSchema>;
+
+/**
+ * Schema for mass canceling orders
+ */
+export const MassCancelOrdersSchema = z.object({
+  order_ids: z.array(z.number()).optional().describe('Array of Extended order IDs to cancel'),
+  external_order_ids: z.array(z.string()).optional().describe('Array of external order IDs to cancel'),
+  markets: z.array(z.string()).optional().describe('Array of market names to cancel all orders in (e.g., ["BTC-USD", "ETH-USD"])'),
+  cancel_all: z.boolean().optional().describe('If true, cancel all open orders for the account'),
+});
+export type MassCancelOrdersSchema = z.infer<typeof MassCancelOrdersSchema>;
+
+/**
+ * Schema for canceling order by external ID
+ */
+export const CancelOrderByExternalIdSchema = z.object({
+  external_id: z.string().describe('The external ID of the order to cancel'),
+});
+export type CancelOrderByExternalIdSchema = z.infer<typeof CancelOrderByExternalIdSchema>;
+
+/**
+ * Schema for dead man switch
+ */
+export const DeadManSwitchSchema = z.object({
+  countdown_time: z.number().describe('Time in seconds until all orders are auto-canceled. Set to 0 to disable.'),
+});
+export type DeadManSwitchSchema = z.infer<typeof DeadManSwitchSchema>;
