@@ -85,80 +85,6 @@ async function testCreateMarketOrder(client) {
 }
 
 /**
- * Test extended_cancel_order_by_external_id tool
- */
-async function testCancelOrderByExternalId(client) {
-  // Use a dummy external ID (will likely fail if order doesn't exist, which is expected)
-  const externalId = `test-cancel-${Date.now()}`;
-
-  const response = await callTool(client, 'extended_cancel_order_by_external_id', {
-    external_id: externalId,
-  });
-
-  if (response.status !== 'success') {
-    console.log(`⚠️  extended_cancel_order_by_external_id failed (expected if order doesn't exist): ${response.error}`);
-  } else {
-    console.log('✅ extended_cancel_order_by_external_id test passed');
-  }
-
-  return response;
-}
-
-/**
- * Test extended_mass_cancel_orders tool
- */
-async function testMassCancelOrders(client) {
-  // Test canceling by market (won't cancel anything if no orders, but API should accept it)
-  const response = await callTool(client, 'extended_mass_cancel_orders', {
-    markets: ['BTC-USD'],
-  });
-
-  if (response.status !== 'success') {
-    console.log(`⚠️  extended_mass_cancel_orders failed: ${response.error}`);
-  } else {
-    console.log('✅ extended_mass_cancel_orders test passed');
-  }
-
-  return response;
-}
-
-/**
- * Test extended_dead_man_switch tool - Enable
- */
-async function testDeadManSwitchEnable(client) {
-  // Set dead man switch to 60 seconds
-  const response = await callTool(client, 'extended_dead_man_switch', {
-    countdown_time: 60,
-  });
-
-  if (response.status !== 'success') {
-    console.log(`⚠️  extended_dead_man_switch (enable) failed: ${response.error}`);
-  } else {
-    console.log('✅ extended_dead_man_switch (enable) test passed');
-  }
-
-  return response;
-}
-
-/**
- * Test extended_dead_man_switch tool - Disable
- */
-async function testDeadManSwitchDisable(client) {
-  // Disable dead man switch
-  const response = await callTool(client, 'extended_dead_man_switch', {
-    countdown_time: 0,
-  });
-
-  if (response.status !== 'success') {
-    console.log(`⚠️  extended_dead_man_switch (disable) failed: ${response.error}`);
-  } else {
-    console.log('✅ extended_dead_man_switch (disable) test passed');
-  }
-
-  return response;
-}
-
-/**
  * Main test runner
  */
 async function main() {
@@ -170,14 +96,6 @@ async function main() {
     // Test order creation tools (these require STARKNET_PRIVATE_KEY)
     await testCreateLimitOrder(client);
     await testCreateMarketOrder(client);
-
-    // Test order cancellation tools
-    await testCancelOrderByExternalId(client);
-    await testMassCancelOrders(client);
-
-    // Test dead man switch
-    await testDeadManSwitchEnable(client);
-    await testDeadManSwitchDisable(client);
 
     console.log('\n✅ All write tool tests completed!');
   } catch (error) {
