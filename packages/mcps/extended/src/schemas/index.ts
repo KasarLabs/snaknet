@@ -74,10 +74,9 @@ export type GetPositionsHistorySchema = z.infer<typeof GetPositionsHistorySchema
  * Schema for getting funding payments
  */
 export const GetFundingPaymentsSchema = z.object({
-  market_id: z.string().optional().describe('Filter by market ID (e.g., "BTC-USD")'),
-  start_time: z.number().optional().describe('Unix timestamp in milliseconds to start filtering'),
-  end_time: z.number().optional().describe('Unix timestamp in milliseconds to end filtering'),
-  limit: z.number().optional().describe('Maximum number of records to return (default: 100)'),
+  market: z.string().optional().describe('List of names of the requested markets (e.g., "BTC-USD")'),
+  side: z.enum(['long', 'short']).optional().describe('Position side: long or short'),
+  fromTime: z.number().describe('Starting timestamp in epoch milliseconds (required)'),
 });
 export type GetFundingPaymentsSchema = z.infer<typeof GetFundingPaymentsSchema>;
 

@@ -9,7 +9,7 @@ export const getOpenOrders = async (
   try {
     const response = await apiGet<{ orders: Order[] }>(
       env,
-      '/api/v1/user/orders/open',
+      '/api/v1/user/orders',
       true
     );
 

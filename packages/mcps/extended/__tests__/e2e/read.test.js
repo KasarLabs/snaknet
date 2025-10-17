@@ -167,8 +167,11 @@ async function testGetPositionsHistory(client) {
  * Test extended_get_funding_payments tool
  */
 async function testGetFundingPayments(client) {
+  // fromTime is required - get funding payments from the last 7 days
+  const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+
   const response = await callTool(client, 'extended_get_funding_payments', {
-    limit: 10,
+    fromTime: sevenDaysAgo
   });
 
   if (response.status !== 'success') {
@@ -273,15 +276,15 @@ async function runTests() {
     // Run all READ tests
     await testGetBalance(client);
     await testGetUserAccountInfo(client);
-    // await testGetPositions(client);
-    // await testGetOpenOrders(client);
-    // await testGetTradesHistory(client);
-    // await testGetTradesHistoryWithFilter(client);
-    // await testGetOrdersHistory(client);
-    // await testGetPositionsHistory(client);
-    // await testGetFundingPayments(client);
-    // await testGetLeverage(client);
-    // await testGetFees(client);
+    await testGetPositions(client);
+    await testGetOpenOrders(client);
+    await testGetTradesHistory(client);
+    await testGetTradesHistoryWithFilter(client);
+    await testGetOrdersHistory(client);
+    await testGetPositionsHistory(client);
+    await testGetFundingPayments(client);
+    await testGetLeverage(client);
+    await testGetFees(client);
 
     // Optional: test get order by ID if you have one
     // await testGetOrderById(client, 'your_order_id_here');

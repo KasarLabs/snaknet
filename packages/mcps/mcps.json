@@ -364,6 +364,7 @@
       "expertise": "Perpetual futures trading, position management, and order execution on Extended exchange (Starknet)",
       "tools": [
         "extended_get_balance",
+        "extended_get_user_account_info",
         "extended_get_positions",
         "extended_get_open_orders",
         "extended_get_order_by_id",

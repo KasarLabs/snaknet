@@ -14,13 +14,12 @@ export const getFundingPayments = async (
 ): Promise<ExtendedApiResponse<FundingPayment[]>> => {
   try {
     const queryParams = new URLSearchParams();
-    if (params.market_id) queryParams.append('market_id', params.market_id);
-    if (params.start_time) queryParams.append('start_time', params.start_time.toString());
-    if (params.end_time) queryParams.append('end_time', params.end_time.toString());
-    if (params.limit) queryParams.append('limit', params.limit.toString());
+    queryParams.append('fromTime', params.fromTime.toString());
+    if (params.market) queryParams.append('market', params.market);
+    if (params.side) queryParams.append('side', params.side);
 
-    const endpoint = `/api/v1/user/funding-payments${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
-
+    const endpoint = `/api/v1/user/funding/history?${queryParams.toString()}`;
+    console.error(endpoint);
     const response = await apiGet<{ funding_payments: FundingPayment[] }>(
       env,
       endpoint,
