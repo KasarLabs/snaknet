@@ -91,13 +91,17 @@ export type GetFundingPaymentsSchema = z.infer<typeof GetFundingPaymentsSchema>;
 /**
  * Schema for getting current leverage settings
  */
-export const GetLeverageSchema = z.object({});
+export const GetLeverageSchema = z.object({
+  market: z.string().optional().describe('Name of the requested market (e.g., "BTC-USD"). Can request multiple markets by calling the API multiple times.'),
+});
 export type GetLeverageSchema = z.infer<typeof GetLeverageSchema>;
 
 /**
  * Schema for getting fee schedule
  */
-export const GetFeesSchema = z.object({});
+export const GetFeesSchema = z.object({
+  market: z.string().optional().describe('Name of the requested market (e.g., "BTC-USD") to get market-specific fees.'),
+});
 export type GetFeesSchema = z.infer<typeof GetFeesSchema>;
 
 // ========================================

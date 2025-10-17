@@ -227,6 +227,7 @@ async function testGetFundingPayments(client) {
  * Test extended_get_leverage tool
  */
 async function testGetLeverage(client) {
+  // Test without filters (all markets)
   const response = await callTool(client, 'extended_get_leverage', {});
 
   if (response.status !== 'success') {
@@ -235,6 +236,17 @@ async function testGetLeverage(client) {
 
   console.log('✅ extended_get_leverage test passed');
 
+  // Test with market filter (optional)
+  const responseFiltered = await callTool(client, 'extended_get_leverage', {
+    market: 'BTC-USD',
+  });
+
+  if (responseFiltered.status !== 'success') {
+    throw new Error(`extended_get_leverage (filtered) failed: ${responseFiltered.error}`);
+  }
+
+  console.log('✅ extended_get_leverage (filtered) test passed');
+
   return response;
 }
 
@@ -242,6 +254,7 @@ async function testGetLeverage(client) {
  * Test extended_get_fees tool
  */
 async function testGetFees(client) {
+  // Test without filters (global fees)
   const response = await callTool(client, 'extended_get_fees', {});
 
   if (response.status !== 'success') {
@@ -249,6 +262,17 @@ async function testGetFees(client) {
   }
 
   console.log('✅ extended_get_fees test passed');
+
+  // Test with market filter (optional)
+  const responseFiltered = await callTool(client, 'extended_get_fees', {
+    market: 'BTC-USD',
+  });
+
+  if (responseFiltered.status !== 'success') {
+    throw new Error(`extended_get_fees (filtered) failed: ${responseFiltered.error}`);
+  }
+
+  console.log('✅ extended_get_fees (filtered) test passed');
 
   return response;
 }

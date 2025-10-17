@@ -7,9 +7,14 @@ export const getLeverage = async (
   params: GetLeverageSchema
 ): Promise<ExtendedApiResponse<LeverageSetting[]>> => {
   try {
+    const queryParams = new URLSearchParams();
+    if (params.market) queryParams.append('market', params.market);
+
+    const endpoint = `/api/v1/user/leverage${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+
     const response = await apiGet<{ leverage_settings: LeverageSetting[] }>(
       env,
-      '/api/v1/user/leverage',
+      endpoint,
       true
     );
 

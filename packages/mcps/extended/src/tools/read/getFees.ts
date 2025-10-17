@@ -7,9 +7,14 @@ export const getFees = async (
   params: GetFeesSchema
 ): Promise<ExtendedApiResponse<FeeSchedule>> => {
   try {
+    const queryParams = new URLSearchParams();
+    if (params.market) queryParams.append('market', params.market);
+
+    const endpoint = `/api/v1/user/fees${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+
     const response = await apiGet<FeeSchedule>(
       env,
-      '/api/v1/user/fees',
+      endpoint,
       true
     );
 
