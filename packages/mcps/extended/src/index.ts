@@ -25,9 +25,6 @@ import { createLimitOrder } from './tools/write/createLimitOrder.js';
 import { createMarketOrder } from './tools/write/createMarketOrder.js';
 import { cancelOrder } from './tools/write/cancelOrder.js';
 import { updateLeverage } from './tools/write/updateLeverage.js';
-import { massCancelOrders } from './tools/write/massCancelOrders.js';
-import { cancelOrderByExternalId } from './tools/write/cancelOrderByExternalId.js';
-import { deadManSwitch } from './tools/write/deadManSwitch.js';
 
 // Import schemas
 import {
@@ -45,10 +42,7 @@ import {
   CreateLimitOrderSchema,
   CreateMarketOrderSchema,
   CancelOrderSchema,
-  UpdateLeverageSchema,
-  MassCancelOrdersSchema,
-  CancelOrderByExternalIdSchema,
-  DeadManSwitchSchema,
+  UpdateLeverageSchema
 } from './schemas/index.js';
 
 dotenv.config();
@@ -216,33 +210,6 @@ const registerTools = (env: ExtendedApiEnv, tools: mcpTool[]) => {
     schema: UpdateLeverageSchema,
     execute: async (params) => {
       return await updateLeverage(env, params);
-    },
-  });
-
-  tools.push({
-    name: 'extended_mass_cancel_orders',
-    description: 'Cancel multiple orders at once by order IDs, external IDs, markets, or cancel all open orders',
-    schema: MassCancelOrdersSchema,
-    execute: async (params) => {
-      return await massCancelOrders(env, params);
-    },
-  });
-
-  tools.push({
-    name: 'extended_cancel_order_by_external_id',
-    description: 'Cancel an existing open order by its external ID (the ID you provided when creating the order)',
-    schema: CancelOrderByExternalIdSchema,
-    execute: async (params) => {
-      return await cancelOrderByExternalId(env, params);
-    },
-  });
-
-  tools.push({
-    name: 'extended_dead_man_switch',
-    description: 'Set or disable a dead man switch countdown timer that automatically cancels all orders after the specified time. Set countdown_time to 0 to disable.',
-    schema: DeadManSwitchSchema,
-    execute: async (params) => {
-      return await deadManSwitch(env, params);
     },
   });
 };

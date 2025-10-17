@@ -154,30 +154,3 @@ export const UpdateLeverageSchema = z.object({
   leverage: z.number().describe('The new leverage multiplier (e.g., 10 for 10x)'),
 });
 export type UpdateLeverageSchema = z.infer<typeof UpdateLeverageSchema>;
-
-/**
- * Schema for mass canceling orders
- */
-export const MassCancelOrdersSchema = z.object({
-  order_ids: z.array(z.number()).optional().describe('Array of Extended order IDs to cancel'),
-  external_order_ids: z.array(z.string()).optional().describe('Array of external order IDs to cancel'),
-  markets: z.array(z.string()).optional().describe('Array of market names to cancel all orders in (e.g., ["BTC-USD", "ETH-USD"])'),
-  cancel_all: z.boolean().optional().describe('If true, cancel all open orders for the account'),
-});
-export type MassCancelOrdersSchema = z.infer<typeof MassCancelOrdersSchema>;
-
-/**
- * Schema for canceling order by external ID
- */
-export const CancelOrderByExternalIdSchema = z.object({
-  external_id: z.string().describe('The external ID of the order to cancel'),
-});
-export type CancelOrderByExternalIdSchema = z.infer<typeof CancelOrderByExternalIdSchema>;
-
-/**
- * Schema for dead man switch
- */
-export const DeadManSwitchSchema = z.object({
-  countdown_time: z.number().describe('Time in seconds until all orders are auto-canceled. Set to 0 to disable.'),
-});
-export type DeadManSwitchSchema = z.infer<typeof DeadManSwitchSchema>;
