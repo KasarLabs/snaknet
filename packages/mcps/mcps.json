@@ -355,13 +355,30 @@
       "args": ["build/index.js"],
       "transport": "stdio",
       "env": {
-        "STARKNET_RPC_URL": ""
+        "EXTENDED_API_KEY": "",
+        "EXTENDED_API_URL": "https://api.starknet.extended.exchange"
       }
     },
-    "description": "Extended functionality on Starknet",
+    "description": "Extended perpetuals exchange integration for trading and account management on Starknet",
     "promptInfo": {
-      "expertise": "Extended Starknet functionality",
-      "tools": []
+      "expertise": "Perpetual futures trading, position management, and order execution on Extended exchange (Starknet)",
+      "tools": [
+        "extended_get_balance",
+        "extended_get_user_account_info",
+        "extended_get_positions",
+        "extended_get_open_orders",
+        "extended_get_order_by_id",
+        "extended_get_trades_history",
+        "extended_get_orders_history",
+        "extended_get_positions_history",
+        "extended_get_funding_payments",
+        "extended_get_leverage",
+        "extended_get_fees",
+        "extended_create_limit_order",
+        "extended_create_market_order",
+        "extended_cancel_order",
+        "extended_update_leverage"
+      ]
     }
   },
   "endurfi": {
