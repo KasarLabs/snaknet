@@ -9,6 +9,7 @@ export const getPositionsHistory = async (
   try {
     const queryParams = new URLSearchParams();
     if (params.market_id) queryParams.append('market_id', params.market_id);
+    if (params.side) queryParams.append('side', params.side);
     if (params.start_time) queryParams.append('start_time', params.start_time.toString());
     if (params.end_time) queryParams.append('end_time', params.end_time.toString());
     if (params.limit) queryParams.append('limit', params.limit.toString());

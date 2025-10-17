@@ -7,9 +7,15 @@ export const getPositions = async (
   params: GetPositionsSchema
 ): Promise<ExtendedApiResponse<Position[]>> => {
   try {
+    const queryParams = new URLSearchParams();
+    if (params.market) queryParams.append('market', params.market);
+    if (params.side) queryParams.append('side', params.side);
+
+    const endpoint = `/api/v1/user/positions${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+
     const response = await apiGet<{ positions: Position[] }>(
       env,
-      '/api/v1/user/positions',
+      endpoint,
       true
     );
 

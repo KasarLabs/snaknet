@@ -19,13 +19,20 @@ export type GetUserAccountInfoSchema = z.infer<typeof GetUserAccountInfoSchema>;
 /**
  * Schema for getting open positions
  */
-export const GetPositionsSchema = z.object({});
+export const GetPositionsSchema = z.object({
+  market: z.string().optional().describe('Filter by market name (e.g., "BTC-USD")'),
+  side: z.enum(['LONG', 'SHORT']).optional().describe('Position side: LONG or SHORT'),
+});
 export type GetPositionsSchema = z.infer<typeof GetPositionsSchema>;
 
 /**
  * Schema for getting open orders
  */
-export const GetOpenOrdersSchema = z.object({});
+export const GetOpenOrdersSchema = z.object({
+  market: z.string().optional().describe('Filter by market name (e.g., "BTC-USD")'),
+  type: z.enum(['LIMIT', 'MARKET']).optional().describe('Order type: LIMIT or MARKET'),
+  side: z.enum(['BUY', 'SELL']).optional().describe('Order side: BUY or SELL'),
+});
 export type GetOpenOrdersSchema = z.infer<typeof GetOpenOrdersSchema>;
 
 /**
@@ -64,6 +71,7 @@ export type GetOrdersHistorySchema = z.infer<typeof GetOrdersHistorySchema>;
  */
 export const GetPositionsHistorySchema = z.object({
   market_id: z.string().optional().describe('Filter by market ID (e.g., "BTC-USD")'),
+  side: z.enum(['LONG', 'SHORT']).optional().describe('Position side: LONG or SHORT'),
   start_time: z.number().optional().describe('Unix timestamp in milliseconds to start filtering'),
   end_time: z.number().optional().describe('Unix timestamp in milliseconds to end filtering'),
   limit: z.number().optional().describe('Maximum number of records to return (default: 100)'),

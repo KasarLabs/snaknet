@@ -68,6 +68,7 @@ async function testGetUserAccountInfo(client) {
  * Test extended_get_positions tool
  */
 async function testGetPositions(client) {
+  // Test without filters
   const response = await callTool(client, 'extended_get_positions', {});
 
   if (response.status !== 'success') {
@@ -76,6 +77,18 @@ async function testGetPositions(client) {
 
   console.log('✅ extended_get_positions test passed');
 
+  // Test with filters (optional)
+  const responseFiltered = await callTool(client, 'extended_get_positions', {
+    market: 'BTC-USD',
+    side: 'LONG',
+  });
+
+  if (responseFiltered.status !== 'success') {
+    throw new Error(`extended_get_positions (filtered) failed: ${responseFiltered.error}`);
+  }
+
+  console.log('✅ extended_get_positions (filtered) test passed');
+
   return response;
 }
 
@@ -83,6 +96,7 @@ async function testGetPositions(client) {
  * Test extended_get_open_orders tool
  */
 async function testGetOpenOrders(client) {
+  // Test without filters
   const response = await callTool(client, 'extended_get_open_orders', {});
 
   if (response.status !== 'success') {
@@ -90,6 +104,19 @@ async function testGetOpenOrders(client) {
   }
 
   console.log('✅ extended_get_open_orders test passed');
+
+  // Test with filters (optional)
+  const responseFiltered = await callTool(client, 'extended_get_open_orders', {
+    market: 'BTC-USD',
+    type: 'LIMIT',
+    side: 'BUY',
+  });
+
+  if (responseFiltered.status !== 'success') {
+    throw new Error(`extended_get_open_orders (filtered) failed: ${responseFiltered.error}`);
+  }
+
+  console.log('✅ extended_get_open_orders (filtered) test passed');
 
   return response;
 }
@@ -159,6 +186,19 @@ async function testGetPositionsHistory(client) {
   }
 
   console.log('✅ extended_get_positions_history test passed');
+
+  // Test with side filter (optional)
+  const responseFiltered = await callTool(client, 'extended_get_positions_history', {
+    market_id: 'BTC-USD',
+    side: 'LONG',
+    limit: 5,
+  });
+
+  if (responseFiltered.status !== 'success') {
+    throw new Error(`extended_get_positions_history (filtered) failed: ${responseFiltered.error}`);
+  }
+
+  console.log('✅ extended_get_positions_history (filtered) test passed');
 
   return response;
 }
